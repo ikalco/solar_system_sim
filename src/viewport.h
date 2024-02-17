@@ -8,7 +8,7 @@ typedef struct vp {
 	double cell_size;
 } Viewport;
 
-void init_viewport();
-void draw_viewport_grid();
+Viewport* init_viewport();
+void draw_viewport_grid(SDL_Renderer* renderer, Viewport* viewport);
 
 #endif

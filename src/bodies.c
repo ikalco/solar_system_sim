@@ -1,12 +1,7 @@
 #include "bodies.h"
 #include "viewport.h"
 
-extern SDL_Renderer *renderer;
-extern Viewport* viewport;
-
-List* bodies;
-
-void init_bodies_list() {	
+List* init_bodies_list() {	
 	PhysicalBody* obj1 = malloc(sizeof(PhysicalBody));
 	obj1->mass = 250 * KG;
 	obj1->position.x = 0 * AU;
@@ -27,12 +22,14 @@ void init_bodies_list() {
 	obj2->color.green = 0;
 	obj2->color.blue = 255;
 
-	bodies = create_list();
+	List* bodies = create_list();
 	add_list(bodies, (void*)obj1);
 	add_list(bodies, (void*)obj2);
+
+	return bodies;
 }
 
-void draw_bodies(List* bodies) {
+void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
 	PhysicalBody* body;
 	SDL_Rect rect;
 	rect.w = 25;

@@ -2,6 +2,7 @@
 #define BODIES_H
 
 #include "defines.h"
+#include "viewport.h"
 
 typedef struct pb {
 	VectorD position;
@@ -10,8 +11,8 @@ typedef struct pb {
 	double mass;
 } PhysicalBody;
 
-void init_bodies_list();
-void draw_bodies(List* bodies);
+List* init_bodies_list();
+void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies);
 void print_phyiscal_body(char* name, PhysicalBody* body);
 
 #endif

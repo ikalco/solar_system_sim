@@ -6,25 +6,27 @@
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-extern Viewport* viewport;
-extern List* bodies;
+Viewport* viewport;
+List* bodies;
 
 int main() {
 	initSDL();
 	atexit(cleanup);
 
-	init_bodies_list();
-	init_viewport();
+	bodies = init_bodies_list();
+	viewport = init_viewport();
 
 	while (1) {
 		handle_input();
+
+		update_bodies(bodies);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		draw_viewport_grid();
-		draw_bodies(bodies);
+		draw_viewport_grid(renderer, viewport);
+		draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
