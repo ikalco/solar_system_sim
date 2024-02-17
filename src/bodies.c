@@ -23,10 +23,18 @@ PhysicalBody* create_body(double x, double y, double mass, Color color) {
 
 List* init_bodies_list() {	
 	PhysicalBody* sun = create_body(0, 0, 1.98892e30, (Color){255, 255, 0});
+
 	PhysicalBody* earth = create_body(-1 * AU, 0, 5.9742e24, (Color){100, 149, 237});
+	earth->velocity.y = 29783;
+
 	PhysicalBody* mars = create_body(-1.524 * AU, 0, 6.39e23, (Color){188,35,50});
+	mars->velocity.y = 24077;
+
 	PhysicalBody* mercury = create_body(0.387 * AU, 0, 3.3e23, (Color){80, 78, 81});
+	mercury->velocity.y = -47400;
+
 	PhysicalBody* venus = create_body(0.723 * AU, 0, 4.8685e24, (Color){255, 255, 255});
+	venus->velocity.y = -35020;
 
 	List* bodies = create_list();
 	add_list(bodies, (void*)sun);
