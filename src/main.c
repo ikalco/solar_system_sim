@@ -1,44 +1,29 @@
 #include <stdio.h>
-#include <SDL2/SDL.h>
+#include "defines.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-void initSDL() {
-	// init sdl2
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL couldn't be initialized.\n");
-		exit(1);
-	} else {
-		printf("SDL video system is ready to go.\n");
+int main(int argc, char* argv[]) {
+	initSDL();
+	atexit(cleanup);
+
+	while (1) {
+		handle_input();
+
+		// clear screen with black
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+
+		// set draw color to white
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+		// draw to screen and wait amount of time for desired fps
+		SDL_RenderPresent(renderer);
+		SDL_Delay(1000/WINDOW_FPS);
 	}
 
-	// create window
-	window = SDL_CreateWindow(
-		"An SDL2 window",
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
-		SDL_WINDOW_SHOWN
-	);
-
-	// if window is undefined print error and exit
-	if (window == NULL) {
-		printf("Couldn't create window: %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	// create renderer
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-}
-
-void cleanup() {
-	// destroy the window
-	SDL_DestroyWindow(window);
-
-	// clean up
-	SDL_Quit();
+	return 0;
 }
 
 void handle_input() {
@@ -55,24 +40,44 @@ void handle_input() {
 	}
 }
 
-int main(int argc, char* argv[]) {
-	initSDL();
-	atexit(cleanup);
-
-	while (1) {
-		handle_input();
-
-		// clear screen
-		SDL_RenderClear(renderer);
-
-		// draw a line
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderDrawLine(renderer, 0, 0, 640, 480);
-
-		// draw to screen and wait 16ms (62.5 fps)
-		SDL_RenderPresent(renderer);
-		SDL_Delay(16);
+void initSDL() {
+	// init sdl2
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("SDL couldn't be initialized.\n");
+		exit(1);
 	}
 
-	return 0;
+	// create window
+	window = SDL_CreateWindow(
+		WINDOW_TITLE,
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
+		SDL_WINDOW_SHOWN
+	);
+
+	// if window is undefined print error and exit
+	if (window == NULL) {
+		printf("Couldn't create window: %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	// create renderer
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	// if renderer is undefined print error and exit
+	if (renderer == NULL) {
+		printf("Couldn't create renderer: %s\n", SDL_GetError());
+		exit(1);
+	}
+}
+
+void cleanup() {
+	SDL_DestroyRenderer(renderer);
+
+	SDL_DestroyWindow(window);
+
+	// clean up sdl
+	SDL_Quit();
 }
