@@ -1,6 +1,6 @@
 # Compiler settings
 CC = gcc
-CFLAGS = -std=c17 -Wall -Wextra -MD
+CFLAGS = -std=c17 -Wall -Wextra -MMD
 LDFLAGS = -lSDL2 -lm
 
 # Makefile settings
@@ -31,4 +31,4 @@ $(BUILDDIR):
 clean:
 	rm $(BUILDDIR)/*
 
--include $(OBJS:.o=.d)
+-include $(OBJ:.o=.d)
