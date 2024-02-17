@@ -1,3 +1,6 @@
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
+
 #include <stdlib.h>
 
 typedef struct node {
@@ -14,3 +17,5 @@ List* create_list();
 void add_list(List* list, void* data);
 void* remove_list(List* list);
 void free_list(List* list);
+
+#endif

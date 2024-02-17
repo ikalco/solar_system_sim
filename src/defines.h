@@ -1,3 +1,6 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+
 #include <stdint.h>
 #include <SDL2/SDL.h>
 #include "linked_list.h"
@@ -37,27 +40,8 @@ typedef struct color {
 	uint8_t blue;
 } Color;
 
-typedef struct pb {
-	VectorD position;
-	VectorD velocity;
-	Color color;
-	double mass;
-} PhysicalBody;
-
-typedef struct vp {
-	VectorD offset;
-	double cell_size;
-} Viewport;
-
-
-void init_viewport();
-void init_bodies_list();
-
-void draw_bodies(List* bodies);
-void draw_viewport_grid();
-
-void print_phyiscal_body(char* name, PhysicalBody* body);
-
 void initSDL();
 void cleanup();
 void handle_input();
+
+#endif
