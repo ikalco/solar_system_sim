@@ -1,4 +1,8 @@
-## A physically accurate Solar System Simulation
+## A Solar System Simulation
+
+Small hobby project to refamiliarize with C and SDL2. \
+It accurately simulates newtons gravity equation with \
+real astronomical numbers and makes it look a little nice.
 
 ### Build and Run
 
