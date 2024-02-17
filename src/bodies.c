@@ -56,11 +56,11 @@ void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
 	}
 }
 
-double dist_bodies_squared(PhysicalBody* body1, PhysicalBody* body2) {
+double dist_bodies(PhysicalBody* body1, PhysicalBody* body2) {
 	double x_off = body2->position.x - body1->position.x;
 	double y_off = body2->position.y - body1->position.y;
 
-	return (x_off * x_off) + (y_off * y_off);
+	return sqrt((x_off * x_off) + (y_off * y_off));
 }
 
 double angle_bodies(PhysicalBody* from, PhysicalBody* to) {
@@ -87,9 +87,9 @@ void update_body_gravity(List* bodies, PhysicalBody* body, double delta_time) {
 		// so the final simplified equation is this
 		// [ a = (G*m_1*m_2) / ((x_2-x_1)^2) + (y_2 - y_1)^2]
 
-		double dist = dist_bodies_squared(body, other);
+		double dist = dist_bodies(body, other);
 		double angle = angle_bodies(body, other);
-		double g_force_mag = (G_CONSTANT * body->mass * other->mass) / dist;
+		double g_force_mag = (G_CONSTANT * body->mass * other->mass) / (dist * dist);
 
 		body->net_force.x += g_force_mag * cos(angle) * delta_time;
 		body->net_force.y += g_force_mag * sin(angle) * delta_time;
