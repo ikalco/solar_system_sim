@@ -16,19 +16,10 @@ int main() {
 	bodies = init_bodies_list();
 	viewport = init_viewport();
 
-	Uint64 NOW = SDL_GetPerformanceCounter();
-	Uint64 LAST = 0;
-	double delta_time = 0;
-
 	while (1) {
 		handle_input();
 
-		LAST = NOW;
-		NOW = SDL_GetPerformanceCounter();
-
-		delta_time = (NOW-LAST)*1000.0 / (double)SDL_GetPerformanceFrequency();
-
-		update_bodies(bodies, delta_time, 3600 * 24);
+		update_bodies(bodies, 3600 * 24);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -54,7 +45,7 @@ void handle_input() {
 				exit(0);
 				break;
 			case SDL_KEYUP:
-				update_bodies(bodies, 1, 3600 * 24);
+				update_bodies(bodies, 3600 * 24);
 				break;
 			default:
 				break;

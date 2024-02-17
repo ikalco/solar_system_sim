@@ -79,7 +79,7 @@ double angle_bodies(PhysicalBody* from, PhysicalBody* to) {
 }
 
 // yes this is basically O(n^2) will optimize later
-void update_body_gravity(List* bodies, PhysicalBody* body, double delta_time) {
+void update_body_gravity(List* bodies, PhysicalBody* body) {
 	for (Node* other_node = bodies->first; other_node != NULL; other_node = other_node->next) {
 		PhysicalBody* other = (PhysicalBody*)other_node->data;
 		if (body == other) continue;
@@ -99,25 +99,25 @@ void update_body_gravity(List* bodies, PhysicalBody* body, double delta_time) {
 		double angle = angle_bodies(body, other);
 		double g_force_mag = (G_CONSTANT * body->mass * other->mass) / (dist * dist);
 
-		body->net_force.x += g_force_mag * cos(angle) * delta_time;
-		body->net_force.y += g_force_mag * sin(angle) * delta_time;
+		body->net_force.x += g_force_mag * cos(angle);
+		body->net_force.y += g_force_mag * sin(angle);
 	}
 }
 
-void update_bodies(List* bodies, double delta_time, double time_step) {
+void update_bodies(List* bodies, double time_step) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = (PhysicalBody*)current_node->data;
 
 		body->net_force.x = 0;
 		body->net_force.y = 0;
 
-		update_body_gravity(bodies, body, delta_time);
+		update_body_gravity(bodies, body);
 
-		body->velocity.x += (body->net_force.x / body->mass) * delta_time * time_step;
-		body->velocity.y += (body->net_force.y / body->mass) * delta_time * time_step;
+		body->velocity.x += (body->net_force.x / body->mass) * time_step;
+		body->velocity.y += (body->net_force.y / body->mass) * time_step;
 
-		body->position.x += body->velocity.x * delta_time;
-		body->position.y += body->velocity.y * delta_time;
+		body->position.x += body->velocity.x * time_step;
+		body->position.y += body->velocity.y * time_step;
 	}
 }
 
