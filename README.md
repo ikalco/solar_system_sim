@@ -1,4 +1,4 @@
-## A physically acurate Solar System Simulation
+## A physically accurate Solar System Simulation
 
 ### Build and Run
 
@@ -14,7 +14,3 @@ cd solar_system_sim
 make
 ./build/solar_system_sim
 ```
-
-### Using
-- SDL2
-- Basic Physics Principles
