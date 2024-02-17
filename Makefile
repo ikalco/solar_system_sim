@@ -1,7 +1,7 @@
 # Compiler settings
 CC = gcc
 CFLAGS = -std=c17 -Wall -Wextra -MD
-LDFLAGS = -lSDL2
+LDFLAGS = -lSDL2 -lm
 
 # Makefile settings
 APPNAME = solar_system_sim
