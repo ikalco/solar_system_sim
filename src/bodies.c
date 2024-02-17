@@ -96,7 +96,7 @@ void update_body_gravity(List* bodies, PhysicalBody* body, double delta_time) {
 	}
 }
 
-void update_bodies(List* bodies, double delta_time) {
+void update_bodies(List* bodies, double delta_time, double time_step) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = (PhysicalBody*)current_node->data;
 
@@ -105,11 +105,8 @@ void update_bodies(List* bodies, double delta_time) {
 
 		// update_body_gravity(bodies, body, delta_time);
 
-		body->acceleration.x += body->net_force.x / body->mass;
-		body->acceleration.y += body->net_force.y / body->mass;
-
-		body->velocity.x += body->acceleration.x * delta_time;
-		body->velocity.y += body->acceleration.y * delta_time;
+		body->velocity.x += (body->acceleration.x / body->mass) * delta_time * time_step;
+		body->velocity.y += (body->acceleration.y / body->mass) * delta_time * time_step;
 
 		body->position.x += body->velocity.x * delta_time;
 		body->position.y += body->velocity.y * delta_time;
