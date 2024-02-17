@@ -7,7 +7,8 @@
 typedef struct pb {
 	VectorD position;
 	VectorD velocity;
-	VectorD accel;
+	VectorD acceleration;
+	VectorD net_force;
 	Color color;
 	double mass;
 } PhysicalBody;
