@@ -44,6 +44,13 @@ typedef struct pb {
 	double mass;
 } PhysicalBody;
 
+typedef struct vp {
+	VectorD offset;
+	double cell_size;
+} Viewport;
+
+
+void init_viewport();
 List* init_bodies_list();
 void print_phyiscal_body(char* name, PhysicalBody* body);
 

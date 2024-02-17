@@ -3,20 +3,14 @@
 
 SDL_Window *window;
 SDL_Renderer *renderer;
+Viewport* viewport;
 
 int main() {
 	initSDL();
 	atexit(cleanup);
 
 	List* bodies = init_bodies_list();
-
-	printf("size: %d\n", bodies->size);
-
-	PhysicalBody* obj = (PhysicalBody*)(bodies->first->data);
-	print_phyiscal_body("obj1", obj);
-	
-	obj = (PhysicalBody*)(bodies->first->next->data);
-	print_phyiscal_body("obj2", obj);
+	init_viewport();
 
 	while (1) {
 		handle_input();
@@ -39,16 +33,18 @@ int main() {
 void draw_bodies(List* bodies) {
 	PhysicalBody* body;
 	SDL_Rect rect;
+	rect.w = 25;
+	rect.h = 25;
 
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		body = (PhysicalBody*)current_node->data;
 
 		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, 255);
 
-		rect.x = 0;
-		rect.y = 0;
-		rect.h = 0;
-		rect.w = 0;
+		rect.x = (body->position.x * viewport->cell_size) + viewport->offset.x;
+		rect.y = (body->position.y * viewport->cell_size) + viewport->offset.y;
+
+		SDL_RenderFillRect(renderer, &rect);
 	}
 }
 
@@ -74,6 +70,23 @@ void draw_viewport_grid() {
 	for(int i = 1; i < WINDOW_HEIGHT / cell_size; i++) {
 		SDL_RenderDrawLine(renderer, 0, i * cell_size, WINDOW_WIDTH, i * cell_size);
 	}
+}
+
+void init_viewport() {
+	viewport = malloc(sizeof(Viewport));
+
+	int min_size;
+
+	if (WINDOW_WIDTH < WINDOW_HEIGHT) {
+		min_size = WINDOW_WIDTH;
+	} else {
+		min_size = WINDOW_HEIGHT;
+	}
+
+	viewport->cell_size = (double) min_size / VIEWPORT_SIZE;
+
+	viewport->offset.x = (double) WINDOW_WIDTH / 2;
+	viewport->offset.y = (double) WINDOW_HEIGHT / 2;
 }
 
 List* init_bodies_list() {	
