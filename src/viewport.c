@@ -12,6 +12,7 @@ Viewport* init_viewport() {
 	}
 
 	viewport->cell_size = (double) min_size / VIEWPORT_SIZE;
+	viewport->conversion = viewport->cell_size / VIEWPORT_UNIT;
 
 	viewport->offset.x = (double) WINDOW_WIDTH / 2;
 	viewport->offset.y = (double) WINDOW_HEIGHT / 2;

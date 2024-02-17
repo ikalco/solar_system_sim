@@ -5,25 +5,25 @@
 
 List* init_bodies_list() {	
 	PhysicalBody* obj1 = malloc(sizeof(PhysicalBody));
-	obj1->mass = 250 * KG;
-	obj1->position.x = 0 * AU;
-	obj1->position.y = 0 * AU;
-	obj1->velocity.x = 0 * AU;
-	obj1->velocity.y = 0 * AU;
-	obj1->accel.x = 0 * AU;
-	obj1->accel.y = 0 * AU;
+	obj1->mass = 250e28 * KG;
+	obj1->position.x = 0 * M;
+	obj1->position.y = 0 * M;
+	obj1->velocity.x = 0.0 * M_S;
+	obj1->velocity.y = 2.34 * KM_S;
+	obj1->accel.x = 0;
+	obj1->accel.y = 0;
 	obj1->color.red = 255;
 	obj1->color.green = 255;
 	obj1->color.blue = 0;
 
 	PhysicalBody* obj2 = malloc(sizeof(PhysicalBody));
-	obj2->mass = 25 * KG;
+	obj2->mass = 25e28 * KG;
 	obj2->position.x = 2 * AU;
-	obj2->position.y = 0 * AU;
-	obj2->velocity.x = 23.45 * KM_S;
-	obj2->velocity.y = 0 * AU;
-	obj1->accel.x = 0 * AU;
-	obj1->accel.y = 0 * AU;
+	obj2->position.y = 0 * M;
+	obj2->velocity.x = 0 * M;
+	obj2->velocity.y = -23.45 * KM_S;
+	obj1->accel.x = 0;
+	obj1->accel.y = 0;
 	obj2->color.red = 255;
 	obj2->color.green = 0;
 	obj2->color.blue = 255;
@@ -46,8 +46,8 @@ void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
 
 		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, 255);
 
-		rect.x = (body->position.x * viewport->cell_size) + viewport->offset.x;
-		rect.y = (body->position.y * viewport->cell_size) + viewport->offset.y;
+		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
+		rect.y = (body->position.y * viewport->conversion) + viewport->offset.y;
 
 		SDL_RenderFillRect(renderer, &rect);
 	}
@@ -68,7 +68,7 @@ double angle_bodies(PhysicalBody* from, PhysicalBody* to) {
 }
 
 // yes this is basically O(n^2) will optimize later
-void update_body_accel(List* bodies, PhysicalBody* body) {
+void update_body_accel(List* bodies, PhysicalBody* body, double delta_time) {
 	for (Node* other_node = bodies->first; other_node != NULL; other_node = other_node->next) {
 		PhysicalBody* other = (PhysicalBody*)other_node->data;
 		if (body == other) continue;
@@ -92,22 +92,22 @@ void update_body_accel(List* bodies, PhysicalBody* body) {
 		double angle = angle_bodies(body, other);
 		double g_accel_mag = (G_CONSTANT * other->mass) / dist;
 
-		body->accel.x += g_accel_mag * cos(angle);
-		body->accel.y += g_accel_mag * sin(angle);
+		body->accel.x += g_accel_mag * cos(angle) * delta_time;
+		body->accel.y += g_accel_mag * sin(angle) * delta_time;
 	}
 }
 
-void update_bodies(List* bodies) {
+void update_bodies(List* bodies, double delta_time) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = (PhysicalBody*)current_node->data;
 
-		update_body_accel(bodies, body);
+		update_body_accel(bodies, body, delta_time);
 
-		body->velocity.x += body->accel.x;
-		body->velocity.y += body->accel.y;
+		body->velocity.x += body->accel.x * delta_time;
+		body->velocity.y += body->accel.y * delta_time;
 
-		body->position.x += body->velocity.x;
-		body->position.y += body->velocity.y;
+		body->position.x += body->velocity.x * delta_time;
+		body->position.y += body->velocity.y * delta_time;
 	}
 }
 

@@ -9,19 +9,16 @@
 #define G_CONSTANT 6.67430e-11
 
 // units
-#define M 6.68458712e-12		// meters
-#define KM 6.68458712e-9		// kilometers	
-#define AU 1					// astronomical unit (149597870700 in meters)
+#define M 1.0					// meters
+#define KM 1000.0				// kilometers	
+#define AU 149597870700.0		// astronomical unit (149597870700 in meters)
 #define G 0.001					// grams
-#define KG 1					// kilograms
-#define S 1						// seconds
+#define KG 1.0					// kilograms
+#define S 1.0					// seconds
 
 // derived units
-#define M_S 1					// meters per second
-#define KM_S 1000				// kilometers per second
-
-// viewport defines
-#define VIEWPORT_SIZE 10 * AU
+#define M_S M / S					// meters per second
+#define KM_S KM / S				// kilometers per second
 
 // window defines
 #define WINDOW_TITLE "Solar System Simulator"

@@ -3,9 +3,14 @@
 
 #include "defines.h"
 
+// viewport defines
+#define VIEWPORT_SIZE 10
+#define VIEWPORT_UNIT AU
+
 typedef struct vp {
 	VectorD offset;
 	double cell_size;
+	double conversion;
 } Viewport;
 
 Viewport* init_viewport();
