@@ -3,13 +3,15 @@
 
 SDL_Window *window;
 SDL_Renderer *renderer;
+
+List* bodies;
 Viewport* viewport;
 
 int main() {
 	initSDL();
 	atexit(cleanup);
 
-	List* bodies = init_bodies_list();
+	init_bodies_list();
 	init_viewport();
 
 	while (1) {
@@ -89,7 +91,7 @@ void init_viewport() {
 	viewport->offset.y = (double) WINDOW_HEIGHT / 2;
 }
 
-List* init_bodies_list() {	
+void init_bodies_list() {	
 	PhysicalBody* obj1 = malloc(sizeof(PhysicalBody));
 	obj1->mass = 250 * KG;
 	obj1->position.x = 0 * AU;
@@ -110,11 +112,9 @@ List* init_bodies_list() {
 	obj2->color.green = 0;
 	obj2->color.blue = 255;
 
-	List* bodies_list = create_list();
-	add_list(bodies_list, (void*)obj1);
-	add_list(bodies_list, (void*)obj2);
-
-	return bodies_list;
+	bodies = create_list();
+	add_list(bodies, (void*)obj1);
+	add_list(bodies, (void*)obj2);
 }
 
 void print_phyiscal_body(char* name, PhysicalBody* body) {
@@ -176,6 +176,14 @@ void initSDL() {
 }
 
 void cleanup() {
+	if (bodies != NULL) {
+		free_list(bodies);
+	}
+
+	if (viewport != NULL) {
+		free(viewport);
+	}
+
 	SDL_DestroyRenderer(renderer);
 
 	SDL_DestroyWindow(window);

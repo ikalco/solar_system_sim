@@ -51,11 +51,12 @@ typedef struct vp {
 
 
 void init_viewport();
-List* init_bodies_list();
-void print_phyiscal_body(char* name, PhysicalBody* body);
+void init_bodies_list();
 
 void draw_bodies(List* bodies);
 void draw_viewport_grid();
+
+void print_phyiscal_body(char* name, PhysicalBody* body);
 
 void initSDL();
 void cleanup();
