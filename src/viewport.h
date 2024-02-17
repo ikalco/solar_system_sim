@@ -4,7 +4,7 @@
 #include "defines.h"
 
 // viewport defines
-#define VIEWPORT_SIZE 10
+#define VIEWPORT_SIZE 2.5
 #define VIEWPORT_UNIT AU
 
 typedef struct vp {

@@ -28,13 +28,13 @@ int main() {
 
 		delta_time = (NOW-LAST)*1000.0 / (double)SDL_GetPerformanceFrequency();
 
-		update_bodies(bodies, delta_time * 25);
+		// update_bodies(bodies, delta_time, 3600 * 24);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		draw_viewport_grid(renderer, viewport);
+		// draw_viewport_grid(renderer, viewport);
 		draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
@@ -54,7 +54,7 @@ void handle_input() {
 				exit(0);
 				break;
 			case SDL_KEYUP:
-				update_bodies(bodies, 1);
+				update_bodies(bodies, 1, 3600 * 24);
 				break;
 			default:
 				break;
