@@ -1,4 +1,5 @@
 #include "linked_list.h"
+#include <stdint.h>
 
 #define WINDOW_TITLE "An SDL2 Window"
 #define WINDOW_WIDTH 1280
@@ -25,9 +26,16 @@ typedef struct vd {
 	double y;
 } VectorD;
 
+typedef struct color {
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+} Color;
+
 typedef struct pb {
 	VectorD position;
 	VectorD velocity;
+	Color color;
 	double mass;
 } PhysicalBody;
 
