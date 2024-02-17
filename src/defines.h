@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <SDL2/SDL.h>
 #include "linked_list.h"
 
 // constants

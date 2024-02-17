@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <SDL2/SDL.h>
 #include "defines.h"
 
 SDL_Window *window;
@@ -26,6 +25,7 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
+		draw_viewport_grid();
 		draw_bodies(bodies);
 
 		// draw to screen and wait amount of time for desired fps
@@ -34,6 +34,46 @@ int main() {
 	}
 
 	return 0;
+}
+
+void draw_bodies(List* bodies) {
+	PhysicalBody* body;
+	SDL_Rect rect;
+
+	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
+		body = (PhysicalBody*)current_node->data;
+
+		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, 255);
+
+		rect.x = 0;
+		rect.y = 0;
+		rect.h = 0;
+		rect.w = 0;
+	}
+}
+
+void draw_viewport_grid() {
+	int min_size;
+
+	if (WINDOW_WIDTH < WINDOW_HEIGHT) {
+		min_size = WINDOW_WIDTH;
+	} else {
+		min_size = WINDOW_HEIGHT;
+	}
+
+	double cell_size = (double) min_size / VIEWPORT_SIZE;
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+	// vertical lines
+	for(int i = 1; i < WINDOW_WIDTH / cell_size; i++) {
+		SDL_RenderDrawLine(renderer, i * cell_size, 0, i * cell_size, WINDOW_HEIGHT);
+	}
+
+	// horizontal lines
+	for(int i = 1; i < WINDOW_HEIGHT / cell_size; i++) {
+		SDL_RenderDrawLine(renderer, 0, i * cell_size, WINDOW_WIDTH, i * cell_size);
+	}
 }
 
 List* init_bodies_list() {	
@@ -56,19 +96,6 @@ List* init_bodies_list() {
 	add_list(bodies_list, (void*)obj2);
 
 	return bodies_list;
-}
-
-void draw_bodies(List* bodies) {
-	Node* current = bodies->first;
-	SDL_Rect rect;
-
-	while (current != NULL) {
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-		SDL_RenderDrawRect(renderer, &rect);
-
-		current = current->next;
-	}
 }
 
 void print_phyiscal_body(char* name, PhysicalBody* body) {
