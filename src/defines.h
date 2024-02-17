@@ -40,6 +40,7 @@ typedef struct pb {
 } PhysicalBody;
 
 List* init_bodies_list();
+void draw_bodies(List* bodies);
 void print_phyiscal_body(char* name, PhysicalBody* body);
 
 void initSDL();

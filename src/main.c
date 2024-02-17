@@ -5,18 +5,18 @@
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-int main(int argc, char* argv[]) {
+int main() {
 	initSDL();
 	atexit(cleanup);
 
-	List* bodies_list = init_bodies_list();
+	List* bodies = init_bodies_list();
 
-	printf("size: %d\n", bodies_list->size);
+	printf("size: %d\n", bodies->size);
 
-	PhysicalBody* obj = (PhysicalBody*)(bodies_list->first->data);
+	PhysicalBody* obj = (PhysicalBody*)(bodies->first->data);
 	print_phyiscal_body("obj1", obj);
 	
-	obj = (PhysicalBody*)(bodies_list->first->next->data);
+	obj = (PhysicalBody*)(bodies->first->next->data);
 	print_phyiscal_body("obj2", obj);
 
 	while (1) {
@@ -26,8 +26,7 @@ int main(int argc, char* argv[]) {
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		// set draw color to white
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		draw_bodies(bodies);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
@@ -57,6 +56,19 @@ List* init_bodies_list() {
 	add_list(bodies_list, (void*)obj2);
 
 	return bodies_list;
+}
+
+void draw_bodies(List* bodies) {
+	Node* current = bodies->first;
+	SDL_Rect rect;
+
+	while (current != NULL) {
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+		SDL_RenderDrawRect(renderer, &rect);
+
+		current = current->next;
+	}
 }
 
 void print_phyiscal_body(char* name, PhysicalBody* body) {
