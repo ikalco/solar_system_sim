@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include "linked_list.h"
 
 #define WINDOW_TITLE "An SDL2 Window"
 #define WINDOW_WIDTH 1280
@@ -30,6 +30,9 @@ typedef struct pb {
 	VectorD velocity;
 	double mass;
 } PhysicalBody;
+
+List* init_bodies_list();
+void print_phyiscal_body(char* name, PhysicalBody* body);
 
 void initSDL();
 void cleanup();

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <SDL2/SDL.h>
 #include "defines.h"
 
 SDL_Window *window;
@@ -7,6 +9,16 @@ SDL_Renderer *renderer;
 int main(int argc, char* argv[]) {
 	initSDL();
 	atexit(cleanup);
+
+	List* bodies_list = init_bodies_list();
+
+	printf("size: %d\n", bodies_list->size);
+
+	PhysicalBody* obj = (PhysicalBody*)(bodies_list->first->data);
+	print_phyiscal_body("obj1", obj);
+	
+	obj = (PhysicalBody*)(bodies_list->first->next->data);
+	print_phyiscal_body("obj2", obj);
 
 	while (1) {
 		handle_input();
@@ -24,6 +36,39 @@ int main(int argc, char* argv[]) {
 	}
 
 	return 0;
+}
+
+List* init_bodies_list() {	
+	PhysicalBody* obj1 = malloc(sizeof(PhysicalBody));
+	obj1->mass = 250 * KG;
+	obj1->position.x = 0 * AU;
+	obj1->position.y = 0 * AU;
+	obj1->velocity.x = 0 * AU;
+	obj1->velocity.y = 0 * AU;
+
+	PhysicalBody* obj2 = malloc(sizeof(PhysicalBody));
+	obj2->mass = 25 * KG;
+	obj2->position.x = 2 * AU;
+	obj2->position.y = 0 * AU;
+	obj2->velocity.x = 23.45 * KM_S;
+	obj2->velocity.y = 0 * AU;
+
+	List* bodies_list = create_list();
+	add_list(bodies_list, (void*)obj1);
+	add_list(bodies_list, (void*)obj2);
+
+	return bodies_list;
+}
+
+void print_phyiscal_body(char* name, PhysicalBody* body) {
+	printf("(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n", 
+		name,
+		body->position.x,
+		body->position.y,
+		body->velocity.x,
+		body->velocity.y,
+		body->mass
+	);
 }
 
 void handle_input() {
