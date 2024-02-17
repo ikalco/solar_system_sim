@@ -26,6 +26,8 @@
 #define WINDOW_HEIGHT 720
 #define WINDOW_FPS 60
 
+#define TIME_STEP 3600*24
+
 typedef struct vd {
 	double x;
 	double y;

@@ -19,13 +19,13 @@ int main() {
 	while (1) {
 		handle_input();
 
-		update_bodies(bodies, 3600 * 24);
+		update_bodies(bodies, TIME_STEP);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		// draw_viewport_grid(renderer, viewport);
+		draw_viewport_grid(renderer, viewport);
 		draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
@@ -43,9 +43,6 @@ void handle_input() {
 		switch (event.type) {
 			case SDL_QUIT:
 				exit(0);
-				break;
-			case SDL_KEYUP:
-				update_bodies(bodies, 3600 * 24);
 				break;
 			default:
 				break;
