@@ -83,6 +83,9 @@ List* init_bodies_list() {
 	obj1->position.y = 0 * AU;
 	obj1->velocity.x = 0 * AU;
 	obj1->velocity.y = 0 * AU;
+	obj1->color.red = 255;
+	obj1->color.green = 255;
+	obj1->color.blue = 0;
 
 	PhysicalBody* obj2 = malloc(sizeof(PhysicalBody));
 	obj2->mass = 25 * KG;
@@ -90,6 +93,9 @@ List* init_bodies_list() {
 	obj2->position.y = 0 * AU;
 	obj2->velocity.x = 23.45 * KM_S;
 	obj2->velocity.y = 0 * AU;
+	obj2->color.red = 255;
+	obj2->color.green = 0;
+	obj2->color.blue = 255;
 
 	List* bodies_list = create_list();
 	add_list(bodies_list, (void*)obj1);
