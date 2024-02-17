@@ -3,38 +3,37 @@
 
 #include "math.h"
 
-List* init_bodies_list() {	
-	PhysicalBody* obj1 = malloc(sizeof(PhysicalBody));
-	obj1->mass = 250e28 * KG;
-	obj1->position.x = 0 * M;
-	obj1->position.y = 0 * M;
-	obj1->velocity.x = 0.0 * M_S;
-	obj1->velocity.y = 2.34 * KM_S;
-	obj1->acceleration.x = 0;
-	obj1->acceleration.y = 0;
-	obj1->net_force.x = 0;
-	obj1->net_force.y = 0;
-	obj1->color.red = 255;
-	obj1->color.green = 255;
-	obj1->color.blue = 0;
+PhysicalBody* create_body(double x, double y, double mass, Color color) {
+	PhysicalBody* body = malloc(sizeof(PhysicalBody));
+	
+	body->position.x = x;
+	body->position.y = y;
+	body->mass = mass;
+	body->color = color;
 
-	PhysicalBody* obj2 = malloc(sizeof(PhysicalBody));
-	obj2->mass = 25e28 * KG;
-	obj2->position.x = 2 * AU;
-	obj2->position.y = 0 * M;
-	obj2->velocity.x = 0 * M;
-	obj2->velocity.y = -23.45 * KM_S;
-	obj2->acceleration.x = 0;
-	obj2->acceleration.y = 0;
-	obj2->net_force.x = 0;
-	obj2->net_force.y = 0;
-	obj2->color.red = 255;
-	obj2->color.green = 0;
-	obj2->color.blue = 255;
+	body->velocity.x = 0;
+	body->velocity.y = 0;
+	body->acceleration.x = 0;
+	body->acceleration.y = 0;
+	body->net_force.x = 0;
+	body->net_force.y = 0;
+
+	return body;
+}
+
+List* init_bodies_list() {	
+	PhysicalBody* sun = create_body(0, 0, 1.98892e30, (Color){255, 255, 0});
+	PhysicalBody* earth = create_body(-1 * AU, 0, 5.9742e24, (Color){100, 149, 237});
+	PhysicalBody* mars = create_body(-1.524 * AU, 0, 6.39e23, (Color){188,35,50});
+	PhysicalBody* mercury = create_body(0.387 * AU, 0, 3.3e23, (Color){80, 78, 81});
+	PhysicalBody* venus = create_body(0.723 * AU, 0, 4.8685e24, (Color){255, 255, 255});
 
 	List* bodies = create_list();
-	add_list(bodies, (void*)obj1);
-	add_list(bodies, (void*)obj2);
+	add_list(bodies, (void*)sun);
+	add_list(bodies, (void*)earth);
+	add_list(bodies, (void*)mars);
+	add_list(bodies, (void*)mercury);
+	add_list(bodies, (void*)venus);
 
 	return bodies;
 }
@@ -46,12 +45,12 @@ void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
 	rect.h = 25;
 
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
-		body = (PhysicalBody*)current_node->data;
+		body = (PhysicalBody*)current_node->data;	
 
 		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, 255);
 
 		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
-		rect.y = (body->position.y * viewport->conversion) + viewport->offset.y;
+		rect.y = (body->position.y * viewport->conversion)*-1 + viewport->offset.y;
 
 		SDL_RenderFillRect(renderer, &rect);
 	}
@@ -101,7 +100,10 @@ void update_bodies(List* bodies, double delta_time) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = (PhysicalBody*)current_node->data;
 
-		update_body_gravity(bodies, body, delta_time);
+		body->net_force.x = 0;
+		body->net_force.y = 0;
+
+		// update_body_gravity(bodies, body, delta_time);
 
 		body->acceleration.x += body->net_force.x / body->mass;
 		body->acceleration.y += body->net_force.y / body->mass;
