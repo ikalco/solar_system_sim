@@ -28,7 +28,7 @@ int main() {
 
 		delta_time = (NOW-LAST)*1000.0 / (double)SDL_GetPerformanceFrequency();
 
-		// update_bodies(bodies, delta_time, 3600 * 24);
+		update_bodies(bodies, delta_time, 3600 * 24);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

@@ -103,10 +103,10 @@ void update_bodies(List* bodies, double delta_time, double time_step) {
 		body->net_force.x = 0;
 		body->net_force.y = 0;
 
-		// update_body_gravity(bodies, body, delta_time);
+		update_body_gravity(bodies, body, delta_time);
 
-		body->velocity.x += (body->acceleration.x / body->mass) * delta_time * time_step;
-		body->velocity.y += (body->acceleration.y / body->mass) * delta_time * time_step;
+		body->velocity.x += (body->net_force.x / body->mass) * delta_time * time_step;
+		body->velocity.y += (body->net_force.y / body->mass) * delta_time * time_step;
 
 		body->position.x += body->velocity.x * delta_time;
 		body->position.y += body->velocity.y * delta_time;
