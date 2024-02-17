@@ -1,6 +1,6 @@
 # Compiler settings
 CC = gcc
-CXXFLAGS = -std=c17 -Wall -Wextra -g -ggdb
+CFLAGS = -std=c17 -Wall -Wextra -g -ggdb -MD
 LDFLAGS = -lSDL2
 
 # Makefile settings
@@ -17,11 +17,11 @@ all: $(BUILDDIR)/$(APPNAME)
 
 # Builds the app from objs and links
 $(BUILDDIR)/$(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Builds all src into objects
 $(BUILDDIR)/%.o: $(SRCDIR)/%$(EXT) | $(BUILDDIR)
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(BUILDDIR):
 	mkdir -p $@
@@ -30,3 +30,5 @@ $(BUILDDIR):
 .PHONY: clean
 clean:
 	rm $(BUILDDIR)/*
+
+-include $(OBJS:.o=.d)
