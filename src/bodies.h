@@ -1,8 +1,9 @@
 #ifndef BODIES_H
 #define BODIES_H
 
-#include "defines.h"
 #include "viewport.h"
+#include "linked_list.h"
+#include <SDL2/SDL.h>
 
 typedef struct pb {
 	VectorD position;
@@ -14,7 +15,6 @@ typedef struct pb {
 	char* name;
 } PhysicalBody;
 
-List* init_bodies_list();
 PhysicalBody* create_body(double x, double y, double mass, Color color, char* name);
 void free_body(PhysicalBody* body);
 void free_bodies(List* bodies);

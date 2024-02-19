@@ -1,4 +1,5 @@
 #include "viewport.h"
+#include "options.h"
 
 Viewport* init_viewport() {
 	Viewport* viewport = malloc(sizeof(Viewport));

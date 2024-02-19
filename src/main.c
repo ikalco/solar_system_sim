@@ -1,5 +1,11 @@
 #include <stdio.h>
+#include <SDL2/SDL.h>
+
 #include "defines.h"
+#include "physical.h"
+#include "options.h"
+
+#include "linked_list.h"
 #include "bodies.h"
 #include "viewport.h"
 #include "save.h"
@@ -15,8 +21,6 @@ int main() {
 	atexit(cleanup);
 
 	bodies = read_save_file("saves/solar_system.save");
-
-	// bodies = init_bodies_list();
 	viewport = init_viewport();
 
 	while (1) {

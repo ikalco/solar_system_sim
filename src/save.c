@@ -1,4 +1,5 @@
 #include "save.h"
+#include "options.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -79,7 +80,7 @@ List* read_save_file(char* filename) {
 
 		if (body == NULL) {
 			free_body(body);
-			printf("Invalid line (at %d) in save file: %s", line_number, filename);
+			printf("Invalid line in save file: %s at line %d", filename, line_number);
 			// yes i'm using line_number as a failure flag
 			line_number = -1;
 			break;

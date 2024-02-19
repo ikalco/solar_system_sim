@@ -1,4 +1,5 @@
 #include "linked_list.h"
+#include <stdlib.h>
 
 List* create_list() {
 	List* new_list = (List*)malloc(sizeof(List));

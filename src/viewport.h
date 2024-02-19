@@ -2,10 +2,7 @@
 #define VIEWPORT_H
 
 #include "defines.h"
-
-// viewport defines
-#define VIEWPORT_SIZE 3.5
-#define VIEWPORT_UNIT AU
+#include <SDL2/SDL.h>
 
 typedef struct vp {
 	VectorD offset;
