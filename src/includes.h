@@ -9,6 +9,7 @@
 #include "bodies.h"
 #include "viewport.h"
 #include "save.h"
+#include "menu.h"
 
 void initSDL();
 void cleanup();

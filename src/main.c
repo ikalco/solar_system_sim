@@ -19,14 +19,14 @@ int main() {
 	while (1) {
 		handle_input();
 
-		update_bodies(bodies, TIME_STEP);
+		// update_bodies(bodies, TIME_STEP);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		draw_viewport_grid(renderer, viewport);
-		draw_bodies(renderer, viewport, bodies);
+		// draw_viewport_grid(renderer, viewport);
+		// draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
