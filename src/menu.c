@@ -88,7 +88,19 @@ MenuNode* remove_menu_list(MenuList* list) {
 }
 
 void draw_menu_list(SDL_Renderer* renderer, MenuList* list) {
-	// TODO
+	SDL_FRect rect = {
+		list->position.x,
+		list->position.y,
+		list->width,
+		list->height
+	};
+
+	SDL_SetRenderDrawColor(renderer, list->bg_color.red, list->bg_color.green, list->bg_color.blue, 255);
+	SDL_RenderFillRectF(renderer, &rect);
+
+	for (MenuListNode* current = list->first; current != NULL; current = current->next) {
+		draw_menu_node(renderer, current->node);
+	}
 }
 
 void free_menu_list(MenuList* list) {
