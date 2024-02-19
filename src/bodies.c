@@ -29,31 +29,6 @@ char* create_string(const char* str) {
 	return new_str;
 }
 
-List* init_bodies_list() {	
-	PhysicalBody* sun = create_body(0, 0, 1.98892e30, (Color){255, 255, 0}, create_string("Sun"));
-
-	PhysicalBody* earth = create_body(-1 * AU, 0, 5.9742e24, (Color){100, 149, 237}, create_string("Earth"));
-	earth->velocity.y = 29783;
-
-	PhysicalBody* mars = create_body(-1.524 * AU, 0, 6.39e23, (Color){188,35,50}, create_string("Mars"));
-	mars->velocity.y = 24077;
-
-	PhysicalBody* mercury = create_body(0.387 * AU, 0, 3.3e23, (Color){80, 78, 81}, create_string("Mercury"));
-	mercury->velocity.y = -47400;
-
-	PhysicalBody* venus = create_body(0.723 * AU, 0, 4.8685e24, (Color){255, 255, 255}, create_string("Venus"));
-	venus->velocity.y = -35020;
-
-	List* bodies = create_list();
-	add_list(bodies, (void*)sun);
-	add_list(bodies, (void*)earth);
-	add_list(bodies, (void*)mars);
-	add_list(bodies, (void*)mercury);
-	add_list(bodies, (void*)venus);
-
-	return bodies;
-}
-
 void free_body(PhysicalBody* body) {
 	if (body == NULL) return;
 
