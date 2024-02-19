@@ -17,7 +17,7 @@ int main() {
 	bodies = read_save_file(DEFAULT_SAVE_FILE);
 	viewport = init_viewport();
 
-	MenuList* menu_list = create_menu_list((VectorD){20, 20}, 200, 300, (Color){20, 20, 20}, 10, 20);
+	MenuList* menu_list = create_menu_list((VectorD){20, 20}, 200, 300, (Color){20, 20, 20, 255}, 10, 20);
 	menu_root = create_menu_root();
 	menu_root->node = menu_list;
 	menu_root->type = MENU_LIST;

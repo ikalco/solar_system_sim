@@ -48,6 +48,9 @@ PhysicalBody* parse_save_line(char* line) {
 	if (token == NULL) return NULL;
 	sscanf(token, "%hhu", &body->color.blue);
 
+	// alpha of color for all bodies is alway 255
+	body->color.alpha = 255;
+
 	token = strtok(NULL, delim);
 	if (token == NULL) return NULL;
 	

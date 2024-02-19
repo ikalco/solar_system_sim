@@ -58,7 +58,7 @@ void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		body = (PhysicalBody*)current_node->data;	
 
-		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, 255);
+		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, body->color.alpha);
 
 		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
 		rect.y = (body->position.y * viewport->conversion)*-1 + viewport->offset.y;
