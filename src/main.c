@@ -85,7 +85,7 @@ void initSDL() {
 
 void cleanup() {
 	if (bodies != NULL) {
-		free_list(bodies);
+		free_bodies(bodies);
 	}
 
 	if (viewport != NULL) {
