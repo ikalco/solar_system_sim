@@ -1,19 +1,15 @@
 #include "menu.h"
 
-MenuNode* create_menu_root(VectorD position, double width, double height, Color bg_color) {
+MenuNode* create_menu_root() {
 	MenuNode* root = malloc(sizeof(MenuNode));
 
-	root->position = position;
-	root->width = width;
-	root->height = height;
-	root->bg_color = bg_color;
 	root->type = MENU_NONE;
 	root->node = NULL;
 
 	return root;
 }
 
-void draw_menu(SDL_Renderer* renderer, Viewport* viewport, MenuNode* menu) {
+void draw_menu_node(SDL_Renderer* renderer, Viewport* viewport, MenuNode* menu) {
 	switch (menu->type) {
 		case MENU_NONE:
 			break;
@@ -51,9 +47,13 @@ void free_menu_node(MenuNode* node) {
 	}
 }
 
-MenuList* create_menu_list(double vertical_spacing, double outer_spacing) {
+MenuList* create_menu_list(VectorD position, double width, double height, Color bg_color, double vertical_spacing, double outer_spacing) {
 	MenuList* list = malloc(sizeof(MenuList));
 
+	list->position = position;
+	list->width = width;
+	list->height = height;
+	list->bg_color = bg_color;
 	list->vertical_spacing = vertical_spacing;
 	list->outer_spacing = outer_spacing;
 
@@ -108,11 +108,17 @@ void free_menu_list(MenuList* list) {
 	free(list);
 }
 
-MenuSelect* create_menu_select(Color text_color, char* text) {
+MenuSelect* create_menu_select(VectorD position, double width, double height, Color bg_color, Color text_color, char* text) {
 	MenuSelect* select = malloc(sizeof(MenuSelect));
+	
+	select->position = position;
+	select->width = width;
+	select->height = height;
+	select->bg_color = bg_color;
 	select->text_color = text_color;
 	select->text = text;
 	select->selected = false;
+
 	return select;
 }
 
@@ -125,10 +131,16 @@ void free_menu_select(MenuSelect* select) {
 	free(select);
 }
 
-MenuButton* create_menu_button(Color text_color, char* text) {
+MenuButton* create_menu_button(VectorD position, double width, double height, Color bg_color, Color text_color, char* text) {
 	MenuButton* button = malloc(sizeof(MenuButton));
+
+	button->position = position;
+	button->width = width;
+	button->height = height;
+	button ->bg_color = bg_color;
 	button->text_color = text_color;
 	button->text = text;
+
 	return button;
 }
 
@@ -141,9 +153,15 @@ void free_menu_button(MenuButton* button) {
 	free(button);
 }
 
-MenuSpacer* create_menu_spacer(double spacing) {
+MenuSpacer* create_menu_spacer(VectorD position, double width, double height, Color bg_color, double spacing) {
 	MenuSpacer* spacer = malloc(sizeof(MenuSpacer));
+	
+	spacer->position = position;
+	spacer->width = width;
+	spacer->height = height;
+	spacer ->bg_color = bg_color;
 	spacer->spacing = spacing;
+	
 	return spacer;
 }
 
