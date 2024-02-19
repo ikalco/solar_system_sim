@@ -9,21 +9,21 @@ MenuNode* create_menu_root() {
 	return root;
 }
 
-void draw_menu_node(SDL_Renderer* renderer, Viewport* viewport, MenuNode* menu) {
+void draw_menu_node(SDL_Renderer* renderer, MenuNode* menu) {
 	switch (menu->type) {
 		case MENU_NONE:
 			break;
 		case MENU_LIST:
-			draw_menu_list(renderer, viewport, menu);
+			draw_menu_list(renderer, menu->node);
 			break;
 		case MENU_SELECT:
-			draw_menu_select(renderer, viewport, menu);
+			draw_menu_select(renderer, menu->node);
 			break;
 		case MENU_BUTTON:
-			draw_menu_button(renderer, viewport, menu);
+			draw_menu_button(renderer, menu->node);
 			break;
 		case MENU_SPACER:
-			draw_menu_spacer(renderer, viewport, menu);
+			draw_menu_spacer(renderer, menu->node);
 			break;
 	}
 }
@@ -87,7 +87,7 @@ MenuNode* remove_menu_list(MenuList* list) {
 	return data;
 }
 
-void draw_menu_list(SDL_Renderer* renderer, Viewport* viewport, MenuNode* list) {
+void draw_menu_list(SDL_Renderer* renderer, MenuList* list) {
 	// TODO
 }
 
@@ -122,7 +122,7 @@ MenuSelect* create_menu_select(VectorD position, double width, double height, Co
 	return select;
 }
 
-void draw_menu_select(SDL_Renderer* renderer, Viewport* viewport, MenuNode* select) {
+void draw_menu_select(SDL_Renderer* renderer, MenuSelect* select) {
 	// TODO
 }
 
@@ -144,7 +144,7 @@ MenuButton* create_menu_button(VectorD position, double width, double height, Co
 	return button;
 }
 
-void draw_menu_button(SDL_Renderer* renderer, Viewport* viewport, MenuNode* button) {
+void draw_menu_button(SDL_Renderer* renderer, MenuButton* button) {
 	// TODO
 }
 
@@ -165,7 +165,7 @@ MenuSpacer* create_menu_spacer(VectorD position, double width, double height, Co
 	return spacer;
 }
 
-void draw_menu_spacer(SDL_Renderer* renderer, Viewport* viewport, MenuNode* spacer) {
+void draw_menu_spacer(SDL_Renderer* renderer, MenuSpacer* spacer) {
 	// TODO
 }
 
