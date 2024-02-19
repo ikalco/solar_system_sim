@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "includes.h"
 
@@ -10,7 +11,7 @@ Viewport* viewport = NULL;
 List* bodies = NULL;
 
 /*
-MenuRoot
+MenuRoot (MenuList)
 	MenuText
 	MenuList
 		MenuButton
@@ -68,6 +69,12 @@ void initSDL() {
 		exit(1);
 	}
 
+	// init sdl2_ttf
+	if (TTF_Init() < 0) {
+		printf("SDL_ttf couldn't be initialized.\n");
+		exit(1);
+	}
+
 	// create window
 	window = SDL_CreateWindow(
 		WINDOW_TITLE,
@@ -107,6 +114,7 @@ void cleanup() {
 
 	SDL_DestroyWindow(window);
 
-	// clean up sdl
+	// clean up sdl2 and sdl2_ttf
+	TTF_Quit();
 	SDL_Quit();
 }

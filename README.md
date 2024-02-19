@@ -13,7 +13,8 @@ the program. However it will work if you follow the steps.
 #### Requirements
 - gcc
 - make
-- SDL2 library
+- SDL2 base library
+- SDL2 ttf library
 
 #### Steps
 ```
