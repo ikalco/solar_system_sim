@@ -1,5 +1,5 @@
-#ifndef DEFINES_H
-#define DEFINES_H
+#ifndef STRUCTS_H
+#define STRUCTS_H
 
 #include <stdint.h>
 
@@ -13,9 +13,5 @@ typedef struct color {
 	uint8_t green;
 	uint8_t blue;
 } Color;
-
-void initSDL();
-void cleanup();
-void handle_input();
 
 #endif

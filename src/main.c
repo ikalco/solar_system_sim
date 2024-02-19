@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-#include "defines.h"
-#include "physical.h"
-#include "options.h"
-
-#include "linked_list.h"
-#include "bodies.h"
-#include "viewport.h"
-#include "save.h"
+#include "includes.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;

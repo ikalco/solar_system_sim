@@ -1,7 +1,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "defines.h"
+#include "structs.h"
 #include <SDL2/SDL.h>
 
 typedef struct vp {
