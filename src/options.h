@@ -14,9 +14,10 @@
 #define VIEWPORT_UNIT AU
 
 // save file options
+#define DEFAULT_SAVE_FILE "saves/solar_system.save"
 #define MAX_SAVE_LINE_LEN 255
 
 // physics engine options
-#define TIME_STEP 3600*24
+#define TIME_STEP 60*60*24 // in seconds, this is one day btw
 
 #endif

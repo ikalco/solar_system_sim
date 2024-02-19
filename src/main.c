@@ -20,7 +20,7 @@ int main() {
 	initSDL();
 	atexit(cleanup);
 
-	bodies = read_save_file("saves/solar_system.save");
+	bodies = read_save_file(DEFAULT_SAVE_FILE);
 	viewport = init_viewport();
 
 	while (1) {
