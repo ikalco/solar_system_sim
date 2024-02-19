@@ -4,6 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+// in format of
+// position.x,position.y,velocity.x,velocity.y,mass,color.red,color.green,color.blue,name
+// first 5 are doubles
+// next are 3 uint8_t
+// final is a string (char*) that goes until end of line
 PhysicalBody* parse_save_line(char* line) {
 	PhysicalBody* body = malloc(sizeof(PhysicalBody));
 	body->name = NULL;
@@ -74,7 +79,7 @@ List* read_save_file(char* filename) {
 
 		if (body == NULL) {
 			free_body(body);
-			printf("Invalid line (%d) in save file: %s", line_number, filename);
+			printf("Invalid line (at %d) in save file: %s", line_number, filename);
 			// yes i'm using line_number as a failure flag
 			line_number = -1;
 			break;
@@ -112,7 +117,7 @@ void write_save_file(char* filename, List* bodies) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = current_node->data;
 
-		// using 255 char buffer to make sure read_save_file will function properly when this save file is read
+		// using same char buffer size to ensure read_save_file will function properly when this save file is read
 		int res = snprintf(line, MAX_SAVE_LINE_LEN, "%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
 			body->position.x,
 			body->position.y,
@@ -131,7 +136,7 @@ void write_save_file(char* filename, List* bodies) {
 		}
 
 		if (res >= MAX_SAVE_LINE_LEN) {
-			printf("Failed to write save file because the line to print was too long: %s", filename);
+			printf("Failed to write save file because the line was too long: %s", filename);
 			break;
 		}
 
