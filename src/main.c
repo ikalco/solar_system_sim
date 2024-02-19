@@ -8,7 +8,17 @@ SDL_Renderer *renderer;
 
 Viewport* viewport = NULL;
 List* bodies = NULL;
-MenuNode* menu_root = NULL;
+
+/*
+MenuRoot
+	MenuText
+	MenuList
+		MenuButton
+		MenuSpacer
+		MenuButton
+		MenuButton
+	MenuButton
+*/
 
 int main() {
 	initSDL();
@@ -17,24 +27,17 @@ int main() {
 	bodies = read_save_file(DEFAULT_SAVE_FILE);
 	viewport = init_viewport();
 
-	MenuList* menu_list = create_menu_list((VectorD){20, 20}, 200, 300, (Color){20, 20, 20, 255}, 10, 20);
-	menu_root = create_menu_root();
-	menu_root->node = menu_list;
-	menu_root->type = MENU_LIST;
-
 	while (1) {
 		handle_input();
 
-		// update_bodies(bodies, TIME_STEP);
+		update_bodies(bodies, TIME_STEP);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		draw_menu_node(renderer, menu_root);
-
-		// draw_viewport_grid(renderer, viewport);
-		// draw_bodies(renderer, viewport, bodies);
+		draw_viewport_grid(renderer, viewport);
+		draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
@@ -98,10 +101,6 @@ void cleanup() {
 
 	if (viewport != NULL) {
 		free(viewport);
-	}
-
-	if (menu_root != NULL) {
-		free_menu_node(menu_root);
 	}
 
 	SDL_DestroyRenderer(renderer);
