@@ -6,6 +6,7 @@
 
 PhysicalBody* parse_save_line(char* line) {
 	PhysicalBody* body = malloc(sizeof(PhysicalBody));
+	body->name = NULL;
 
 	const char delim[] = ",";
 
@@ -64,16 +65,19 @@ List* read_save_file(char* filename) {
 		exit(1);
 	}
 
-	char buf[255];
+	char buf[MAX_SAVE_LINE_LEN];
 	int line_number = 1;
 	List* bodies = malloc(sizeof(List));
 	
-	while (fgets(buf, 255, file) != NULL) {
+	while (fgets(buf, MAX_SAVE_LINE_LEN, file) != NULL) {
 		PhysicalBody* body = parse_save_line(buf);
 
 		if (body == NULL) {
+			free_body(body);
 			printf("Invalid line (%d) in save file: %s", line_number, filename);
-			exit(1);
+			// yes i'm using line_number as a failure flag
+			line_number = -1;
+			break;
 		}
 
 		print_phyiscal_body(body);
@@ -84,6 +88,12 @@ List* read_save_file(char* filename) {
 
 	if (fclose(file) == EOF) {
 		printf("Failed to close save file: %s", filename);
+		free_bodies(bodies);
+		exit(1);
+	}
+
+	if (line_number == -1) {
+		free_bodies(bodies);
 		exit(1);
 	}
 
@@ -97,10 +107,13 @@ void write_save_file(char* filename, List* bodies) {
 		exit(1);
 	}
 
+	char line[MAX_SAVE_LINE_LEN];
+
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
 		PhysicalBody* body = current_node->data;
 
-		fprintf(file, "%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
+		// using 255 char buffer to make sure read_save_file will function properly when this save file is read
+		int res = snprintf(line, MAX_SAVE_LINE_LEN, "%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
 			body->position.x,
 			body->position.y,
 			body->velocity.x,
@@ -111,6 +124,23 @@ void write_save_file(char* filename, List* bodies) {
 			body->color.blue,
 			body->name
 		);
+
+		if (res < 0) {
+			printf("Failed to write save file: %s", filename);
+			break;
+		}
+
+		if (res >= MAX_SAVE_LINE_LEN) {
+			printf("Failed to write save file because the line to print was too long: %s", filename);
+			break;
+		}
+
+		res = fputs(line, file);
+
+		if (res == EOF) {
+			printf("Failed to write save file: %s", filename);
+			break;
+		}
 	}
 
 	if (fclose(file) == EOF) {

@@ -15,6 +15,8 @@ typedef struct pb {
 } PhysicalBody;
 
 List* init_bodies_list();
+PhysicalBody* create_body(double x, double y, double mass, Color color, char* name);
+void free_body(PhysicalBody* body);
 void free_bodies(List* bodies);
 void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies);
 void update_bodies(List* bodies, double time_step);

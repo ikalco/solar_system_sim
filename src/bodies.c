@@ -54,14 +54,21 @@ List* init_bodies_list() {
 	return bodies;
 }
 
+void free_body(PhysicalBody* body) {
+	if (body == NULL) return;
+
+	if (body->name != NULL) {
+		free(body->name);
+		body->name = NULL;
+	}
+
+	free(body);
+}
+
 void free_bodies(List* bodies) {
 	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
-		PhysicalBody* body = current_node->data;
-
-		if (body->name != NULL) {
-			free(body->name);
-			body->name = NULL;
-		}
+		free_body(current_node->data);
+		current_node->data = NULL;
 	}
 
 	free_list(bodies);
