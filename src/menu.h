@@ -58,8 +58,8 @@ typedef struct {
 } MenuText;
 
 typedef struct {
-	Color text_color;
 	Color bg_color;
+	Color text_color;
 	char* text;
 } MenuButton;
 
@@ -76,5 +76,7 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 void add_menu_vlist(MenuVerticalList* list, MenuNode* node);
 
 MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text);
+
+MenuButton* create_menu_button(Color bg_color, Color text_color, char* text);
 
 #endif

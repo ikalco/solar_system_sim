@@ -19,15 +19,20 @@ MenuNode* init_menu_sub_list() {
 }
 
 MenuRoot* init_menu() {
+	Color text_color = {235, 235, 235, 255};
+
 	MenuVerticalList* root_list = create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
 	MenuNode* root_node = create_menu_node((VectorD){10, 10}, (VectorD){260, 460}, MENU_LIST, root_list);
 
-	MenuText* text1 = create_menu_text((Color){235, 235, 235, 255}, TEXT_CENTER, "Main Menu");
+	MenuText* text1 = create_menu_text(text_color, TEXT_CENTER, "Main Menu");
 	MenuNode* text1_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 30}, MENU_TEXT, text1);
 	add_menu_vlist(root_list, text1_node);
 
 	MenuNode* sub_list_node = init_menu_sub_list();
 	add_menu_vlist(root_list, sub_list_node);
+
+	MenuButton* button1 = create_menu_button((Color){240, 10, 10, 255}, text_color, "Exit");
+	MenuNode* button1_node = create_menu_node((VectorD){0, 0}, (VectorD){120, 50}, MENU_BUTTON, button1);
 
 	MenuRoot* root = create_menu_root((VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
 
