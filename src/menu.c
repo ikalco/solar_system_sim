@@ -107,3 +107,18 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 
 	return menu_text;
 }
+
+MenuButton* create_menu_button(Color bg_color, Color text_color, char* text) {
+	MenuButton* button = malloc(sizeof(MenuButton));
+
+	button->bg_color = bg_color;
+	button->text_color = text_color;
+	button->text = text;
+
+	return button;
+}
+
+void free_menu_button(MenuButton* button) {
+	free(button->text);
+	free(button);
+}
