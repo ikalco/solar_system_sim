@@ -11,10 +11,23 @@ MenuRoot (MenuList)
 */
 
 MenuNode* init_menu_sub_list() {
+	Color button_color = (Color){130, 130, 130, 255};
 	Color text_color = {235, 235, 235, 255};
 
 	MenuVerticalList* sub_list = create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
 	MenuNode* sub_list_node = create_menu_node((VectorD){0, 20}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, MENU_LIST, sub_list);
+
+	MenuButton* button1 = create_menu_button(button_color, text_color, "Button 1");
+	MenuNode* button1_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, MENU_BUTTON, button1);
+	add_menu_vlist(sub_list, button1_node);
+
+	MenuButton* button2 = create_menu_button(button_color, text_color, "Button 2");
+	MenuNode* button2_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, MENU_BUTTON, button2);
+	add_menu_vlist(sub_list, button2_node);
+
+	MenuButton* button3 = create_menu_button(button_color, text_color, "Button 3");
+	MenuNode* button3_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, MENU_BUTTON, button3);
+	add_menu_vlist(sub_list, button3_node);
 
 	return sub_list_node;
 }
