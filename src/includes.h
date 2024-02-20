@@ -4,7 +4,7 @@
 #include "physical.h"
 #include "options.h"
 
-#include "structs.h"
+#include "util.h"
 #include "linked_list.h"
 #include "bodies.h"
 #include "viewport.h"

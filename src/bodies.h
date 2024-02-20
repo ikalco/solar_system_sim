@@ -1,6 +1,7 @@
 #ifndef BODIES_H
 #define BODIES_H
 
+#include "util.h"
 #include "viewport.h"
 #include "linked_list.h"
 #include <SDL2/SDL.h>

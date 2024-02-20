@@ -1,5 +1,5 @@
-#ifndef STRUCTS_H
-#define STRUCTS_H
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <stdint.h>
 
@@ -14,5 +14,7 @@ typedef struct color {
 	uint8_t blue;
 	uint8_t alpha;
 } Color;
+
+char* create_string(const char* str);
 
 #endif
