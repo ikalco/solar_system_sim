@@ -63,15 +63,21 @@ typedef struct {
 } MenuButton;
 
 MenuRoot* init_menu();
+
 MenuRoot* create_menu_root(VectorD position, VectorD size, char* font, MenuNode* root_node);
+void free_menu_root(MenuRoot* root);
 
 MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* node);
+void free_menu_node(MenuNode* node);
 
 MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spacing);
+void free_menu_vlist(MenuVerticalList* list);
 void add_menu_vlist(MenuVerticalList* list, MenuNode* node);
 
 MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text);
+void free_menu_text(MenuText* text);
 
 MenuButton* create_menu_button(Color bg_color, Color text_color, char* text);
+void free_menu_button(MenuButton* button);
 
 #endif
