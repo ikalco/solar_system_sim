@@ -28,7 +28,7 @@ typedef struct {
 	VectorD position;
 	VectorD size;
 
-	char* fontname;
+	TTF_Font* font;
 	
 	MenuNode* root;
 } MenuRoot;
@@ -39,6 +39,7 @@ typedef struct {
 	double spacing;
 
 	MenuNode* child;
+	int size;
 } MenuVerticalList;
 
 typedef struct {
@@ -56,8 +57,11 @@ typedef struct {
 	double spacing;
 } MenuSpacer;
 
+MenuRoot* init_menu();
 MenuRoot* create_menu_root(VectorD position, VectorD size, char* font, MenuNode* root_node);
-void draw_menu_root(SDL_Renderer* renderer, MenuRoot* root);
-void free_menu_root(MenuRoot* root);
+
+MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* node);
+
+MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spacing);
 
 #endif
