@@ -64,7 +64,7 @@ typedef struct {
 
 MenuRoot* init_menu();
 
-MenuRoot* create_menu_root(VectorD position, VectorD size, char* font, MenuNode* root_node);
+MenuRoot* create_menu_root(VectorD position, VectorD size, const char* font, MenuNode* root_node);
 void free_menu_root(MenuRoot* root);
 
 MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* node);
