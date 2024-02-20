@@ -66,6 +66,16 @@ MenuRoot* create_menu_root(VectorD position, VectorD size, const char* fontname,
 	return root;
 }
 
+void free_menu_root(MenuRoot* root) {
+	if (root->root != NULL) {
+		free_menu_node(root->root);
+	}
+
+	if (root->font != NULL) {
+		TTF_CloseFont(root->font);
+	}
+}
+
 MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* node) {
 	MenuNode* ret = malloc(sizeof(MenuNode));
 
@@ -79,6 +89,29 @@ MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* no
 	return ret;
 }
 
+void free_menu_node(MenuNode* node) {
+	if (node->node != NULL) {
+		switch (node->type) {
+			case MENU_NONE:
+				break;
+			case MENU_ROOT:
+				free_menu_root(node->node);
+				break;
+			case MENU_LIST:
+				free_menu_root(node->node);
+				break;
+			case MENU_TEXT:
+				free_menu_root(node->node);
+				break;
+			case MENU_BUTTON:
+				free_menu_root(node->node);
+				break;
+		}
+	}
+
+	free(node);
+}
+
 MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
 	MenuVerticalList* list = malloc(sizeof(MenuVerticalList));
 
@@ -90,6 +123,16 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 	list->size = 0;
 
 	return list;
+}
+
+void free_menu_vlist(MenuVerticalList* list) {
+	for (MenuNode* current = list->child; current != NULL; current = current->next) {
+		MenuNode* next = current->next;
+		free_menu_node(current);
+		current = next;
+	}
+
+	free(list);
 }
 
 void add_menu_vlist(MenuVerticalList* list, MenuNode* node) {
@@ -108,6 +151,14 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
+void free_menu_text(MenuText* text) {
+	if (text->text != NULL) {
+		free(text->text);
+	}
+
+	free(text);
+}
+
 MenuButton* create_menu_button(Color bg_color, Color text_color, char* text) {
 	MenuButton* button = malloc(sizeof(MenuButton));
 
@@ -119,6 +170,9 @@ MenuButton* create_menu_button(Color bg_color, Color text_color, char* text) {
 }
 
 void free_menu_button(MenuButton* button) {
-	free(button->text);
+	if (button->text != NULL) {
+		free(button->text);
+	}
+
 	free(button);
 }
