@@ -11,14 +11,24 @@ MenuRoot (MenuList)
 	MenuButton
 */
 
+MenuNode* init_menu_sub_list() {
+	MenuVerticalList* sub_list = create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
+	MenuNode* sub_list_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, MENU_LIST, sub_list);
+
+	return sub_list_node;
+}
+
 MenuRoot* init_menu() {
 	MenuVerticalList* root_list = create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
+	MenuNode* root_node = create_menu_node((VectorD){10, 10}, (VectorD){260, 460}, MENU_LIST, root_list);
 
 	MenuText* text1 = create_menu_text((Color){235, 235, 235, 255}, TEXT_CENTER, "Main Menu");
 	MenuNode* text1_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 30}, MENU_TEXT, text1);
 	add_menu_vlist(root_list, text1_node);
 
-	MenuNode* root_node = create_menu_node((VectorD){10, 10}, (VectorD){260, 460}, MENU_LIST, root_list);
+	MenuNode* sub_list_node = init_menu_sub_list();
+	add_menu_vlist(root_list, sub_list_node);
+
 	MenuRoot* root = create_menu_root((VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
 
 	return root;
