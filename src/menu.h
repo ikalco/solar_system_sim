@@ -13,8 +13,7 @@ typedef enum {
 	MENU_ROOT,
 	MENU_LIST,
 	MENU_TEXT,
-	MENU_BUTTON,
-	MENU_SPACER
+	MENU_BUTTON
 } MenuType;
 
 typedef enum {
@@ -62,10 +61,6 @@ typedef struct {
 	Color text_color;
 	char* text;
 } MenuButton;
-
-typedef struct {
-	double spacing;
-} MenuSpacer;
 
 MenuRoot* init_menu();
 MenuRoot* create_menu_root(VectorD position, VectorD size, char* font, MenuNode* root_node);

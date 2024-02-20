@@ -15,7 +15,6 @@ MenuRoot (MenuList)
 	MenuText
 	MenuList
 		MenuButton
-		MenuSpacer
 		MenuButton
 		MenuButton
 	MenuButton

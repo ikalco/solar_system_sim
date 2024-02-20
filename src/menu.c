@@ -5,15 +5,16 @@ MenuRoot (MenuList)
 	MenuText
 	MenuList
 		MenuButton
-		MenuSpacer
 		MenuButton
 		MenuButton
 	MenuButton
 */
 
 MenuNode* init_menu_sub_list() {
+	Color text_color = {235, 235, 235, 255};
+
 	MenuVerticalList* sub_list = create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
-	MenuNode* sub_list_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, MENU_LIST, sub_list);
+	MenuNode* sub_list_node = create_menu_node((VectorD){0, 20}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, MENU_LIST, sub_list);
 
 	return sub_list_node;
 }
