@@ -28,6 +28,7 @@ typedef struct menunode {
 	MenuType type;
 	void* node;
 
+	struct menunode* parent;
 	struct menunode* next;
 } MenuNode;
 
@@ -67,7 +68,7 @@ MenuRoot* create_menu_root(VectorD position, VectorD size, const char* font, Men
 void draw_menu_root(MenuRoot* root);
 void free_menu_root(MenuRoot* root);
 
-MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* node);
+MenuNode* create_menu_node(VectorD offset, VectorD size, MenuNode* parent, MenuType type, void* node);
 void draw_menu_node(MenuNode* node);
 void free_menu_node(MenuNode* node);
 
