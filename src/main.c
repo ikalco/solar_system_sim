@@ -9,16 +9,7 @@ SDL_Renderer *renderer;
 
 Viewport* viewport = NULL;
 List* bodies = NULL;
-
-/*
-MenuRoot (MenuList)
-	MenuText
-	MenuList
-		MenuButton
-		MenuButton
-		MenuButton
-	MenuButton
-*/
+MenuRoot* menu_root = NULL;
 
 int main() {
 	initSDL();
@@ -26,6 +17,7 @@ int main() {
 
 	bodies = read_save_file(DEFAULT_SAVE_FILE);
 	viewport = init_viewport();
+	menu_root = init_menu();
 
 	while (1) {
 		handle_input();
@@ -107,6 +99,10 @@ void cleanup() {
 
 	if (viewport != NULL) {
 		free(viewport);
+	}
+
+	if (menu_root != NULL) {
+		free_menu_root(menu_root);
 	}
 
 	SDL_DestroyRenderer(renderer);
