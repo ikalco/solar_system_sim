@@ -10,14 +10,6 @@ MenuRoot (MenuList)
 	MenuButton
 */
 
-void render_menu_node(MenuRoot* root, MenuNode* node);
-void render_menu_vlist(MenuRoot* root, MenuNode* list);
-void render_menu_text(MenuRoot* root, MenuNode* text);
-void render_menu_button(MenuRoot* root, MenuNode* button);
-
-SDL_Rect get_menu_offset(MenuNode *node);
-SDL_Rect get_menu_align_offset(MenuNode *node, int text_width, int text_height);
-
 MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	Color button_color = (Color){130, 130, 130, 255};
 	Color text_color = {235, 235, 235, 255};
@@ -82,17 +74,6 @@ MenuRoot* create_menu_root(SDL_Window* window, VectorD position, VectorD size, c
 	return root;
 }
 
-void render_menu_root(MenuRoot* root) {
-	// set renderer to render to our texture
-	SDL_SetRenderTarget(root->menu_renderer, root->menu_texture);
-
-	// render menu to the texture
-	render_menu_node(root, root->root);
-
-	// set renderer to render back to window
-	SDL_SetRenderTarget(root->menu_renderer, NULL);
-}
-
 void draw_menu_root(MenuRoot* root) {
 	// copy texture to renderer (window)
 	SDL_RenderCopy(
@@ -131,10 +112,6 @@ MenuNode* create_menu_node(VectorD offset, VectorD size, MenuNode* parent, MenuT
 	return ret;
 }
 
-void render_menu_node(MenuRoot* root, MenuNode* node) {
-	// TODO
-}
-
 void free_menu_node(MenuNode* node) {
 	if (node->node != NULL) {
 		switch (node->type) {
@@ -168,10 +145,6 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 	return list;
 }
 
-void render_menu_vlist(MenuRoot* root, MenuNode* list) {
-	// TODO
-}
-
 void free_menu_vlist(MenuVerticalList* list) {
 	for (MenuNode* current = list->child; current != NULL; current = current->next) {
 		MenuNode* next = current->next;
@@ -198,37 +171,6 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
-void render_menu_text(MenuRoot* root, MenuNode* text_node) {
-	if (text_node->type != MENU_TEXT)
-	{
-		printf("Tried to render menu text with a non menu text node\n");
-		exit(1);
-	}
-
-	MenuText* text = text_node->node;
-
-	// type punning here, so don't change size/order of Color
-	SDL_Surface* rendered_text = TTF_RenderUTF8_Blended(root->font, text->text, *(SDL_Color*)&text->text_color);
-
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
-
-	int w, h;
-	TTF_SizeUTF8(root->font, text->text, &w, &h);
-
-	SDL_Rect dstrect = get_menu_offset(text_node);
-	dstrect = get_menu_align_offset(text_node, w, h);
-
-	SDL_RenderCopy(
-		root->menu_renderer,
-		texture,
-		NULL,
-		&dstrect
-	);
-
-	SDL_DestroyTexture(texture);
-	SDL_FreeSurface(rendered_text);
-}
-
 void free_menu_text(MenuText* text) {
 	if (text->text != NULL) {
 		free(text->text);
@@ -246,10 +188,6 @@ MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign a
 	button->text = text;
 
 	return button;
-}
-
-void render_menu_button(MenuRoot* root, MenuNode* button) {
-	// TODO
 }
 
 void free_menu_button(MenuButton* button) {
