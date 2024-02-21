@@ -50,7 +50,19 @@ void render_menu_root(MenuRoot* root) {
 }
 
 void render_menu_node(MenuRoot* root, MenuNode* node) {
-	// TODO
+	switch (node->type) {
+		case MENU_NONE:
+			break;
+		case MENU_LIST:
+			render_menu_vlist(root, node->node);
+			break;
+		case MENU_TEXT:
+			render_menu_text(root, node->node);
+			break;
+		case MENU_BUTTON:
+			render_menu_button(root, node->node);
+			break;
+	}
 }
 
 void render_menu_vlist(MenuRoot* root, MenuNode* list) {
