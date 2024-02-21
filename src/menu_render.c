@@ -65,8 +65,44 @@ void render_menu_node(MenuRoot* root, MenuNode* node) {
 	}
 }
 
-void render_menu_vlist(MenuRoot* root, MenuNode* list) {
-	// TODO
+void render_menu_vlist(MenuRoot* root, MenuNode* list_node) {
+	if (list_node->type != MENU_LIST)
+	{
+		printf("Tried to render menu list with a non menu list node\n");
+		exit(1);
+	}
+
+	MenuVerticalList* list = list_node->node;
+
+	// draw background
+	SDL_Rect offset = get_menu_offset(root, list_node);
+	SDL_SetRenderDrawColor(root->menu_renderer, list->bg_color.red, list->bg_color.green, list->bg_color.blue, list->bg_color.alpha);
+	SDL_RenderFillRect(root->menu_renderer, &offset);
+
+	// padding
+	list_node->offset.x += list->padding.x;
+	list_node->offset.y += list->padding.y;
+	list_node->size.x -= list->padding.x;
+	list_node->size.y -= list->padding.y;
+
+	int spacing_index = 0;
+
+	// draw children
+	for (MenuNode* current = list->child; current != NULL; current = current->next) {
+		current->offset.y += list->spacing * spacing_index;
+
+		render_menu_node(root, current);
+
+		current->offset.y -= list->spacing * spacing_index;
+
+		spacing_index++;
+	}
+
+	// undo padding
+	list_node->offset.x -= list->padding.x;
+	list_node->offset.y -= list->padding.y;
+	list_node->size.x += list->padding.x;
+	list_node->size.y += list->padding.y;
 }
 
 void render_menu_text(MenuRoot* root, MenuNode* text_node) {
