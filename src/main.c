@@ -17,7 +17,7 @@ int main() {
 
 	// bodies = read_save_file(DEFAULT_SAVE_FILE);
 	// viewport = init_viewport();
-	menu_root = init_menu();
+	menu_root = init_main_menu(window);
 
 	while (1) {
 		handle_input();

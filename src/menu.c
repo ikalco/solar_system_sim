@@ -10,6 +10,11 @@ MenuRoot (MenuList)
 	MenuButton
 */
 
+void render_menu_node(MenuRoot* root, MenuNode* node);
+void render_menu_vlist(MenuRoot* root, MenuVerticalList* list);
+void render_menu_text(MenuRoot* root, MenuText* text);
+void render_menu_button(MenuRoot* root, MenuButton* button);
+
 MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	Color button_color = (Color){130, 130, 130, 255};
 	Color text_color = {235, 235, 235, 255};
@@ -32,7 +37,7 @@ MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	return sub_list_node;
 }
 
-MenuRoot* init_menu() {
+MenuRoot* init_main_menu(SDL_Window* window) {
 	Color text_color = {235, 235, 235, 255};
 
 	MenuVerticalList* root_list = create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
@@ -49,12 +54,13 @@ MenuRoot* init_menu() {
 	MenuNode* exit_button_node = create_menu_node((VectorD){0, 0}, (VectorD){120, 50}, root_node, MENU_BUTTON, exit_button);
 	add_menu_vlist(root_list, exit_button_node);
 
-	MenuRoot* root = create_menu_root((VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
+	MenuRoot* root = create_menu_root(window, (VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
+	render_menu_root(root);
 
 	return root;
 }
 
-MenuRoot* create_menu_root(VectorD position, VectorD size, const char* fontname, MenuNode* root_node) {
+MenuRoot* create_menu_root(SDL_Window* window, VectorD position, VectorD size, const char* fontname, MenuNode* root_node) {
 	MenuRoot* root = malloc(sizeof(MenuRoot));
 
 	root->position = position;
@@ -63,11 +69,35 @@ MenuRoot* create_menu_root(VectorD position, VectorD size, const char* fontname,
 
 	root->font = TTF_OpenFont(fontname, 12);
 
+	Uint32 format = SDL_GetWindowPixelFormat(window);
+	root->menu_renderer = SDL_GetRenderer(window);
+	root->menu_texture = SDL_CreateTexture(root->menu_renderer, format, SDL_TEXTUREACCESS_TARGET, size.x, size.y);
+
+	// might want to change this later, but it's supposed to blend alpha which sounds right
+	SDL_SetTextureBlendMode(root->menu_texture, SDL_BLENDMODE_BLEND);
+
 	return root;
 }
 
+void render_menu_root(MenuRoot* root) {
+	// set renderer to render to our texture
+	SDL_SetRenderTarget(root->menu_renderer, root->menu_texture);
+
+	// render menu to the texture
+	render_menu_node(root, root->root);
+
+	// set renderer to render back to window
+	SDL_SetRenderTarget(root->menu_renderer, NULL);
+}
+
 void draw_menu_root(MenuRoot* root) {
-	draw_menu_node(root, root->root);
+	// copy texture to renderer (window)
+	SDL_RenderCopy(
+		root->menu_renderer,
+		root->menu_texture,
+		NULL,
+		&(SDL_Rect){root->position.x, root->position.y, root->size.x, root->size.y}
+	);
 }
 
 void free_menu_root(MenuRoot* root) {
@@ -77,6 +107,10 @@ void free_menu_root(MenuRoot* root) {
 
 	if (root->font != NULL) {
 		TTF_CloseFont(root->font);
+	}
+
+	if (root->menu_texture != NULL) {
+		SDL_DestroyTexture(root->menu_texture);
 	}
 }
 
@@ -94,7 +128,7 @@ MenuNode* create_menu_node(VectorD offset, VectorD size, MenuNode* parent, MenuT
 	return ret;
 }
 
-void draw_menu_node(MenuRoot* root, MenuNode* node) {
+void render_menu_node(MenuRoot* root, MenuNode* node) {
 	// TODO
 }
 
@@ -131,7 +165,7 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 	return list;
 }
 
-void draw_menu_vlist(MenuRoot* root, MenuVerticalList* list) {
+void render_menu_vlist(MenuRoot* root, MenuVerticalList* list) {
 	// TODO
 }
 
@@ -161,7 +195,7 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
-void draw_menu_text(MenuRoot* root, MenuText* text) {
+void render_menu_text(MenuRoot* root, MenuText* text) {
 	// TODO
 }
 
@@ -184,7 +218,7 @@ MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign a
 	return button;
 }
 
-void draw_menu_button(MenuRoot* root, MenuButton* button) {
+void render_menu_button(MenuRoot* root, MenuButton* button) {
 	// TODO
 }
 

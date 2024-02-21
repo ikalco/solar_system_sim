@@ -36,6 +36,8 @@ typedef struct {
 	VectorD position;
 	VectorD size;
 
+	SDL_Renderer* menu_renderer;
+	SDL_Texture* menu_texture;
 	TTF_Font* font;
 	
 	MenuNode* root;
@@ -63,27 +65,24 @@ typedef struct {
 	char* text;
 } MenuButton;
 
-MenuRoot* init_menu();
+MenuRoot* init_main_menu(SDL_Window* window);
 
-MenuRoot* create_menu_root(VectorD position, VectorD size, const char* font, MenuNode* root_node);
+MenuRoot* create_menu_root(SDL_Window* window, VectorD position, VectorD size, const char* font, MenuNode* root_node);
+void render_menu_root(MenuRoot* root);
 void draw_menu_root(MenuRoot* root);
 void free_menu_root(MenuRoot* root);
 
 MenuNode* create_menu_node(VectorD offset, VectorD size, MenuNode* parent, MenuType type, void* node);
-void draw_menu_node(MenuRoot* root, MenuNode* node);
 void free_menu_node(MenuNode* node);
 
 MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spacing);
-void draw_menu_vlist(MenuRoot* root, MenuVerticalList* list);
 void free_menu_vlist(MenuVerticalList* list);
 void add_menu_vlist(MenuVerticalList* list, MenuNode* node);
 
 MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text);
-void draw_menu_text(MenuRoot* root, MenuText* text);
 void free_menu_text(MenuText* text);
 
 MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign align, char* text);
-void draw_menu_button(MenuRoot* root, MenuButton* button);
 void free_menu_button(MenuButton* button);
 
 #endif
