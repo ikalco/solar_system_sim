@@ -10,7 +10,6 @@
 
 typedef enum {
 	MENU_NONE,
-	MENU_ROOT,
 	MENU_LIST,
 	MENU_TEXT,
 	MENU_BUTTON

@@ -94,17 +94,14 @@ void free_menu_node(MenuNode* node) {
 		switch (node->type) {
 			case MENU_NONE:
 				break;
-			case MENU_ROOT:
-				free_menu_root(node->node);
-				break;
 			case MENU_LIST:
-				free_menu_root(node->node);
+				free_menu_node(node->node);
 				break;
 			case MENU_TEXT:
-				free_menu_root(node->node);
+				free_menu_node(node->node);
 				break;
 			case MENU_BUTTON:
-				free_menu_root(node->node);
+				free_menu_node(node->node);
 				break;
 		}
 	}
