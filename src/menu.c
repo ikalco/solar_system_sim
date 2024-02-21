@@ -17,15 +17,15 @@ MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	MenuVerticalList* sub_list = create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
 	MenuNode* sub_list_node = create_menu_node((VectorD){0, 20}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, root_node, MENU_LIST, sub_list);
 
-	MenuButton* button1 = create_menu_button(button_color, text_color, create_string("Button 1"));
+	MenuButton* button1 = create_menu_button(button_color, text_color, TEXT_CENTER, create_string("Button 1"));
 	MenuNode* button1_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, sub_list_node, MENU_BUTTON, button1);
 	add_menu_vlist(sub_list, button1_node);
 
-	MenuButton* button2 = create_menu_button(button_color, text_color, create_string("Button 2"));
+	MenuButton* button2 = create_menu_button(button_color, text_color, TEXT_CENTER, create_string("Button 2"));
 	MenuNode* button2_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, sub_list_node, MENU_BUTTON, button2);
 	add_menu_vlist(sub_list, button2_node);
 
-	MenuButton* button3 = create_menu_button(button_color, text_color, create_string("Button 3"));
+	MenuButton* button3 = create_menu_button(button_color, text_color, TEXT_CENTER, create_string("Button 3"));
 	MenuNode* button3_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, sub_list_node, MENU_BUTTON, button3);
 	add_menu_vlist(sub_list, button3_node);
 
@@ -45,7 +45,7 @@ MenuRoot* init_menu() {
 	MenuNode* sub_list_node = init_menu_sub_list(root_node);
 	add_menu_vlist(root_list, sub_list_node);
 
-	MenuButton* exit_button = create_menu_button((Color){240, 10, 10, 255}, text_color, create_string("Exit"));
+	MenuButton* exit_button = create_menu_button((Color){240, 10, 10, 255}, text_color, TEXT_CENTER, create_string("Exit"));
 	MenuNode* exit_button_node = create_menu_node((VectorD){0, 0}, (VectorD){120, 50}, root_node, MENU_BUTTON, exit_button);
 	add_menu_vlist(root_list, exit_button_node);
 
@@ -173,11 +173,12 @@ void free_menu_text(MenuText* text) {
 	free(text);
 }
 
-MenuButton* create_menu_button(Color bg_color, Color text_color, char* text) {
+MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign align, char* text) {
 	MenuButton* button = malloc(sizeof(MenuButton));
 
 	button->bg_color = bg_color;
 	button->text_color = text_color;
+	button->text_align = align;
 	button->text = text;
 
 	return button;

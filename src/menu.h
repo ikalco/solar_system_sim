@@ -59,6 +59,7 @@ typedef struct {
 typedef struct {
 	Color bg_color;
 	Color text_color;
+	MenuTextAlign text_align;
 	char* text;
 } MenuButton;
 
@@ -81,7 +82,7 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text);
 void draw_menu_text(MenuRoot* root, MenuText* text);
 void free_menu_text(MenuText* text);
 
-MenuButton* create_menu_button(Color bg_color, Color text_color, char* text);
+MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign align, char* text);
 void draw_menu_button(MenuRoot* root, MenuButton* button);
 void free_menu_button(MenuButton* button);
 
