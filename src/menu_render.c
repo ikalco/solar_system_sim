@@ -136,6 +136,38 @@ void render_menu_text(MenuRoot* root, MenuNode* text_node) {
 	SDL_FreeSurface(rendered_text);
 }
 
-void render_menu_button(MenuRoot* root, MenuNode* button) {
-	// TODO
+void render_menu_button(MenuRoot* root, MenuNode* button_node) {
+	if (button_node->type != MENU_BUTTON)
+	{
+		printf("Tried to render menu text with a non menu text node\n");
+		exit(1);
+	}
+
+	MenuButton* button = button_node->node;
+
+	// draw background
+	SDL_Rect offset = get_menu_offset(root, button_node);
+	SDL_SetRenderDrawColor(root->menu_renderer, button->bg_color.red, button->bg_color.green, button->bg_color.blue, button->bg_color.alpha);
+	SDL_RenderFillRect(root->menu_renderer, &offset);
+
+	// type punning here, so don't change size/order of Color
+	SDL_Surface* rendered_text = TTF_RenderUTF8_Blended(root->font, button->text, *(SDL_Color*)&button->text_color);
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
+
+	int text_width, text_height;
+	TTF_SizeUTF8(root->font, button->text, &text_width, &text_height);
+
+	SDL_Rect dstrect = get_menu_offset(root, button_node);
+	dstrect = add_menu_align_offset(dstrect, button->text_align, text_width, text_height);
+
+	SDL_RenderCopy(
+		root->menu_renderer,
+		texture,
+		NULL,
+		&dstrect
+	);
+
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(rendered_text);
 }
