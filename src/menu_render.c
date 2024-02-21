@@ -54,13 +54,13 @@ void render_menu_node(MenuRoot* root, MenuNode* node) {
 		case MENU_NONE:
 			break;
 		case MENU_LIST:
-			render_menu_vlist(root, node->node);
+			render_menu_vlist(root, node);
 			break;
 		case MENU_TEXT:
-			render_menu_text(root, node->node);
+			render_menu_text(root, node);
 			break;
 		case MENU_BUTTON:
-			render_menu_button(root, node->node);
+			render_menu_button(root, node);
 			break;
 	}
 }
