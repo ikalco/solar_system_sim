@@ -11,9 +11,9 @@ MenuRoot (MenuList)
 */
 
 void render_menu_node(MenuRoot* root, MenuNode* node);
-void render_menu_vlist(MenuRoot* root, MenuVerticalList* list);
-void render_menu_text(MenuRoot* root, MenuText* text);
-void render_menu_button(MenuRoot* root, MenuButton* button);
+void render_menu_vlist(MenuRoot* root, MenuNode* list);
+void render_menu_text(MenuRoot* root, MenuNode* text);
+void render_menu_button(MenuRoot* root, MenuNode* button);
 
 MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	Color button_color = (Color){130, 130, 130, 255};
@@ -165,7 +165,7 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 	return list;
 }
 
-void render_menu_vlist(MenuRoot* root, MenuVerticalList* list) {
+void render_menu_vlist(MenuRoot* root, MenuNode* list) {
 	// TODO
 }
 
@@ -195,8 +195,39 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
-void render_menu_text(MenuRoot* root, MenuText* text) {
+SDL_Rect get_aligned_menu_text(MenuNode* text_node, int text_width, int text_height) {
 	// TODO
+	return (SDL_Rect){0, 0, 0, 0};
+}
+
+void render_menu_text(MenuRoot* root, MenuNode* text_node) {
+	if (text_node->type != MENU_TEXT)
+	{
+		printf("Tried to render menu text with a non menu text node\n");
+		exit(1);
+	}
+
+	MenuText* text = text_node->node;
+
+	// type punning here, so don't change size/order of Color
+	SDL_Surface* rendered_text = TTF_RenderUTF8_Blended(root->font, text->text, *(SDL_Color*)&text->text_color);
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
+
+	int w, h;
+	TTF_SizeUTF8(root->font, text->text, &w, &h);
+
+	SDL_Rect dstrect = get_aligned_menu_text(text_node, w, h);
+
+	SDL_RenderCopy(
+		root->menu_renderer,
+		texture,
+		NULL,
+		&dstrect
+	);
+
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(rendered_text);
 }
 
 void free_menu_text(MenuText* text) {
@@ -218,7 +249,7 @@ MenuButton* create_menu_button(Color bg_color, Color text_color, MenuTextAlign a
 	return button;
 }
 
-void render_menu_button(MenuRoot* root, MenuButton* button) {
+void render_menu_button(MenuRoot* root, MenuNode* button) {
 	// TODO
 }
 

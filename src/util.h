@@ -8,6 +8,7 @@ typedef struct vd {
 	double y;
 } VectorD;
 
+// type punning with SDL_Color, so don't change size/order of Color
 typedef struct color {
 	uint8_t red;
 	uint8_t green;
