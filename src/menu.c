@@ -15,6 +15,9 @@ void render_menu_vlist(MenuRoot* root, MenuNode* list);
 void render_menu_text(MenuRoot* root, MenuNode* text);
 void render_menu_button(MenuRoot* root, MenuNode* button);
 
+SDL_Rect get_menu_offset(MenuNode *node);
+SDL_Rect get_menu_align_offset(MenuNode *node, int text_width, int text_height);
+
 MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	Color button_color = (Color){130, 130, 130, 255};
 	Color text_color = {235, 235, 235, 255};
@@ -195,11 +198,6 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
-SDL_Rect get_aligned_menu_text(MenuNode* text_node, int text_width, int text_height) {
-	// TODO
-	return (SDL_Rect){0, 0, 0, 0};
-}
-
 void render_menu_text(MenuRoot* root, MenuNode* text_node) {
 	if (text_node->type != MENU_TEXT)
 	{
@@ -217,7 +215,8 @@ void render_menu_text(MenuRoot* root, MenuNode* text_node) {
 	int w, h;
 	TTF_SizeUTF8(root->font, text->text, &w, &h);
 
-	SDL_Rect dstrect = get_aligned_menu_text(text_node, w, h);
+	SDL_Rect dstrect = get_menu_offset(text_node);
+	dstrect = get_menu_align_offset(text_node, w, h);
 
 	SDL_RenderCopy(
 		root->menu_renderer,
