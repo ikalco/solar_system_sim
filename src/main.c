@@ -15,21 +15,22 @@ int main() {
 	initSDL();
 	atexit(cleanup);
 
-	bodies = read_save_file(DEFAULT_SAVE_FILE);
-	viewport = init_viewport();
+	// bodies = read_save_file(DEFAULT_SAVE_FILE);
+	// viewport = init_viewport();
 	menu_root = init_menu();
 
 	while (1) {
 		handle_input();
 
-		update_bodies(bodies, TIME_STEP);
+		// update_bodies(bodies, TIME_STEP);
 
 		// clear screen with black
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderClear(renderer);
 
-		draw_viewport_grid(renderer, viewport);
-		draw_bodies(renderer, viewport, bodies);
+		draw_menu_root(menu_root);
+		// draw_viewport_grid(renderer, viewport);
+		// draw_bodies(renderer, viewport, bodies);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);

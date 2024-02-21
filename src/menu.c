@@ -66,6 +66,10 @@ MenuRoot* create_menu_root(VectorD position, VectorD size, const char* fontname,
 	return root;
 }
 
+void draw_menu_root(MenuRoot* root) {
+	// TODO
+}
+
 void free_menu_root(MenuRoot* root) {
 	if (root->root != NULL) {
 		free_menu_node(root->root);
@@ -87,6 +91,10 @@ MenuNode* create_menu_node(VectorD offset, VectorD size, MenuType type, void* no
 	ret->next = NULL;
 
 	return ret;
+}
+
+void draw_menu_node(MenuNode* node) {
+	// TODO
 }
 
 void free_menu_node(MenuNode* node) {
@@ -122,6 +130,10 @@ MenuVerticalList* create_menu_vlist(Color bg_color, VectorD padding, double spac
 	return list;
 }
 
+void draw_menu_vlist(MenuVerticalList* list) {
+	// TODO
+}
+
 void free_menu_vlist(MenuVerticalList* list) {
 	for (MenuNode* current = list->child; current != NULL; current = current->next) {
 		MenuNode* next = current->next;
@@ -148,6 +160,10 @@ MenuText* create_menu_text(Color text_color, MenuTextAlign align, char* text) {
 	return menu_text;
 }
 
+void draw_menu_text(MenuText* text) {
+	// TODO
+}
+
 void free_menu_text(MenuText* text) {
 	if (text->text != NULL) {
 		free(text->text);
@@ -164,6 +180,10 @@ MenuButton* create_menu_button(Color bg_color, Color text_color, char* text) {
 	button->text = text;
 
 	return button;
+}
+
+void draw_menu_button(MenuButton* button) {
+	// TODO
 }
 
 void free_menu_button(MenuButton* button) {
