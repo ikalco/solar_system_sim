@@ -15,7 +15,7 @@ MenuNode* init_menu_sub_list(MenuNode* root_node) {
 	Color text_color = {235, 235, 235, 255};
 
 	MenuVerticalList* sub_list = create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
-	MenuNode* sub_list_node = create_menu_node((VectorD){0, 20}, (VectorD){MENU_MAX_SIZE, MENU_MAX_SIZE}, root_node, MENU_LIST, sub_list);
+	MenuNode* sub_list_node = create_menu_node((VectorD){0, 20}, (VectorD){MENU_MAX_SIZE, 250}, root_node, MENU_LIST, sub_list);
 
 	MenuButton* button1 = create_menu_button(button_color, text_color, TEXT_CENTER, create_string("Button 1"));
 	MenuNode* button1_node = create_menu_node((VectorD){0, 0}, (VectorD){MENU_MAX_SIZE, 60}, sub_list_node, MENU_BUTTON, button1);
@@ -50,6 +50,7 @@ MenuRoot* init_main_menu(SDL_Window* window) {
 	add_menu_vlist(root_list, exit_button_node);
 
 	MenuRoot* root = create_menu_root(window, (VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
+
 	render_menu_root(root);
 
 	return root;

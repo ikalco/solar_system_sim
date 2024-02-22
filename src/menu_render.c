@@ -5,11 +5,12 @@ void render_menu_vlist(MenuRoot* root, MenuNode* list);
 void render_menu_text(MenuRoot* root, MenuNode* text);
 void render_menu_button(MenuRoot* root, MenuNode* button);
 
-SDL_Rect get_menu_offset(MenuRoot* root, MenuNode* node) {
-	// we want to add our own offset so that's why we don't set parent here
-	MenuNode* parent = node;
+SDL_Rect get_menu_offset(MenuNode* node) {
+	MenuNode* parent = node->parent;
 
-	SDL_Rect offset = {root->position.x, root->position.y, node->size.x, node->size.y};
+	if (node->size.x == MENU_MAX_SIZE) node->size.x = node->parent->size.x;
+
+	SDL_Rect offset = {node->offset.x, node->offset.y, node->size.x, node->size.y};
 
 	while (parent != NULL) {
 		offset.x += parent->offset.x;
@@ -75,34 +76,34 @@ void render_menu_vlist(MenuRoot* root, MenuNode* list_node) {
 	MenuVerticalList* list = list_node->node;
 
 	// draw background
-	SDL_Rect offset = get_menu_offset(root, list_node);
+	SDL_Rect offset = get_menu_offset(list_node);
 	SDL_SetRenderDrawColor(root->menu_renderer, list->bg_color.red, list->bg_color.green, list->bg_color.blue, list->bg_color.alpha);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
 	// padding
 	list_node->offset.x += list->padding.x;
 	list_node->offset.y += list->padding.y;
-	list_node->size.x -= list->padding.x;
-	list_node->size.y -= list->padding.y;
+	list_node->size.x -= list->padding.x * 2;
+	list_node->size.y -= list->padding.y * 2;
 
-	int spacing_index = 0;
+	double spacing_offset = 0;
 
 	// draw children
 	for (MenuNode* current = list->child; current != NULL; current = current->next) {
-		current->offset.y += list->spacing * spacing_index;
+		current->offset.y += spacing_offset;
 
 		render_menu_node(root, current);
 
-		current->offset.y -= list->spacing * spacing_index;
+		current->offset.y -= spacing_offset;
 
-		spacing_index++;
+		spacing_offset += list->spacing + current->size.y;
 	}
 
 	// undo padding
 	list_node->offset.x -= list->padding.x;
 	list_node->offset.y -= list->padding.y;
-	list_node->size.x += list->padding.x;
-	list_node->size.y += list->padding.y;
+	list_node->size.x += list->padding.x * 2;
+	list_node->size.y += list->padding.y * 2;
 }
 
 void render_menu_text(MenuRoot* root, MenuNode* text_node) {
@@ -122,7 +123,7 @@ void render_menu_text(MenuRoot* root, MenuNode* text_node) {
 	int text_width, text_height;
 	TTF_SizeUTF8(root->font, text->text, &text_width, &text_height);
 
-	SDL_Rect dstrect = get_menu_offset(root, text_node);
+	SDL_Rect dstrect = get_menu_offset(text_node);
 	dstrect = add_menu_align_offset(dstrect, text->align, text_width, text_height);
 
 	SDL_RenderCopy(
@@ -146,7 +147,7 @@ void render_menu_button(MenuRoot* root, MenuNode* button_node) {
 	MenuButton* button = button_node->node;
 
 	// draw background
-	SDL_Rect offset = get_menu_offset(root, button_node);
+	SDL_Rect offset = get_menu_offset(button_node);
 	SDL_SetRenderDrawColor(root->menu_renderer, button->bg_color.red, button->bg_color.green, button->bg_color.blue, button->bg_color.alpha);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
@@ -158,8 +159,7 @@ void render_menu_button(MenuRoot* root, MenuNode* button_node) {
 	int text_width, text_height;
 	TTF_SizeUTF8(root->font, button->text, &text_width, &text_height);
 
-	SDL_Rect dstrect = get_menu_offset(root, button_node);
-	dstrect = add_menu_align_offset(dstrect, button->text_align, text_width, text_height);
+	SDL_Rect dstrect = add_menu_align_offset(offset, button->text_align, text_width, text_height);
 
 	SDL_RenderCopy(
 		root->menu_renderer,
