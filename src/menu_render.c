@@ -165,7 +165,7 @@ void render_menu_button(MenuRoot* root, MenuNode* button_node) {
 		root->menu_renderer,
 		texture,
 		NULL,
-		&dstrect
+		&offset
 	);
 
 	SDL_DestroyTexture(texture);

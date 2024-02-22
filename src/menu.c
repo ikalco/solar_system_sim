@@ -49,7 +49,7 @@ MenuRoot* init_main_menu(SDL_Window* window) {
 	MenuNode* exit_button_node = create_menu_node((VectorD){0, 0}, (VectorD){120, 50}, root_node, MENU_BUTTON, exit_button);
 	add_menu_vlist(root_list, exit_button_node);
 
-	MenuRoot* root = create_menu_root(window, (VectorD){100, 100}, (VectorD){300, 500}, "arial.ttf", root_node);
+	MenuRoot* root = create_menu_root(window, (VectorD){100, 100}, (VectorD){300, 500}, "fonts/Roboto-Regular.ttf", root_node);
 
 	render_menu_root(root);
 
@@ -63,7 +63,11 @@ MenuRoot* create_menu_root(SDL_Window* window, VectorD position, VectorD size, c
 	root->size = size;
 	root->root = root_node;
 
-	root->font = TTF_OpenFont(fontname, 12);
+	root->font = TTF_OpenFontDPI(fontname, 12, 10000, 10000);
+	if (root->font == NULL) {
+		printf("ERROR: %s", SDL_GetError());
+		exit(1);
+	}
 
 	Uint32 format = SDL_GetWindowPixelFormat(window);
 	root->menu_renderer = SDL_GetRenderer(window);
