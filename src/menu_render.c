@@ -90,6 +90,13 @@ void render_menu_vlist(MenuRoot* root, MenuNode* list_node) {
 
 	MenuVerticalList* list = list_node->node;
 
+	int min_height = 0;
+	for (MenuNode* current = list->child; current != NULL; current = current->next) {
+		min_height += list->spacing + current->offset.y + current->size.y;
+	}
+
+	if (list_node->size.y < min_height) list_node->size.y = min_height;
+
 	// draw background
 	SDL_Rect offset = get_menu_offset(list_node);
 	SDL_SetRenderDrawColor(root->menu_renderer, list->bg_color.red, list->bg_color.green, list->bg_color.blue, list->bg_color.alpha);
