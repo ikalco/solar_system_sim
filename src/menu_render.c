@@ -21,18 +21,33 @@ SDL_Rect get_menu_offset(MenuNode* node) {
 	return offset;
 }
 
-SDL_Rect add_menu_align_offset(SDL_Rect offset, MenuTextAlign align, int text_width, int text_height) {
-	// all alignments are vertically centered, the align is actually for the horizontal
-	offset.y += (offset.h / 2) - (text_height / 2);
+SDL_Rect get_menu_text_offset(MenuRoot* root, MenuNode* node, char* text, MenuTextAlign align) {
+	if (node->type != MENU_TEXT && node->type != MENU_BUTTON) {
+		printf("mistake\n");
+	}
+
+	int text_width, text_height;
+	TTF_SizeUTF8(root->font, text, &text_width, &text_height);
+
+	SDL_Rect offset = get_menu_offset(node);
+
+	offset.w = node->size.x;
+	offset.h = node->size.y;
+
+	if (offset.h < offset.w) {
+		offset.w = (node->size.y * ((double)text_width / text_height));
+	} else {
+		offset.h = (node->size.x * ((double)text_height / text_width));
+	}
 
 	switch (align) {
 		case TEXT_LEFT:
 			break;
 		case TEXT_CENTER:
-			offset.x += (offset.w / 2) - (text_width / 2);
+			offset.x += (node->size.x / 2.0) - (offset.w / 2.0);
 			break;
 		case TEXT_RIGHT:
-			offset.x += offset.w - (text_width / 2);
+			offset.x += node->size.x - (offset.w / 2.0);
 			break;
 	}
 
@@ -120,11 +135,7 @@ void render_menu_text(MenuRoot* root, MenuNode* text_node) {
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
-	int text_width, text_height;
-	TTF_SizeUTF8(root->font, text->text, &text_width, &text_height);
-
-	SDL_Rect dstrect = get_menu_offset(text_node);
-	dstrect = add_menu_align_offset(dstrect, text->align, text_width, text_height);
+	SDL_Rect dstrect = get_menu_text_offset(root, text_node, text->text, text->align);
 
 	SDL_RenderCopy(
 		root->menu_renderer,
@@ -156,16 +167,13 @@ void render_menu_button(MenuRoot* root, MenuNode* button_node) {
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
-	int text_width, text_height;
-	TTF_SizeUTF8(root->font, button->text, &text_width, &text_height);
-
-	SDL_Rect dstrect = add_menu_align_offset(offset, button->text_align, text_width, text_height);
-
+	SDL_Rect dstrect = get_menu_text_offset(root, button_node, button->text, button->text_align);
+	
 	SDL_RenderCopy(
 		root->menu_renderer,
 		texture,
 		NULL,
-		&offset
+		&dstrect
 	);
 
 	SDL_DestroyTexture(texture);
