@@ -63,7 +63,7 @@ MenuRoot* create_menu_root(SDL_Window* window, VectorD position, VectorD size, c
 	root->size = size;
 	root->root = root_node;
 
-	root->font = TTF_OpenFontDPI(fontname, 12, 10000, 10000);
+	root->font = TTF_OpenFontDPI(fontname, 12, 1000, 1000);
 	if (root->font == NULL) {
 		printf("ERROR: %s", SDL_GetError());
 		exit(1);
