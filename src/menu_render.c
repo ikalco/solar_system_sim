@@ -111,7 +111,7 @@ void render_menu_vlist(MenuRoot* root, MenuNode* list_node) {
 
 		current->offset.y -= spacing_offset;
 
-		spacing_offset += list->spacing + current->size.y;
+		spacing_offset += list->spacing + current->offset.y + current->size.y;
 	}
 
 	// undo padding
