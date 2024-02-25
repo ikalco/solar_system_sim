@@ -1,15 +1,16 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
-#include "physical.h"
 #include "options.h"
 
-#include "util.h"
-#include "linked_list.h"
-#include "bodies.h"
-#include "viewport.h"
-#include "save.h"
-#include "menu.h"
+#include "engine/physical.h"
+#include "engine/bodies.h"
+#include "engine/viewport.h"
+#include "engine/save.h"
+
+#include "utils/util.h"
+#include "utils/linked_list.h"
+#include "menu/menu.h"
 
 void initSDL();
 void cleanup();

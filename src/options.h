@@ -1,7 +1,7 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-#include "physical.h"
+#include "engine/physical.h"
 
 // window options
 #define WINDOW_TITLE "Solar System Simulator"

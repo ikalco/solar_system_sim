@@ -1,7 +1,7 @@
 #ifndef SAVE_H
 #define SAVE_H
 
-#include "linked_list.h"
+#include "utils/linked_list.h"
 #include "bodies.h"
 
 List* read_save_file(char* filename);

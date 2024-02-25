@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "util.h"
+#include "utils/util.h"
 
 #define MENU_MAX_SIZE -1
 #define MENU_MIN_SIZE -2

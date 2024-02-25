@@ -1,7 +1,7 @@
 # Compiler settings
 CC = gcc
-CFLAGS = -std=c17 -Wall -Wextra -MMD
-LDFLAGS = -lSDL2 -lSDL2_ttf -lm
+CFLAGS = -std=c17 -Wall -Wextra -I./src -MMD
+LDFLAGS = -lSDL2 -lSDL2_ttf -lm -I./src
 
 # Makefile settings
 APPNAME = solar_system_sim
@@ -10,7 +10,7 @@ SRCDIR = src
 BUILDDIR = build
 
 # Dirs defined
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
+SRC = $(wildcard $(SRCDIR)/*$(EXT)) $(wildcard $(SRCDIR)/**/*$(EXT))
 OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(BUILDDIR)/%.o)
 
 all: $(BUILDDIR)/$(APPNAME)
@@ -20,15 +20,13 @@ $(BUILDDIR)/$(APPNAME): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Builds all src into objects
-$(BUILDDIR)/%.o: $(SRCDIR)/%$(EXT) | $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRCDIR)/%$(EXT)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(BUILDDIR):
-	mkdir -p $@
 
 # Cleans complete project
 .PHONY: clean
 clean:
-	rm $(BUILDDIR)/*
+	rm -rf $(BUILDDIR)/*
 
 -include $(OBJ:.o=.d)

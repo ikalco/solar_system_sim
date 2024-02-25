@@ -1,6 +1,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "linked_list.h"
 #include <stdint.h>
 
 typedef struct vd {
