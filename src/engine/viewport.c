@@ -27,14 +27,22 @@ void draw_viewport_grid(SDL_Renderer *renderer, Viewport *viewport) {
 	// vertical lines
 	for (int i = 1; i < WINDOW_WIDTH / viewport->cell_size; i++) {
 		SDL_RenderDrawLine(
-			renderer, i * viewport->cell_size, 0, i * viewport->cell_size, WINDOW_HEIGHT
+			renderer,
+			i * viewport->cell_size,
+			0,
+			i * viewport->cell_size,
+			WINDOW_HEIGHT
 		);
 	}
 
 	// horizontal lines
 	for (int i = 1; i < WINDOW_HEIGHT / viewport->cell_size; i++) {
 		SDL_RenderDrawLine(
-			renderer, 0, i * viewport->cell_size, WINDOW_WIDTH, i * viewport->cell_size
+			renderer,
+			0,
+			i * viewport->cell_size,
+			WINDOW_WIDTH,
+			i * viewport->cell_size
 		);
 	}
 }

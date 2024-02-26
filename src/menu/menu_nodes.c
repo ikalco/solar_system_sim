@@ -21,10 +21,12 @@ MenuRoot *create_menu_root(
 
 	Uint32 format = SDL_GetWindowPixelFormat(window);
 	root->menu_renderer = SDL_GetRenderer(window);
-	root->menu_texture =
-		SDL_CreateTexture(root->menu_renderer, format, SDL_TEXTUREACCESS_TARGET, size.x, size.y);
+	root->menu_texture = SDL_CreateTexture(
+		root->menu_renderer, format, SDL_TEXTUREACCESS_TARGET, size.x, size.y
+	);
 
-	// might want to change this later, but it's supposed to blend alpha which sounds right
+	// might want to change this later, but it's supposed to blend alpha which
+	// sounds right
 	SDL_SetTextureBlendMode(root->menu_texture, SDL_BLENDMODE_BLEND);
 
 	return root;
@@ -36,7 +38,8 @@ void draw_menu_root(MenuRoot *root) {
 		root->menu_renderer,
 		root->menu_texture,
 		NULL,
-		&(SDL_Rect){root->position.x, root->position.y, root->size.x, root->size.y}
+		&(SDL_Rect
+		){root->position.x, root->position.y, root->size.x, root->size.y}
 	);
 }
 
@@ -54,8 +57,13 @@ void free_menu_root(MenuRoot *root) {
 	}
 }
 
-MenuNode *
-create_menu_node(VectorD offset, VectorD size, MenuNode *parent, MenuType type, void *node) {
+MenuNode *create_menu_node(
+	VectorD offset,
+	VectorD size,
+	MenuNode *parent,
+	MenuType type,
+	void *node
+) {
 	MenuNode *ret = malloc(sizeof(MenuNode));
 
 	ret->offset = offset;
@@ -89,7 +97,8 @@ void free_menu_node(MenuNode *node) {
 	free(node);
 }
 
-MenuVerticalList *create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
+MenuVerticalList *
+create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
 	MenuVerticalList *list = malloc(sizeof(MenuVerticalList));
 
 	list->bg_color = bg_color;
@@ -103,7 +112,8 @@ MenuVerticalList *create_menu_vlist(Color bg_color, VectorD padding, double spac
 }
 
 void free_menu_vlist(MenuVerticalList *list) {
-	for (MenuNode *current = list->child; current != NULL; current = current->next) {
+	for (MenuNode *current = list->child; current != NULL;
+		 current = current->next) {
 		MenuNode *next = current->next;
 		free_menu_node(current);
 		current = next;
@@ -146,7 +156,12 @@ void free_menu_text(MenuText *text) {
 	free(text);
 }
 
-MenuButton *create_menu_button(Color bg_color, Color text_color, MenuTextAlign align, char *text) {
+MenuButton *create_menu_button(
+	Color bg_color,
+	Color text_color,
+	MenuTextAlign align,
+	char *text
+) {
 	MenuButton *button = malloc(sizeof(MenuButton));
 
 	button->bg_color = bg_color;

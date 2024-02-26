@@ -9,4 +9,4 @@ BinPackArguments: false
 BinPackParameters: false
 ExperimentalAutoDetectBinPacking: false
 AllowAllParametersOfDeclarationOnNextLine: false
-ColumnLimit: 100
+ColumnLimit: 80

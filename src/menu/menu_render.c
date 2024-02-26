@@ -10,7 +10,8 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 
 	if (node->size.x == MENU_MAX_SIZE) node->size.x = node->parent->size.x;
 
-	SDL_Rect offset = {node->offset.x, node->offset.y, node->size.x, node->size.y};
+	SDL_Rect offset = {
+		node->offset.x, node->offset.y, node->size.x, node->size.y};
 
 	while (parent != NULL) {
 		offset.x += parent->offset.x;
@@ -21,7 +22,12 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 	return offset;
 }
 
-SDL_Rect get_menu_text_offset(MenuRoot *root, MenuNode *node, char *text, MenuTextAlign align) {
+SDL_Rect get_menu_text_offset(
+	MenuRoot *root,
+	MenuNode *node,
+	char *text,
+	MenuTextAlign align
+) {
 	if (node->type != MENU_TEXT && node->type != MENU_BUTTON) {
 		printf("mistake\n");
 	}
@@ -90,7 +96,8 @@ void render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
 	MenuVerticalList *list = list_node->node;
 
 	int min_height = 0;
-	for (MenuNode *current = list->child; current != NULL; current = current->next) {
+	for (MenuNode *current = list->child; current != NULL;
+		 current = current->next) {
 		min_height += list->spacing + current->offset.y + current->size.y;
 	}
 
@@ -116,7 +123,8 @@ void render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
 	double spacing_offset = 0;
 
 	// draw children
-	for (MenuNode *current = list->child; current != NULL; current = current->next) {
+	for (MenuNode *current = list->child; current != NULL;
+		 current = current->next) {
 		current->offset.y += spacing_offset;
 
 		render_menu_node(root, current);
@@ -142,12 +150,15 @@ void render_menu_text(MenuRoot *root, MenuNode *text_node) {
 	MenuText *text = text_node->node;
 
 	// type punning here, so don't change size/order of Color
-	SDL_Surface *rendered_text =
-		TTF_RenderUTF8_Blended(root->font, text->text, *(SDL_Color *)&text->text_color);
+	SDL_Surface *rendered_text = TTF_RenderUTF8_Blended(
+		root->font, text->text, *(SDL_Color *)&text->text_color
+	);
 
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
+	SDL_Texture *texture =
+		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
-	SDL_Rect dstrect = get_menu_text_offset(root, text_node, text->text, text->align);
+	SDL_Rect dstrect =
+		get_menu_text_offset(root, text_node, text->text, text->align);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
@@ -175,12 +186,16 @@ void render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
 	// type punning here, so don't change size/order of Color
-	SDL_Surface *rendered_text =
-		TTF_RenderUTF8_Blended(root->font, button->text, *(SDL_Color *)&button->text_color);
+	SDL_Surface *rendered_text = TTF_RenderUTF8_Blended(
+		root->font, button->text, *(SDL_Color *)&button->text_color
+	);
 
-	SDL_Texture *texture = SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
+	SDL_Texture *texture =
+		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
-	SDL_Rect dstrect = get_menu_text_offset(root, button_node, button->text, button->text_align);
+	SDL_Rect dstrect = get_menu_text_offset(
+		root, button_node, button->text, button->text_align
+	);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 

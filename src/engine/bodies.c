@@ -3,7 +3,8 @@
 
 #include "math.h"
 
-PhysicalBody *create_body(double x, double y, double mass, Color color, char *name) {
+PhysicalBody *
+create_body(double x, double y, double mass, Color color, char *name) {
 	PhysicalBody *body = malloc(sizeof(PhysicalBody));
 
 	body->position.x = x;
@@ -54,11 +55,16 @@ void draw_bodies(SDL_Renderer *renderer, Viewport *viewport, List *bodies) {
 		body = (PhysicalBody *)current_node->data;
 
 		SDL_SetRenderDrawColor(
-			renderer, body->color.red, body->color.green, body->color.blue, body->color.alpha
+			renderer,
+			body->color.red,
+			body->color.green,
+			body->color.blue,
+			body->color.alpha
 		);
 
 		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
-		rect.y = (body->position.y * viewport->conversion) * -1 + viewport->offset.y;
+		rect.y =
+			(body->position.y * viewport->conversion) * -1 + viewport->offset.y;
 
 		SDL_RenderFillRect(renderer, &rect);
 	}
@@ -80,7 +86,8 @@ double angle_bodies(PhysicalBody *from, PhysicalBody *to) {
 
 // yes this is basically O(n^2) will optimize later
 void update_body_gravity(List *bodies, PhysicalBody *body) {
-	for (Node *other_node = bodies->first; other_node != NULL; other_node = other_node->next) {
+	for (Node *other_node = bodies->first; other_node != NULL;
+		 other_node = other_node->next) {
 		PhysicalBody *other = (PhysicalBody *)other_node->data;
 		if (body == other) continue;
 
@@ -97,7 +104,8 @@ void update_body_gravity(List *bodies, PhysicalBody *body) {
 
 		double dist = dist_bodies(body, other);
 		double angle = angle_bodies(body, other);
-		double g_force_mag = (G_CONSTANT * body->mass * other->mass) / (dist * dist);
+		double g_force_mag =
+			(G_CONSTANT * body->mass * other->mass) / (dist * dist);
 
 		body->net_force.x += g_force_mag * cos(angle);
 		body->net_force.y += g_force_mag * sin(angle);
