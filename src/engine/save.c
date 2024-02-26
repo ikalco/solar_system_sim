@@ -2,21 +2,21 @@
 #include "options.h"
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 // in format of
 // position.x,position.y,velocity.x,velocity.y,mass,color.red,color.green,color.blue,name
 // first 5 are doubles
 // next are 3 uint8_t
 // final is a string (char*) that goes until end of line
-PhysicalBody* parse_save_line(char* line) {
-	PhysicalBody* body = malloc(sizeof(PhysicalBody));
+PhysicalBody *parse_save_line(char *line) {
+	PhysicalBody *body = malloc(sizeof(PhysicalBody));
 	body->name = NULL;
 
 	const char delim[] = ",";
 
-	char* token = strtok(line, delim);
+	char *token = strtok(line, delim);
 	if (token == NULL) return NULL;
 	sscanf(token, "%lf", &body->position.x);
 
@@ -31,7 +31,7 @@ PhysicalBody* parse_save_line(char* line) {
 	token = strtok(NULL, delim);
 	if (token == NULL) return NULL;
 	sscanf(token, "%lf", &body->velocity.y);
-	
+
 	token = strtok(NULL, delim);
 	if (token == NULL) return NULL;
 	sscanf(token, "%lf", &body->mass);
@@ -53,7 +53,7 @@ PhysicalBody* parse_save_line(char* line) {
 
 	token = strtok(NULL, delim);
 	if (token == NULL) return NULL;
-	
+
 	int length = strlen(token);
 
 	if (token[length - 1] == '\n') {
@@ -67,8 +67,8 @@ PhysicalBody* parse_save_line(char* line) {
 	return body;
 }
 
-List* read_save_file(char* filename) {
-	FILE* file = fopen(filename, "rb");
+List *read_save_file(char *filename) {
+	FILE *file = fopen(filename, "rb");
 	if (file == NULL) {
 		printf("Failed to open save file for reading: %s", filename);
 		exit(1);
@@ -76,10 +76,10 @@ List* read_save_file(char* filename) {
 
 	char buf[MAX_SAVE_LINE_LEN];
 	int line_number = 1;
-	List* bodies = malloc(sizeof(List));
-	
+	List *bodies = malloc(sizeof(List));
+
 	while (fgets(buf, MAX_SAVE_LINE_LEN, file) != NULL) {
-		PhysicalBody* body = parse_save_line(buf);
+		PhysicalBody *body = parse_save_line(buf);
 
 		if (body == NULL) {
 			free_body(body);
@@ -109,8 +109,8 @@ List* read_save_file(char* filename) {
 	return bodies;
 }
 
-void write_save_file(char* filename, List* bodies) {
-	FILE* file = fopen(filename, "wb");
+void write_save_file(char *filename, List *bodies) {
+	FILE *file = fopen(filename, "wb");
 	if (file == NULL) {
 		printf("Failed to open save file for writing: %s", filename);
 		exit(1);
@@ -118,11 +118,16 @@ void write_save_file(char* filename, List* bodies) {
 
 	char line[MAX_SAVE_LINE_LEN];
 
-	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
-		PhysicalBody* body = current_node->data;
+	for (Node *current_node = bodies->first; current_node != NULL;
+		 current_node = current_node->next) {
+		PhysicalBody *body = current_node->data;
 
-		// using same char buffer size to ensure read_save_file will function properly when this save file is read
-		int res = snprintf(line, MAX_SAVE_LINE_LEN, "%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
+		// using same char buffer size to ensure read_save_file will function properly when this
+		// save file is read
+		int res = snprintf(
+			line,
+			MAX_SAVE_LINE_LEN,
+			"%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
 			body->position.x,
 			body->position.y,
 			body->velocity.x,

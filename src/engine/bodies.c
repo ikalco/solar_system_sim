@@ -3,9 +3,9 @@
 
 #include "math.h"
 
-PhysicalBody* create_body(double x, double y, double mass, Color color, char* name) {
-	PhysicalBody* body = malloc(sizeof(PhysicalBody));
-	
+PhysicalBody *create_body(double x, double y, double mass, Color color, char *name) {
+	PhysicalBody *body = malloc(sizeof(PhysicalBody));
+
 	body->position.x = x;
 	body->position.y = y;
 	body->mass = mass;
@@ -22,7 +22,7 @@ PhysicalBody* create_body(double x, double y, double mass, Color color, char* na
 	return body;
 }
 
-void free_body(PhysicalBody* body) {
+void free_body(PhysicalBody *body) {
 	if (body == NULL) return;
 
 	if (body->name != NULL) {
@@ -33,8 +33,9 @@ void free_body(PhysicalBody* body) {
 	free(body);
 }
 
-void free_bodies(List* bodies) {
-	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
+void free_bodies(List *bodies) {
+	for (Node *current_node = bodies->first; current_node != NULL;
+		 current_node = current_node->next) {
 		free_body(current_node->data);
 		current_node->data = NULL;
 	}
@@ -42,32 +43,35 @@ void free_bodies(List* bodies) {
 	free_list(bodies);
 }
 
-void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies) {
-	PhysicalBody* body;
+void draw_bodies(SDL_Renderer *renderer, Viewport *viewport, List *bodies) {
+	PhysicalBody *body;
 	SDL_Rect rect;
 	rect.w = 25;
 	rect.h = 25;
 
-	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
-		body = (PhysicalBody*)current_node->data;	
+	for (Node *current_node = bodies->first; current_node != NULL;
+		 current_node = current_node->next) {
+		body = (PhysicalBody *)current_node->data;
 
-		SDL_SetRenderDrawColor(renderer, body->color.red, body->color.green, body->color.blue, body->color.alpha);
+		SDL_SetRenderDrawColor(
+			renderer, body->color.red, body->color.green, body->color.blue, body->color.alpha
+		);
 
 		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
-		rect.y = (body->position.y * viewport->conversion)*-1 + viewport->offset.y;
+		rect.y = (body->position.y * viewport->conversion) * -1 + viewport->offset.y;
 
 		SDL_RenderFillRect(renderer, &rect);
 	}
 }
 
-double dist_bodies(PhysicalBody* body1, PhysicalBody* body2) {
+double dist_bodies(PhysicalBody *body1, PhysicalBody *body2) {
 	double x_off = body2->position.x - body1->position.x;
 	double y_off = body2->position.y - body1->position.y;
 
 	return sqrt((x_off * x_off) + (y_off * y_off));
 }
 
-double angle_bodies(PhysicalBody* from, PhysicalBody* to) {
+double angle_bodies(PhysicalBody *from, PhysicalBody *to) {
 	double x_off = to->position.x - from->position.x;
 	double y_off = to->position.y - from->position.y;
 
@@ -75,9 +79,9 @@ double angle_bodies(PhysicalBody* from, PhysicalBody* to) {
 }
 
 // yes this is basically O(n^2) will optimize later
-void update_body_gravity(List* bodies, PhysicalBody* body) {
-	for (Node* other_node = bodies->first; other_node != NULL; other_node = other_node->next) {
-		PhysicalBody* other = (PhysicalBody*)other_node->data;
+void update_body_gravity(List *bodies, PhysicalBody *body) {
+	for (Node *other_node = bodies->first; other_node != NULL; other_node = other_node->next) {
+		PhysicalBody *other = (PhysicalBody *)other_node->data;
 		if (body == other) continue;
 
 		// F is the gravitational force
@@ -100,9 +104,10 @@ void update_body_gravity(List* bodies, PhysicalBody* body) {
 	}
 }
 
-void update_bodies(List* bodies, double time_step) {
-	for (Node* current_node = bodies->first; current_node != NULL; current_node = current_node->next) {
-		PhysicalBody* body = (PhysicalBody*)current_node->data;
+void update_bodies(List *bodies, double time_step) {
+	for (Node *current_node = bodies->first; current_node != NULL;
+		 current_node = current_node->next) {
+		PhysicalBody *body = (PhysicalBody *)current_node->data;
 
 		body->net_force.x = 0;
 		body->net_force.y = 0;
@@ -117,8 +122,9 @@ void update_bodies(List* bodies, double time_step) {
 	}
 }
 
-void print_phyiscal_body(PhysicalBody* body) {
-	printf("(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n", 
+void print_phyiscal_body(PhysicalBody *body) {
+	printf(
+		"(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n",
 		body->name,
 		body->position.x,
 		body->position.y,

@@ -17,6 +17,6 @@ typedef struct color {
 	uint8_t alpha;
 } Color;
 
-char* create_string(const char* str);
+char *create_string(const char *str);
 
 #endif

@@ -1,15 +1,15 @@
-#include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 
 #include "includes.h"
 
 SDL_Window *window;
 SDL_Renderer *renderer;
 
-Viewport* viewport = NULL;
-List* bodies = NULL;
-MenuRoot* menu_root = NULL;
+Viewport *viewport = NULL;
+List *bodies = NULL;
+MenuRoot *menu_root = NULL;
 
 int main() {
 	initSDL();
@@ -34,7 +34,7 @@ int main() {
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
-		SDL_Delay(1000/WINDOW_FPS);
+		SDL_Delay(1000 / WINDOW_FPS);
 	}
 
 	return 0;
@@ -45,11 +45,11 @@ void handle_input() {
 
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
-			case SDL_QUIT:
-				exit(0);
-				break;
-			default:
-				break;
+		case SDL_QUIT:
+			exit(0);
+			break;
+		default:
+			break;
 		}
 	}
 }

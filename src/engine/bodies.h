@@ -1,9 +1,9 @@
 #ifndef BODIES_H
 #define BODIES_H
 
-#include <SDL2/SDL.h>
 #include "utils/util.h"
 #include "viewport.h"
+#include <SDL2/SDL.h>
 
 typedef struct pb {
 	VectorD position;
@@ -12,14 +12,14 @@ typedef struct pb {
 	VectorD net_force;
 	Color color;
 	double mass;
-	char* name;
+	char *name;
 } PhysicalBody;
 
-PhysicalBody* create_body(double x, double y, double mass, Color color, char* name);
-void free_body(PhysicalBody* body);
-void free_bodies(List* bodies);
-void draw_bodies(SDL_Renderer* renderer, Viewport* viewport, List* bodies);
-void update_bodies(List* bodies, double time_step);
-void print_phyiscal_body(PhysicalBody* body);
+PhysicalBody *create_body(double x, double y, double mass, Color color, char *name);
+void free_body(PhysicalBody *body);
+void free_bodies(List *bodies);
+void draw_bodies(SDL_Renderer *renderer, Viewport *viewport, List *bodies);
+void update_bodies(List *bodies, double time_step);
+void print_phyiscal_body(PhysicalBody *body);
 
 #endif

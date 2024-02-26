@@ -3,14 +3,14 @@
 
 #include "options.h"
 
-#include "engine/physical.h"
 #include "engine/bodies.h"
-#include "engine/viewport.h"
+#include "engine/physical.h"
 #include "engine/save.h"
+#include "engine/viewport.h"
 
-#include "utils/util.h"
-#include "utils/linked_list.h"
 #include "menu/menu.h"
+#include "utils/linked_list.h"
+#include "utils/util.h"
 
 void initSDL();
 void cleanup();

@@ -18,6 +18,6 @@
 #define MAX_SAVE_LINE_LEN 255
 
 // physics engine options
-#define TIME_STEP 60*60*24 // in seconds, this is one day btw
+#define TIME_STEP 60 * 60 * 24 // in seconds, this is one day btw
 
 #endif
