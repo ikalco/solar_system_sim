@@ -8,46 +8,36 @@ SDL_Window *window;
 SDL_Renderer *renderer;
 SceneManager *manager;
 
-// Viewport *viewport = NULL;
-// List *bodies = NULL;
-// MenuRoot *menu_root = NULL;
-
 int main() {
+	init_SDL();
+	atexit(cleanup_SDL);
+
+	// create menu scene
 	Scene *menu_scene = create_scene(
 		init_menu, cleanup_menu, handle_input_menu, draw_menu, NULL
 	);
 
+	// create scene manager, add menu_scene, and select it
 	manager = create_scene_manager(menu_scene);
-	manager->scenes[0]->init(manager->scenes[0]->data, window);
 	select_scene_manager(manager, window, 0);
-
-	init_SDL();
-	atexit(cleanup_SDL);
-
-	// bodies = read_save_file(DEFAULT_SAVE_FILE);
-	// viewport = init_viewport();
-	// menu_root = init_main_menu(window);
 
 	Scene *active_scene;
 	SDL_Event event;
 
 	while (1) {
+		// get active scene
 		active_scene = manager->scenes[manager->active_index];
 
 		while (SDL_PollEvent(&event)) {
-			handle_input_SDL(&event);
+			if (event.type == SDL_QUIT) {
+				exit(0);
+			}
+
+			// handle input for scene
 			active_scene->handle_input(active_scene->data, &event);
 		}
-		// update_bodies(bodies, TIME_STEP);
 
-		// clear screen with black
-		// SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		// SDL_RenderClear(renderer);
-
-		// draw_menu_root(menu_root);
-		// draw_viewport_grid(renderer, viewport);
-		// draw_bodies(renderer, viewport, bodies);
-
+		// draw scene to screen
 		active_scene->draw(active_scene->data, renderer);
 
 		// draw to screen and wait amount of time for desired fps
@@ -58,22 +48,10 @@ int main() {
 	return 0;
 }
 
-void handle_input_SDL(SDL_Event *event) {
-	if (event->type == SDL_QUIT) {
-		exit(0);
-	}
-}
-
 void init_SDL() {
 	// init sdl2
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("SDL couldn't be initialized.\n");
-		exit(1);
-	}
-
-	// init sdl2_ttf
-	if (TTF_Init() < 0) {
-		printf("SDL_ttf couldn't be initialized.\n");
 		exit(1);
 	}
 
@@ -104,25 +82,12 @@ void init_SDL() {
 }
 
 void cleanup_SDL() {
-	// if (bodies != NULL) {
-	// 	free_bodies(bodies);
-	// }
-	//
-	// if (viewport != NULL) {
-	// 	free(viewport);
-	// }
-	//
-	// if (menu_root != NULL) {
-	// 	free_menu_root(menu_root);
-	// }
-
 	destroy_scene_manager(manager);
 
 	SDL_DestroyRenderer(renderer);
 
 	SDL_DestroyWindow(window);
 
-	// clean up sdl2 and sdl2_ttf
-	// TTF_Quit();
+	// clean up sdl2
 	SDL_Quit();
 }

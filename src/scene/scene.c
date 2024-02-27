@@ -94,7 +94,7 @@ void select_scene_manager(
 	}
 
 	if (manager->scenes[index]->initialized == false) {
-		manager->scenes[index]->init(manager->scenes[index]->data, window);
+		manager->scenes[index]->init(manager->scenes[index], window);
 	}
 
 	manager->active_index = index;
