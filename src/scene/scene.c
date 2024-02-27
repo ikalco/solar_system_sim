@@ -1,9 +1,9 @@
 #include "scene.h"
 
 Scene *create_scene(
-	void (*init)(void *data, SDL_Window *window),
+	void (*init)(Scene *scene, SDL_Window *window),
 	void (*cleanup)(void *data),
-	void (*handle_input)(void *data, SDL_Event event),
+	void (*handle_input)(void *data, SDL_Event *event),
 	void (*draw)(void *data, SDL_Renderer *renderer),
 	void *data
 ) {
@@ -42,9 +42,10 @@ void destroy_scene_manager(SceneManager *manager) {
 	free(manager);
 }
 
-void resize_scene_manager(SceneManager* manager) {
+void resize_scene_manager(SceneManager *manager) {
 	manager->capacity *= 2;
-	manager->scenes = realloc(manager->scenes, sizeof(Scene*) * manager->capacity);
+	manager->scenes =
+		realloc(manager->scenes, sizeof(Scene *) * manager->capacity);
 	if (manager->scenes == NULL) {
 		printf("Something went wrong when resizing scenes in SceneManager");
 		exit(1);

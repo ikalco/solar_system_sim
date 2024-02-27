@@ -4,18 +4,18 @@
 #include <SDL2/SDL.h>
 
 // cleanup should also free (void *data)
-typedef struct {
-	void (*init)(void *data, SDL_Window *window);
+typedef struct scene {
+	void (*init)(struct scene *scene, SDL_Window *window);
 	void (*cleanup)(void *data);
-	void (*handle_input)(void *data, SDL_Event event);
+	void (*handle_input)(void *data, SDL_Event *event);
 	void (*draw)(void *data, SDL_Renderer *renderer);
 	void *data;
 } Scene;
 
 Scene *create_scene(
-	void (*init)(void *data, SDL_Window *window),
+	void (*init)(Scene *scene, SDL_Window *window),
 	void (*cleanup)(void *data),
-	void (*handle_input)(void *data, SDL_Event event),
+	void (*handle_input)(void *data, SDL_Event *event),
 	void (*draw)(void *data, SDL_Renderer *renderer),
 	void *data
 );
@@ -29,7 +29,7 @@ typedef struct {
 	int active_index;
 } SceneManager;
 
-SceneManager *create_scene_manager(Scene* initial_scene);
+SceneManager *create_scene_manager(Scene *initial_scene);
 void destroy_scene_manager(SceneManager *manager);
 void add_scene_manager(SceneManager *manager, Scene *scene);
 void remove_scene_manager(SceneManager *manager, int index);
