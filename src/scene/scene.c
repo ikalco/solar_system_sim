@@ -14,6 +14,7 @@ Scene *create_scene(
 	scene->handle_input = handle_input;
 	scene->draw = draw;
 	scene->data = data;
+	scene->initialized = false;
 
 	return scene;
 }
@@ -26,7 +27,7 @@ SceneManager *create_scene_manager(Scene *initial_scene) {
 
 	manager->capacity = 1;
 	manager->num_scenes = 1;
-	manager->active_index = 0;
+	manager->active_index = -1;
 
 	return manager;
 }
@@ -80,12 +81,20 @@ void remove_scene_manager(SceneManager *manager, int index) {
 	manager->num_scenes--;
 }
 
-void select_scene(SceneManager *manager, int index) {
+void select_scene_manager(
+	SceneManager *manager,
+	SDL_Window *window,
+	int index
+) {
 	if (index >= manager->num_scenes) {
 		printf(
 			"Tried to select invalid scene index from scene manager: %d", index
 		);
 		exit(1);
+	}
+
+	if (manager->scenes[index]->initialized == false) {
+		manager->scenes[index]->init(manager->scenes[index]->data, window);
 	}
 
 	manager->active_index = index;

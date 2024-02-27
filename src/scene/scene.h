@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <SDL2/SDL.h>
+#include <stdbool.h>
 
 // cleanup should also free (void *data)
 typedef struct scene {
@@ -9,6 +10,7 @@ typedef struct scene {
 	void (*cleanup)(void *data);
 	void (*handle_input)(void *data, SDL_Event *event);
 	void (*draw)(void *data, SDL_Renderer *renderer);
+	bool initialized;
 	void *data;
 } Scene;
 
@@ -33,6 +35,6 @@ SceneManager *create_scene_manager(Scene *initial_scene);
 void destroy_scene_manager(SceneManager *manager);
 void add_scene_manager(SceneManager *manager, Scene *scene);
 void remove_scene_manager(SceneManager *manager, int index);
-void select_scene(SceneManager *manager, int index);
+void select_scene_manager(SceneManager *manager, SDL_Window *window, int index);
 
 #endif
