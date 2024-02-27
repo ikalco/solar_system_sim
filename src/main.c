@@ -6,31 +6,49 @@
 
 SDL_Window *window;
 SDL_Renderer *renderer;
+SceneManager *manager;
 
-Viewport *viewport = NULL;
-List *bodies = NULL;
-MenuRoot *menu_root = NULL;
+// Viewport *viewport = NULL;
+// List *bodies = NULL;
+// MenuRoot *menu_root = NULL;
 
 int main() {
-	initSDL();
-	atexit(cleanup);
+	Scene *menu_scene = create_scene(
+		init_menu, cleanup_menu, handle_input_menu, draw_menu, NULL
+	);
+
+	manager = create_scene_manager(menu_scene);
+	manager->scenes[0]->init(manager->scenes[0]->data, window);
+	select_scene_manager(manager, window, 0);
+
+	init_SDL();
+	atexit(cleanup_SDL);
 
 	// bodies = read_save_file(DEFAULT_SAVE_FILE);
 	// viewport = init_viewport();
-	menu_root = init_main_menu(window);
+	// menu_root = init_main_menu(window);
+
+	Scene *active_scene;
+	SDL_Event event;
 
 	while (1) {
-		handle_input();
+		active_scene = manager->scenes[manager->active_index];
 
+		while (SDL_PollEvent(&event)) {
+			handle_input_SDL(&event);
+			active_scene->handle_input(active_scene->data, &event);
+		}
 		// update_bodies(bodies, TIME_STEP);
 
 		// clear screen with black
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
+		// SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		// SDL_RenderClear(renderer);
 
-		draw_menu_root(menu_root);
+		// draw_menu_root(menu_root);
 		// draw_viewport_grid(renderer, viewport);
 		// draw_bodies(renderer, viewport, bodies);
+
+		active_scene->draw(active_scene->data, renderer);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
@@ -40,21 +58,13 @@ int main() {
 	return 0;
 }
 
-void handle_input() {
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT:
-			exit(0);
-			break;
-		default:
-			break;
-		}
+void handle_input_SDL(SDL_Event *event) {
+	if (event->type == SDL_QUIT) {
+		exit(0);
 	}
 }
 
-void initSDL() {
+void init_SDL() {
 	// init sdl2
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("SDL couldn't be initialized.\n");
@@ -93,24 +103,26 @@ void initSDL() {
 	}
 }
 
-void cleanup() {
-	if (bodies != NULL) {
-		free_bodies(bodies);
-	}
+void cleanup_SDL() {
+	// if (bodies != NULL) {
+	// 	free_bodies(bodies);
+	// }
+	//
+	// if (viewport != NULL) {
+	// 	free(viewport);
+	// }
+	//
+	// if (menu_root != NULL) {
+	// 	free_menu_root(menu_root);
+	// }
 
-	if (viewport != NULL) {
-		free(viewport);
-	}
-
-	if (menu_root != NULL) {
-		free_menu_root(menu_root);
-	}
+	destroy_scene_manager(manager);
 
 	SDL_DestroyRenderer(renderer);
 
 	SDL_DestroyWindow(window);
 
 	// clean up sdl2 and sdl2_ttf
-	TTF_Quit();
+	// TTF_Quit();
 	SDL_Quit();
 }
