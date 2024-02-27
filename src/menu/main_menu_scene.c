@@ -1,5 +1,5 @@
+#include "main_menu_scene.h"
 #include "menu.h"
-#include "menu_scene.h"
 
 /*
 MenuRoot (MenuList)
@@ -111,7 +111,7 @@ MenuRoot *init_main_menu_root(SDL_Window *window) {
 	return root;
 }
 
-void init_menu(Scene *scene, SDL_Window *window) {
+void init_main_menu(Scene *scene, SDL_Window *window) {
 	// init sdl2_ttf
 	if (TTF_Init() < 0) {
 		printf("SDL_ttf couldn't be initialized.\n");
@@ -122,7 +122,7 @@ void init_menu(Scene *scene, SDL_Window *window) {
 	scene->data = root;
 }
 
-void cleanup_menu(void *data) {
+void cleanup_main_menu(void *data) {
 	MenuRoot *root = data;
 
 	if (root != NULL) {
@@ -132,12 +132,12 @@ void cleanup_menu(void *data) {
 	TTF_Quit();
 }
 
-void handle_input_menu(void *data, SDL_Event *event) {
+void handle_input_main_menu(void *data, SDL_Event *event) {
 	// TODO
 	return;
 }
 
-void draw_menu(void *data, SDL_Renderer *renderer) {
+void draw_main_menu(void *data, SDL_Renderer *renderer) {
 	MenuRoot *root = data;
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

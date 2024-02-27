@@ -14,7 +14,11 @@ int main() {
 
 	// create menu scene
 	Scene *menu_scene = create_scene(
-		init_menu, cleanup_menu, handle_input_menu, draw_menu, NULL
+		init_main_menu,
+		cleanup_main_menu,
+		handle_input_main_menu,
+		draw_main_menu,
+		NULL
 	);
 
 	// create scene manager, add menu_scene, and select it

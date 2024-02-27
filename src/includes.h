@@ -1,8 +1,8 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+#include "menu/main_menu_scene.h"
 #include "options.h"
-#include "menu/menu_scene.h"
 
 void init_SDL();
 void cleanup_SDL();
