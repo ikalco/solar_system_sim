@@ -56,8 +56,6 @@ typedef struct {
 	char *text;
 } MenuButton;
 
-MenuRoot *init_main_menu(SDL_Window *window);
-
 MenuRoot *create_menu_root(
 	SDL_Window *window,
 	VectorD position,
@@ -65,6 +63,7 @@ MenuRoot *create_menu_root(
 	const char *font,
 	MenuNode *root_node
 );
+
 void render_menu_root(MenuRoot *root);
 void draw_menu_root(MenuRoot *root);
 void free_menu_root(MenuRoot *root);

@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "menu_scene.h"
 
 /*
 MenuRoot (MenuList)
@@ -63,7 +64,7 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 	return sub_list_node;
 }
 
-MenuRoot *init_main_menu(SDL_Window *window) {
+MenuRoot *init_main_menu_root(SDL_Window *window) {
 	Color text_color = {235, 235, 235, 255};
 
 	MenuVerticalList *root_list =
@@ -108,4 +109,39 @@ MenuRoot *init_main_menu(SDL_Window *window) {
 	render_menu_root(root);
 
 	return root;
+}
+
+void init_menu(Scene *scene, SDL_Window *window) {
+	// init sdl2_ttf
+	if (TTF_Init() < 0) {
+		printf("SDL_ttf couldn't be initialized.\n");
+		exit(1);
+	}
+
+	MenuRoot *root = init_main_menu_root(window);
+	scene->data = root;
+}
+
+void cleanup_menu(void *data) {
+	MenuRoot *root = data;
+
+	if (root != NULL) {
+		free_menu_root(root);
+	}
+
+	TTF_Quit();
+}
+
+void handle_input_menu(void *data, SDL_Event *event) {
+	// TODO
+	return;
+}
+
+void draw_menu(void *data, SDL_Renderer *renderer) {
+	MenuRoot *root = data;
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	draw_menu_root(root);
 }
