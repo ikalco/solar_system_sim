@@ -1,6 +1,6 @@
 # Compiler settings
 CC = gcc
-CFLAGS = -std=c17 -Wall -Wextra -I./src -MMD
+CFLAGS = -std=c17 -Wall -Wextra -I./src -MMD -ggdb
 LDFLAGS = -lSDL2 -lSDL2_ttf -lm -I./src
 
 # Makefile settings
