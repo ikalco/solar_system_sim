@@ -20,6 +20,11 @@ MenuRoot (MenuList) id=0
 #define BUTTON_3 5
 #define EXIT_BUTTON 6
 
+typedef struct {
+	MenuRoot *root;
+	int clicked_id;
+} Data;
+
 MenuNode *init_menu_sub_list(MenuNode *root_node) {
 	Color button_color = (Color){130, 130, 130, 255};
 	Color text_color = {235, 235, 235, 255};
@@ -142,48 +147,60 @@ void init_main_menu(Scene *scene, SDL_Window *window) {
 		exit(1);
 	}
 
-	MenuRoot *root = init_main_menu_root(window);
-	scene->data = root;
+	Data *data = malloc(sizeof(Data));
+	data->root = init_main_menu_root(window);
+	data->clicked_id = -1;
+
+	scene->data = data;
 }
 
 void cleanup_main_menu(void *data) {
-	MenuRoot *root = data;
+	Data *menu_data = data;
 
-	if (root != NULL) {
-		free_menu_root(root);
+	if (menu_data->root != NULL) {
+		free_menu_root(menu_data->root);
 	}
+
+	free(menu_data);
 
 	TTF_Quit();
 }
 
 void handle_input_main_menu(void *data, SDL_Event *event) {
-	MenuRoot *root = data;
+	Data *menu_data = data;
 
-	// we'll only handle moust button up events
-	if (event->type != SDL_MOUSEBUTTONUP) return;
+	if (event->type == SDL_MOUSEBUTTONDOWN) {
+		menu_data->clicked_id =
+			find_mouse_menu_root(menu_data->root, event->button.x, event->button.y);
+	} else if (event->type == SDL_MOUSEBUTTONUP) {
+		int new_clicked_id =
+			find_mouse_menu_root(menu_data->root, event->button.x, event->button.y);
 
-	int clicked_id =
-		find_mouse_menu_root(root, event->button.x, event->button.y);
+		// if we clicked something but then dragged mouse off and let go somewhere else, then just don't do anything
+		if (menu_data->clicked_id != new_clicked_id) return;
 
-	switch (clicked_id) {
-	case EXIT_BUTTON:
-		exit(0);
-	case BUTTON_1:
-		break;
-	case BUTTON_2:
-		break;
-	case BUTTON_3:
-		break;
-	default:
-		break;
+		switch (menu_data->clicked_id) {
+		case EXIT_BUTTON:
+			exit(0);
+		case BUTTON_1:
+			break;
+		case BUTTON_2:
+			break;
+		case BUTTON_3:
+			break;
+		default:
+			break;
+		}
+
+		menu_data->clicked_id = -1;
 	}
 }
 
 void draw_main_menu(void *data, SDL_Renderer *renderer) {
-	MenuRoot *root = data;
+	Data *menu_data = data;
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	draw_menu_root(root);
+	draw_menu_root(menu_data->root);
 }
