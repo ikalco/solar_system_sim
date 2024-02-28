@@ -2,10 +2,21 @@
 #include <stdbool.h>
 
 bool inside_node(MenuNode *node, int mouse_x, int mouse_y) {
+	int node_x = node->offset.x;
+	int node_y = node->offset.y;
+
+	MenuNode *parent = node->parent;
+
+	while(parent != NULL) {
+		node_x += parent->offset.x;
+		node_y += parent->offset.y;
+		parent = parent->parent;
+	}
+
 	return (
-		mouse_x > node->offset.x && mouse_y > node->offset.y &&
-		mouse_x < node->offset.x + node->size.x &&
-		mouse_y < node->offset.y + node->size.y
+		mouse_x > node_x && mouse_y > node_y &&
+		mouse_x < node_x + node->size.x &&
+		mouse_y < node_y + node->size.y
 	);
 }
 
@@ -20,11 +31,17 @@ int find_mouse_menu_node(MenuNode *node, int mouse_x, int mouse_y) {
 	MenuNode *next = list->child;
 	int res = -1;
 
+	double spacing_offset = 0;
+
 	while (next != NULL) {
+		next->offset.y += spacing_offset;
 		res = find_mouse_menu_node(next, mouse_x, mouse_y);
+		next->offset.y -= spacing_offset;
 
 		if (res != -1) break;
 
+		spacing_offset += list->spacing + next->offset.y + next->size.y;
+		
 		next = next->next;
 	}
 
