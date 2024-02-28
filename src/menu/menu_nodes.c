@@ -85,13 +85,13 @@ void free_menu_node(MenuNode *node) {
 		case MENU_NONE:
 			break;
 		case MENU_LIST:
-			free_menu_node(node->node);
+			free_menu_vlist(node->node);
 			break;
 		case MENU_TEXT:
-			free_menu_node(node->node);
+			free_menu_text(node->node);
 			break;
 		case MENU_BUTTON:
-			free_menu_node(node->node);
+			free_menu_button(node->node);
 			break;
 		}
 	}
@@ -114,8 +114,8 @@ create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
 }
 
 void free_menu_vlist(MenuVerticalList *list) {
-	for (MenuNode *current = list->child; current != NULL;
-		 current = current->next) {
+	MenuNode *current = list->child;
+	while (current != NULL) {
 		MenuNode *next = current->next;
 		free_menu_node(current);
 		current = next;
