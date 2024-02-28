@@ -13,6 +13,7 @@ typedef enum { MENU_NONE, MENU_LIST, MENU_TEXT, MENU_BUTTON } MenuType;
 typedef enum { TEXT_LEFT, TEXT_CENTER, TEXT_RIGHT } MenuTextAlign;
 
 typedef struct menunode {
+	int id;
 	VectorD offset;
 	VectorD size;
 
@@ -69,6 +70,7 @@ void draw_menu_root(MenuRoot *root);
 void free_menu_root(MenuRoot *root);
 
 MenuNode *create_menu_node(
+	int id,
 	VectorD offset,
 	VectorD size,
 	MenuNode *parent,

@@ -1,14 +1,15 @@
 #include "main_menu_scene.h"
 #include "menu.h"
+#include "menu_util.h"
 
 /*
-MenuRoot (MenuList)
-	MenuText
-	MenuList
-		MenuButton
-		MenuButton
-		MenuButton
-	MenuButton
+MenuRoot (MenuList) id=0
+	MenuText		id=1
+	MenuList		id=2
+		MenuButton	id=3
+		MenuButton	id=4
+		MenuButton	id=5
+	MenuButton		id=6
 */
 
 MenuNode *init_menu_sub_list(MenuNode *root_node) {
@@ -18,6 +19,7 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 	MenuVerticalList *sub_list =
 		create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
 	MenuNode *sub_list_node = create_menu_node(
+		2,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 0},
 		root_node,
@@ -29,6 +31,7 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		button_color, text_color, TEXT_CENTER, create_string("Button 1")
 	);
 	MenuNode *button1_node = create_menu_node(
+		3,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
@@ -41,6 +44,7 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		button_color, text_color, TEXT_CENTER, create_string("Button 2")
 	);
 	MenuNode *button2_node = create_menu_node(
+		4,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
@@ -53,6 +57,7 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		button_color, text_color, TEXT_CENTER, create_string("Button 3")
 	);
 	MenuNode *button3_node = create_menu_node(
+		5,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
@@ -70,12 +75,13 @@ MenuRoot *init_main_menu_root(SDL_Window *window) {
 	MenuVerticalList *root_list =
 		create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
 	MenuNode *root_node = create_menu_node(
-		(VectorD){10, 10}, (VectorD){260, 460}, NULL, MENU_LIST, root_list
+		0, (VectorD){10, 10}, (VectorD){260, 460}, NULL, MENU_LIST, root_list
 	);
 
 	MenuText *title_text =
 		create_menu_text(text_color, TEXT_CENTER, create_string("Main Menu"));
 	MenuNode *title_text_node = create_menu_node(
+		1,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 30},
 		root_node,
@@ -94,7 +100,12 @@ MenuRoot *init_main_menu_root(SDL_Window *window) {
 		create_string("Exit")
 	);
 	MenuNode *exit_button_node = create_menu_node(
-		(VectorD){0, 0}, (VectorD){120, 50}, root_node, MENU_BUTTON, exit_button
+		6,
+		(VectorD){0, 0},
+		(VectorD){120, 50},
+		root_node,
+		MENU_BUTTON,
+		exit_button
 	);
 	add_menu_vlist(root_list, exit_button_node);
 
@@ -133,8 +144,10 @@ void cleanup_main_menu(void *data) {
 }
 
 void handle_input_main_menu(void *data, SDL_Event *event) {
-	// TODO
-	return;
+	MenuRoot *root = data;
+
+	if (event->type == SDL_MOUSEBUTTONUP) {
+	}
 }
 
 void draw_main_menu(void *data, SDL_Renderer *renderer) {

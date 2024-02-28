@@ -58,6 +58,7 @@ void free_menu_root(MenuRoot *root) {
 }
 
 MenuNode *create_menu_node(
+	int id,
 	VectorD offset,
 	VectorD size,
 	MenuNode *parent,
@@ -66,6 +67,7 @@ MenuNode *create_menu_node(
 ) {
 	MenuNode *ret = malloc(sizeof(MenuNode));
 
+	ret->id = id;
 	ret->offset = offset;
 	ret->size = size;
 	ret->type = type;
