@@ -1,6 +1,7 @@
 #include "main_menu_scene.h"
-#include "menu.h"
-#include "menu_util.h"
+#include "menu/menu.h"
+#include "menu/menu_util.h"
+#include "scene.h"
 
 /*
 MenuRoot (MenuList) id=0
@@ -22,6 +23,7 @@ MenuRoot (MenuList) id=0
 
 typedef struct {
 	SceneManager *manager;
+	SDL_Window *window;
 	MenuRoot *root;
 	int clicked_id;
 } Data;
@@ -156,6 +158,7 @@ void init_main_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
 
 	Data *data = malloc(sizeof(Data));
 	data->manager = manager;
+	data->window = window;
 	data->root = init_main_menu_root(window);
 	data->clicked_id = -1;
 
@@ -194,6 +197,7 @@ void handle_input_main_menu(void *data, SDL_Event *event) {
 		case EXIT_BUTTON:
 			exit(0);
 		case LOAD_BUTTON:
+			select_scene_manager(menu_data->manager, menu_data->window, 1);
 			break;
 		case EDIT_BUTTON:
 			break;

@@ -1,7 +1,7 @@
-#ifndef MENU_SCENE_H
-#define MENU_SCENE_H
+#ifndef MAIN_MENU_SCENE_H
+#define MAIN_MENU_SCENE_H
 
-#include "scene/scene.h"
+#include "scenes/scene.h"
 #include <SDL2/SDL.h>
 
 void init_main_menu(SceneManager *manager, Scene *scene, SDL_Window *window);
