@@ -1,5 +1,5 @@
-#ifndef SETTINGS_MENU_SCENE_H
-#define SETTINGS_MENU_SCENE_H
+#ifndef LOAD_MENU_SCENE_H
+#define LOAD_MENU_SCENE_H
 
 #include "scenes/scene.h"
 #include <SDL2/SDL.h>

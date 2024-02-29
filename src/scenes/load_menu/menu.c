@@ -1,23 +1,12 @@
-#include "load_menu_scene.h"
+#include "menu.h"
+
 #include "menu/menu.h"
 #include "options.h"
 #include "utils/util.h"
 
 #include <dirent.h>
+#include <stdbool.h>
 #include <sys/stat.h>
-
-typedef struct {
-	SceneManager *manager;
-	SDL_Window *window;
-	MenuRoot *root;
-	int clicked_id;
-	int num_saves;
-} Data;
-
-#define ROOT_LIST 0
-#define TITLE_TEXT 1
-#define SAVE_LIST 2
-#define SAVE_BUTTONS 3
 
 bool valid_save_file_name(char *save_file_name) {
 	char save_file_path[512];
@@ -151,38 +140,4 @@ MenuRoot *init_menu_root(SDL_Window *window, Data *data) {
 	render_menu_root(root);
 
 	return root;
-}
-
-void init_load_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
-	Data *data = malloc(sizeof(Data));
-	data->manager = manager;
-	data->window = window;
-	data->clicked_id = -1;
-	data->num_saves = 0;
-	data->root = init_menu_root(window, data);
-
-	scene->data = data;
-}
-
-void cleanup_load_menu(void *data) {
-	Data *menu_data = data;
-
-	if (menu_data->root != NULL) {
-		free_menu_root(menu_data->root);
-	}
-
-	free(menu_data);
-}
-
-void handle_input_load_menu(void *data, SDL_Event *event) {
-	// TODO
-}
-
-void draw_load_menu(void *data, SDL_Renderer *renderer) {
-	Data *menu_data = data;
-
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
-
-	draw_menu_root(menu_data->root);
 }

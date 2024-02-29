@@ -10,7 +10,7 @@ SRCDIR = src
 BUILDDIR = build
 
 # Dirs defined
-SRC = $(wildcard $(SRCDIR)/*$(EXT)) $(wildcard $(SRCDIR)/**/*$(EXT))
+SRC = $(shell find $(SRCDIR) -type f -name "*.c")
 OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(BUILDDIR)/%.o)
 
 all: $(BUILDDIR)/$(APPNAME)
