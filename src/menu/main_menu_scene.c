@@ -21,6 +21,7 @@ MenuRoot (MenuList) id=0
 #define EXIT_BUTTON 6
 
 typedef struct {
+	SceneManager *manager;
 	MenuRoot *root;
 	int clicked_id;
 } Data;
@@ -146,7 +147,7 @@ MenuRoot *init_main_menu_root(SDL_Window *window) {
 	return root;
 }
 
-void init_main_menu(Scene *scene, SDL_Window *window) {
+void init_main_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
 	// init sdl2_ttf
 	if (TTF_Init() < 0) {
 		printf("SDL_ttf couldn't be initialized.\n");
@@ -154,6 +155,7 @@ void init_main_menu(Scene *scene, SDL_Window *window) {
 	}
 
 	Data *data = malloc(sizeof(Data));
+	data->manager = manager;
 	data->root = init_main_menu_root(window);
 	data->clicked_id = -1;
 

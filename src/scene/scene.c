@@ -1,7 +1,7 @@
 #include "scene.h"
 
 Scene *create_scene(
-	void (*init)(Scene *scene, SDL_Window *window),
+	void (*init)(SceneManager *manager, Scene *scene, SDL_Window *window),
 	void (*cleanup)(void *data),
 	void (*handle_input)(void *data, SDL_Event *event),
 	void (*draw)(void *data, SDL_Renderer *renderer),
@@ -94,7 +94,7 @@ void select_scene_manager(
 	}
 
 	if (manager->scenes[index]->initialized == false) {
-		manager->scenes[index]->init(manager->scenes[index], window);
+		manager->scenes[index]->init(manager, manager->scenes[index], window);
 	}
 
 	manager->active_index = index;

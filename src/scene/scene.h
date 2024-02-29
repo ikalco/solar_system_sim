@@ -4,9 +4,22 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
+struct scene;
+
+typedef struct {
+	struct scene **scenes;
+	int num_scenes;
+	int capacity;
+	int active_index;
+} SceneManager;
+
 // cleanup should also free (void *data)
 typedef struct scene {
-	void (*init)(struct scene *scene, SDL_Window *window);
+	void (*init)(
+		SceneManager *manager,
+		struct scene *scene,
+		SDL_Window *window
+	);
 	void (*cleanup)(void *data);
 	void (*handle_input)(void *data, SDL_Event *event);
 	void (*draw)(void *data, SDL_Renderer *renderer);
@@ -15,7 +28,7 @@ typedef struct scene {
 } Scene;
 
 Scene *create_scene(
-	void (*init)(Scene *scene, SDL_Window *window),
+	void (*init)(SceneManager *manager, Scene *scene, SDL_Window *window),
 	void (*cleanup)(void *data),
 	void (*handle_input)(void *data, SDL_Event *event),
 	void (*draw)(void *data, SDL_Renderer *renderer),
@@ -23,13 +36,6 @@ Scene *create_scene(
 );
 
 void destroy_scene(Scene *scene);
-
-typedef struct {
-	Scene **scenes;
-	int num_scenes;
-	int capacity;
-	int active_index;
-} SceneManager;
 
 SceneManager *create_scene_manager(Scene *initial_scene);
 void destroy_scene_manager(SceneManager *manager);
