@@ -14,7 +14,7 @@ typedef struct {
 } Data;
 
 #define ROOT_LIST 0
-#define MENU_TEXT 1
+#define TITLE_TEXT 1
 #define SAVE_LIST 2
 #define SAVE_BUTTONS 3
 
@@ -90,16 +90,17 @@ MenuRoot *init_menu_root(SDL_Window *window, Data *data) {
 		root_list
 	);
 
-	MenuText *menu_text = create_menu_text(text_color, TEXT_CENTER, "Saves");
-	MenuNode *menu_text_node = create_menu_node(
-		MENU_TEXT,
+	MenuText *title_text =
+		create_menu_text(text_color, TEXT_CENTER, create_string("Saves"));
+	MenuNode *title_text_node = create_menu_node(
+		TITLE_TEXT,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 30},
 		root_node,
 		MENU_TEXT,
-		menu_text
+		title_text
 	);
-	add_menu_vlist(root_list, menu_text_node);
+	add_menu_vlist(root_list, title_text_node);
 
 	MenuNode *saves_list_node = init_saves_list(root_node, data);
 	add_menu_vlist(root_list, saves_list_node);
