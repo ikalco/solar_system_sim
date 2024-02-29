@@ -1,4 +1,5 @@
 ---
+BasedOnStyle: LLVM
 AllowShortIfStatementsOnASingleLine: true
 PointerAlignment: Right
 UseTab: Always

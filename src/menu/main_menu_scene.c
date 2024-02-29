@@ -170,13 +170,16 @@ void handle_input_main_menu(void *data, SDL_Event *event) {
 	Data *menu_data = data;
 
 	if (event->type == SDL_MOUSEBUTTONDOWN) {
-		menu_data->clicked_id =
-			find_mouse_menu_root(menu_data->root, event->button.x, event->button.y);
+		menu_data->clicked_id = find_mouse_menu_root(
+			menu_data->root, event->button.x, event->button.y
+		);
 	} else if (event->type == SDL_MOUSEBUTTONUP) {
-		int new_clicked_id =
-			find_mouse_menu_root(menu_data->root, event->button.x, event->button.y);
+		int new_clicked_id = find_mouse_menu_root(
+			menu_data->root, event->button.x, event->button.y
+		);
 
-		// if we clicked something but then dragged mouse off and let go somewhere else, then just don't do anything
+		// if we clicked something but then dragged mouse off and let go
+		// somewhere else, then just don't do anything
 		if (menu_data->clicked_id != new_clicked_id) return;
 
 		switch (menu_data->clicked_id) {

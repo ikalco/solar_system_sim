@@ -30,7 +30,7 @@ int find_mouse_menu_node(MenuNode *node, int mouse_x, int mouse_y) {
 		if (res != -1) break;
 
 		spacing_offset += list->spacing + next->offset.y + next->size.y;
-		
+
 		next = next->next;
 	}
 
