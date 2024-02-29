@@ -34,7 +34,9 @@ SceneManager *create_scene_manager(Scene *initial_scene) {
 
 void destroy_scene_manager(SceneManager *manager) {
 	for (int i = 0; i < manager->num_scenes; i++) {
-		manager->scenes[i]->cleanup(manager->scenes[i]->data);
+		if (manager->scenes[i]->initialized) {
+			manager->scenes[i]->cleanup(manager->scenes[i]->data);
+		}
 		free(manager->scenes[i]);
 		manager->scenes[i] = NULL;
 	}

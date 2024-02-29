@@ -150,12 +150,6 @@ MenuRoot *init_main_menu_root(SDL_Window *window) {
 }
 
 void init_main_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
-	// init sdl2_ttf
-	if (TTF_Init() < 0) {
-		printf("SDL_ttf couldn't be initialized.\n");
-		exit(1);
-	}
-
 	Data *data = malloc(sizeof(Data));
 	data->manager = manager;
 	data->window = window;
@@ -173,8 +167,6 @@ void cleanup_main_menu(void *data) {
 	}
 
 	free(menu_data);
-
-	TTF_Quit();
 }
 
 void handle_input_main_menu(void *data, SDL_Event *event) {
