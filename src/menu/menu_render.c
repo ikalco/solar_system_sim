@@ -27,6 +27,7 @@ SDL_Rect get_menu_text_offset(
 	MenuRoot *root,
 	MenuNode *node,
 	SDL_Rect offset,
+	double padding,
 	char *text,
 	MenuTextAlign align
 ) {
@@ -37,14 +38,29 @@ SDL_Rect get_menu_text_offset(
 	int text_width, text_height;
 	TTF_SizeUTF8(root->font, text, &text_width, &text_height);
 
-	offset.w = node->size.x;
-	offset.h = node->size.y;
+	offset.w = node->size.x - padding;
+	offset.h = node->size.y - padding;
 
-	if (offset.h < offset.w) {
-		offset.w = (node->size.y * ((double)text_width / text_height));
+	// make sure text doesn't go outside bounds
+	double ratio_width = (offset.h * ((double)text_width / text_height));
+	double ratio_height = (offset.w * ((double)text_height / text_width));
+
+	if (node->size.y < node->size.x) {
+		if (ratio_width > node->size.x) {
+			offset.h = ratio_height;
+		} else {
+			offset.w = ratio_width;
+		}
 	} else {
-		offset.h = (node->size.x * ((double)text_height / text_width));
+		if (ratio_height > node->size.y) {
+			offset.w = ratio_width;
+		} else {
+			offset.h = ratio_height;
+		}
 	}
+
+	// always verticaly centered
+	offset.y += (node->size.y / 2.0) - (offset.h / 2.0);
 
 	switch (align) {
 	case TEXT_LEFT:
@@ -160,8 +176,9 @@ VectorD render_menu_text(MenuRoot *root, MenuNode *text_node) {
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect offset = get_menu_offset(text_node);
-	SDL_Rect dstrect =
-		get_menu_text_offset(root, text_node, offset, text->text, text->align);
+	SDL_Rect dstrect = get_menu_text_offset(
+		root, text_node, offset, 0, text->text, text->align
+	);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
@@ -199,7 +216,7 @@ VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect dstrect = get_menu_text_offset(
-		root, button_node, offset, button->text, button->text_align
+		root, button_node, offset, 10, button->text, button->text_align
 	);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
