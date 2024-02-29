@@ -1,9 +1,9 @@
 #include "menu.h"
 
 void render_menu_node(MenuRoot *root, MenuNode *node);
-void render_menu_vlist(MenuRoot *root, MenuNode *list);
-void render_menu_text(MenuRoot *root, MenuNode *text);
-void render_menu_button(MenuRoot *root, MenuNode *button);
+VectorD render_menu_vlist(MenuRoot *root, MenuNode *list);
+VectorD render_menu_text(MenuRoot *root, MenuNode *text);
+VectorD render_menu_button(MenuRoot *root, MenuNode *button);
 
 SDL_Rect get_menu_offset(MenuNode *node) {
 	MenuNode *parent = node->parent;
@@ -11,7 +11,8 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 	if (node->size.x == MENU_MAX_SIZE) node->size.x = node->parent->size.x;
 
 	SDL_Rect offset = {
-		node->offset.x, node->offset.y, node->size.x, node->size.y};
+		node->offset.x, node->offset.y, node->size.x, node->size.y
+	};
 
 	while (parent != NULL) {
 		offset.x += parent->offset.x;
@@ -25,6 +26,7 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 SDL_Rect get_menu_text_offset(
 	MenuRoot *root,
 	MenuNode *node,
+	SDL_Rect offset,
 	char *text,
 	MenuTextAlign align
 ) {
@@ -34,8 +36,6 @@ SDL_Rect get_menu_text_offset(
 
 	int text_width, text_height;
 	TTF_SizeUTF8(root->font, text, &text_width, &text_height);
-
-	SDL_Rect offset = get_menu_offset(node);
 
 	offset.w = node->size.x;
 	offset.h = node->size.y;
@@ -76,18 +76,18 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 	case MENU_NONE:
 		break;
 	case MENU_LIST:
-		render_menu_vlist(root, node);
+		node->render_pos = render_menu_vlist(root, node);
 		break;
 	case MENU_TEXT:
-		render_menu_text(root, node);
+		node->render_pos = render_menu_text(root, node);
 		break;
 	case MENU_BUTTON:
-		render_menu_button(root, node);
+		node->render_pos = render_menu_button(root, node);
 		break;
 	}
 }
 
-void render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
+VectorD render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
 	if (list_node->type != MENU_LIST) {
 		printf("Tried to render menu list with a non menu list node\n");
 		exit(1);
@@ -139,9 +139,11 @@ void render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
 	list_node->offset.y -= list->padding.y;
 	list_node->size.x += list->padding.x * 2;
 	list_node->size.y += list->padding.y * 2;
+
+	return (VectorD){offset.x, offset.y};
 }
 
-void render_menu_text(MenuRoot *root, MenuNode *text_node) {
+VectorD render_menu_text(MenuRoot *root, MenuNode *text_node) {
 	if (text_node->type != MENU_TEXT) {
 		printf("Tried to render menu text with a non menu text node\n");
 		exit(1);
@@ -157,16 +159,19 @@ void render_menu_text(MenuRoot *root, MenuNode *text_node) {
 	SDL_Texture *texture =
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
+	SDL_Rect offset = get_menu_offset(text_node);
 	SDL_Rect dstrect =
-		get_menu_text_offset(root, text_node, text->text, text->align);
+		get_menu_text_offset(root, text_node, offset, text->text, text->align);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(rendered_text);
+
+	return (VectorD){offset.x, offset.y};
 }
 
-void render_menu_button(MenuRoot *root, MenuNode *button_node) {
+VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	if (button_node->type != MENU_BUTTON) {
 		printf("Tried to render menu text with a non menu text node\n");
 		exit(1);
@@ -194,11 +199,13 @@ void render_menu_button(MenuRoot *root, MenuNode *button_node) {
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect dstrect = get_menu_text_offset(
-		root, button_node, button->text, button->text_align
+		root, button_node, offset, button->text, button->text_align
 	);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(rendered_text);
+
+	return (VectorD){offset.x, offset.y};
 }

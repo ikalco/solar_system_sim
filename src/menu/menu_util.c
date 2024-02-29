@@ -2,21 +2,10 @@
 #include <stdbool.h>
 
 bool inside_node(MenuNode *node, int mouse_x, int mouse_y) {
-	int node_x = node->offset.x;
-	int node_y = node->offset.y;
-
-	MenuNode *parent = node->parent;
-
-	while(parent != NULL) {
-		node_x += parent->offset.x;
-		node_y += parent->offset.y;
-		parent = parent->parent;
-	}
-
 	return (
-		mouse_x > node_x && mouse_y > node_y &&
-		mouse_x < node_x + node->size.x &&
-		mouse_y < node_y + node->size.y
+		mouse_x > node->render_pos.x && mouse_y > node->render_pos.y &&
+		mouse_x < node->render_pos.x + node->size.x &&
+		mouse_y < node->render_pos.y + node->size.y
 	);
 }
 

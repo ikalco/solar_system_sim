@@ -14,6 +14,7 @@ typedef enum { TEXT_LEFT, TEXT_CENTER, TEXT_RIGHT } MenuTextAlign;
 
 typedef struct menunode {
 	int id;
+	VectorD render_pos;
 	VectorD offset;
 	VectorD size;
 
