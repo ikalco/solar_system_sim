@@ -4,6 +4,7 @@
 #include "utils/util.h"
 
 #include <dirent.h>
+#include <sys/stat.h>
 
 typedef struct {
 	SceneManager *manager;
@@ -18,21 +19,37 @@ typedef struct {
 #define SAVE_LIST 2
 #define SAVE_BUTTONS 3
 
-MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
-	Color button_color = (Color){130, 130, 130, 255};
-	Color text_color = {235, 235, 235, 255};
+bool valid_save_file_name(char *save_file_name) {
+	char save_file_path[512];
+	struct stat save_file_info;
 
-	MenuVerticalList *save_list =
-		create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
-	MenuNode *save_list_node = create_menu_node(
-		SAVE_LIST,
-		(VectorD){0, 0},
-		(VectorD){MENU_MAX_SIZE, 0},
-		root_node,
-		MENU_LIST,
-		save_list
-	);
+	sprintf(save_file_path, "%s/%s", DEFAULT_SAVE_PATH, save_file_name);
+	if (stat(save_file_path, &save_file_info) < 0) {
+		// failed to stat file
+		printf("Failed to read \"%s\" when reading saves.\n", save_file_name);
+		return 0;
+	}
 
+	// if it's a directory then don't add it to the list
+	if (S_ISDIR(save_file_info.st_mode)) {
+		return 0;
+	}
+
+	// if the file name is less than 6 characters or does't end in ".save"
+	int save_file_len = strlen(save_file_name);
+	if (save_file_len < 6 ||
+		strcmp(save_file_name + save_file_len - 5, ".save")) {
+		return 0;
+	}
+
+	// null terminate at the just before the ".save", so that only save name
+	// is displayed
+	save_file_name[save_file_len - 5] = 0;
+
+	return 1;
+}
+
+int add_saves_to_list(MenuNode *save_list_node, MenuVerticalList *save_list) {
 	struct dirent *save_file;
 	DIR *directory;
 
@@ -48,9 +65,11 @@ MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
 	// read files from directory stream
 	// we aren't checking for duplicates so hopefully that doesn't happen
 	while ((save_file = readdir(directory))) {
+		if (!valid_save_file_name(save_file->d_name)) continue;
+
 		MenuButton *save_file_button = create_menu_button(
-			button_color,
-			text_color,
+			(Color){130, 130, 130, 255},
+			(Color){235, 235, 235, 255},
 			TEXT_CENTER,
 			create_string(save_file->d_name)
 		);
@@ -71,7 +90,23 @@ MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
 
 	closedir(directory);
 
-	data->num_saves = save_file_id - SAVE_BUTTONS;
+	return save_file_id - SAVE_BUTTONS;
+}
+
+MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
+	MenuVerticalList *save_list =
+		create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
+	MenuNode *save_list_node = create_menu_node(
+		SAVE_LIST,
+		(VectorD){0, 0},
+		(VectorD){MENU_MAX_SIZE, 0},
+		root_node,
+		MENU_LIST,
+		save_list
+	);
+
+	// returns numbers of saves added to list, so we save it
+	data->num_saves = add_saves_to_list(save_list_node, save_list);
 
 	return save_list_node;
 }
