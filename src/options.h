@@ -14,7 +14,8 @@
 #define VIEWPORT_UNIT AU
 
 // save file options
-#define DEFAULT_SAVE_FILE "saves/solar_system.save"
+#define DEFAULT_SAVE_PATH "saves"
+#define DEFAULT_SAVE_FILE "solar_system.save"
 #define MAX_SAVE_LINE_LEN 255
 
 // physics engine options
