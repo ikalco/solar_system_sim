@@ -16,8 +16,8 @@ MenuRoot (MenuList) id=0
 #define ROOT_LIST 0
 #define MENUTEXT 1
 #define SUB_LIST 2
-#define LOAD_BUTTON 3
-#define EDIT_BUTTON 4
+#define CREATE_BUTTON 3
+#define LOAD_BUTTON 4
 #define SETTINGS_BUTTON 5
 #define EXIT_BUTTON 6
 
@@ -43,6 +43,22 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		sub_list
 	);
 
+	MenuButton *create_button = create_menu_button(
+		button_color,
+		text_color,
+		TEXT_CENTER,
+		create_string("Create Solar System")
+	);
+	MenuNode *create_button_node = create_menu_node(
+		CREATE_BUTTON,
+		(VectorD){0, 0},
+		(VectorD){MENU_MAX_SIZE, 60},
+		sub_list_node,
+		MENU_BUTTON,
+		create_button
+	);
+	add_menu_vlist(sub_list, create_button_node);
+
 	MenuButton *load_button = create_menu_button(
 		button_color,
 		text_color,
@@ -58,22 +74,6 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		load_button
 	);
 	add_menu_vlist(sub_list, load_button_node);
-
-	MenuButton *edit_button = create_menu_button(
-		button_color,
-		text_color,
-		TEXT_CENTER,
-		create_string("Edit Solar System")
-	);
-	MenuNode *edit_button_node = create_menu_node(
-		EDIT_BUTTON,
-		(VectorD){0, 0},
-		(VectorD){MENU_MAX_SIZE, 60},
-		sub_list_node,
-		MENU_BUTTON,
-		edit_button
-	);
-	add_menu_vlist(sub_list, edit_button_node);
 
 	MenuButton *settings_button = create_menu_button(
 		button_color, text_color, TEXT_CENTER, create_string("Settings")
@@ -188,10 +188,10 @@ void handle_input_main_menu(void *data, SDL_Event *event) {
 		switch (menu_data->clicked_id) {
 		case EXIT_BUTTON:
 			exit(0);
+		case CREATE_BUTTON:
+			break;
 		case LOAD_BUTTON:
 			select_scene_manager(menu_data->manager, menu_data->window, 1);
-			break;
-		case EDIT_BUTTON:
 			break;
 		case SETTINGS_BUTTON:
 			break;
