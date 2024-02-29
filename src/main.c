@@ -21,8 +21,18 @@ int main() {
 		NULL
 	);
 
+	Scene *load_scene = create_scene(
+		init_load_menu,
+		cleanup_load_menu,
+		handle_input_load_menu,
+		draw_load_menu,
+		NULL
+	);
+
 	// create scene manager, add menu_scene, and select it
 	manager = create_scene_manager(menu_scene);
+	add_scene_manager(manager, load_scene);
+
 	select_scene_manager(manager, window, 0);
 
 	Scene *active_scene;
