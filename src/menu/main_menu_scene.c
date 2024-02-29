@@ -15,9 +15,9 @@ MenuRoot (MenuList) id=0
 #define ROOT_LIST 0
 #define MENUTEXT 1
 #define SUB_LIST 2
-#define BUTTON_1 3
-#define BUTTON_2 4
-#define BUTTON_3 5
+#define LOAD_BUTTON 3
+#define EDIT_BUTTON 4
+#define SETTINGS_BUTTON 5
 #define EXIT_BUTTON 6
 
 typedef struct {
@@ -40,44 +40,50 @@ MenuNode *init_menu_sub_list(MenuNode *root_node) {
 		sub_list
 	);
 
-	MenuButton *button1 = create_menu_button(
-		button_color, text_color, TEXT_CENTER, create_string("Button 1")
+	MenuButton *load_button = create_menu_button(
+		button_color,
+		text_color,
+		TEXT_CENTER,
+		create_string("Load Solar System")
 	);
-	MenuNode *button1_node = create_menu_node(
-		BUTTON_1,
+	MenuNode *load_button_node = create_menu_node(
+		LOAD_BUTTON,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
 		MENU_BUTTON,
-		button1
+		load_button
 	);
-	add_menu_vlist(sub_list, button1_node);
+	add_menu_vlist(sub_list, load_button_node);
 
-	MenuButton *button2 = create_menu_button(
-		button_color, text_color, TEXT_CENTER, create_string("Button 2")
+	MenuButton *edit_button = create_menu_button(
+		button_color,
+		text_color,
+		TEXT_CENTER,
+		create_string("Edit Solar System")
 	);
-	MenuNode *button2_node = create_menu_node(
-		BUTTON_2,
+	MenuNode *edit_button_node = create_menu_node(
+		EDIT_BUTTON,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
 		MENU_BUTTON,
-		button2
+		edit_button
 	);
-	add_menu_vlist(sub_list, button2_node);
+	add_menu_vlist(sub_list, edit_button_node);
 
-	MenuButton *button3 = create_menu_button(
-		button_color, text_color, TEXT_CENTER, create_string("Button 3")
+	MenuButton *settings_button = create_menu_button(
+		button_color, text_color, TEXT_CENTER, create_string("Settings")
 	);
-	MenuNode *button3_node = create_menu_node(
-		BUTTON_3,
+	MenuNode *settings_button_node = create_menu_node(
+		SETTINGS_BUTTON,
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 60},
 		sub_list_node,
 		MENU_BUTTON,
-		button3
+		settings_button
 	);
-	add_menu_vlist(sub_list, button3_node);
+	add_menu_vlist(sub_list, settings_button_node);
 
 	return sub_list_node;
 }
@@ -185,11 +191,11 @@ void handle_input_main_menu(void *data, SDL_Event *event) {
 		switch (menu_data->clicked_id) {
 		case EXIT_BUTTON:
 			exit(0);
-		case BUTTON_1:
+		case LOAD_BUTTON:
 			break;
-		case BUTTON_2:
+		case EDIT_BUTTON:
 			break;
-		case BUTTON_3:
+		case SETTINGS_BUTTON:
 			break;
 		default:
 			break;
