@@ -55,12 +55,14 @@ void resize_scene_manager(SceneManager *manager) {
 	}
 }
 
-void add_scene_manager(SceneManager *manager, Scene *scene) {
+int add_scene_manager(SceneManager *manager, Scene *scene) {
 	if (manager->num_scenes + 1 > manager->capacity)
 		resize_scene_manager(manager);
 
 	manager->scenes[manager->num_scenes] = scene;
 	manager->num_scenes++;
+
+	return manager->num_scenes - 1;
 }
 
 void remove_scene_manager(SceneManager *manager, int index) {

@@ -51,3 +51,23 @@ int find_mouse_menu_root(MenuRoot *root, int mouse_x, int mouse_y) {
 
 	return find_mouse_menu_node(root_node, offset_x, offset_y);
 }
+
+MenuNode *find_menu_node_id(MenuNode *node, int id) {
+	if (node->id == id) return node;
+	if (node->type != MENU_LIST) return NULL;
+
+	MenuVerticalList *list = node->node;
+
+	MenuNode *next = list->child;
+	MenuNode *res = NULL;
+
+	while (next != NULL) {
+		res = find_menu_node_id(next, id);
+
+		if (res != NULL) return next;
+
+		next = next->next;
+	}
+
+	return NULL;
+}

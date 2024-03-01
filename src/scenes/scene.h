@@ -39,7 +39,7 @@ void destroy_scene(Scene *scene);
 
 SceneManager *create_scene_manager(Scene *initial_scene);
 void destroy_scene_manager(SceneManager *manager);
-void add_scene_manager(SceneManager *manager, Scene *scene);
+int add_scene_manager(SceneManager *manager, Scene *scene);
 void remove_scene_manager(SceneManager *manager, int index);
 void select_scene_manager(SceneManager *manager, SDL_Window *window, int index);
 
