@@ -64,7 +64,7 @@ MenuNode *find_menu_node_id(MenuNode *node, int id) {
 	while (next != NULL) {
 		res = find_menu_node_id(next, id);
 
-		if (res != NULL) return next;
+		if (res != NULL) return res;
 
 		next = next->next;
 	}

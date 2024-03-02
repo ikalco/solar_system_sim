@@ -128,12 +128,13 @@ void free_menu_vlist(MenuVerticalList *list) {
 void add_menu_vlist(MenuVerticalList *list, MenuNode *node) {
 	if (list->child == NULL) {
 		list->child = node;
+		list->size++;
 		return;
 	}
 
 	MenuNode *next = list->child;
 
-	for (int i = 0; i < list->size; i++) {
+	for (int i = 1; i < list->size; i++) {
 		next = next->next;
 	}
 
