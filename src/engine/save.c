@@ -76,7 +76,7 @@ List *read_save_file(char *filename) {
 
 	char buf[MAX_SAVE_LINE_LEN];
 	int line_number = 1;
-	List *bodies = malloc(sizeof(List));
+	List *bodies = create_list();
 
 	while (fgets(buf, MAX_SAVE_LINE_LEN, file) != NULL) {
 		PhysicalBody *body = parse_save_line(buf);
