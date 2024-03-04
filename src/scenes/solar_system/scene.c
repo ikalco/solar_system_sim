@@ -28,7 +28,9 @@ void init_solar_system(
 	data->manager = manager;
 	data->window = window;
 	data->bodies = read_save_file(scene->data);
-	data->viewport = init_viewport();
+	data->viewport = init_viewport(
+		(VectorD){0, 0}, (VectorD){WINDOW_WIDTH, WINDOW_HEIGHT}, 3.5 * AU
+	);
 
 	scene->data = data;
 }

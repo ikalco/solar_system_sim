@@ -10,7 +10,7 @@ typedef struct vp {
 	double conversion;
 } Viewport;
 
-Viewport *init_viewport();
+Viewport *init_viewport(VectorD offset, VectorD size, double scale);
 void draw_viewport_grid(SDL_Renderer *renderer, Viewport *viewport);
 
 #endif
