@@ -8,13 +8,13 @@
 
 void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
 	MenuVerticalList *bodies_list = bodies_list_node->node;
-	int body_id = BODIES_LIST;
+	int body_id = BODIES_BUTTONS;
 
 	// yes this loops backwards through the bodies, might want to fix later
 	for (Node *current = bodies->first; current != NULL;
 		 current = current->next) {
 		// only draw 5 bodies
-		if (body_id == BODIES_LIST + 5) {
+		if (body_id == BODIES_BUTTONS + 5) {
 			break;
 		}
 

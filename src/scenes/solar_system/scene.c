@@ -4,7 +4,22 @@
 #include "engine/bodies.h"
 #include "engine/save.h"
 #include "engine/viewport.h"
+#include "menu/menu_util.h"
 #include "options.h"
+
+PhysicalBody *get_body_from_node_id(Data *data, int clicked_id) {
+	Node *current = data->bodies->first;
+	for (int i = 0; i < clicked_id - BODIES_BUTTONS; i++) {
+		if (current == NULL) {
+			printf("Trying to find unknown body.\n");
+			exit(1);
+		}
+
+		current = current->next;
+	}
+
+	return (PhysicalBody *)(current->data);
+}
 
 // this expects scene->data to be a char* string containing a save file name
 void init_solar_system(
@@ -29,6 +44,9 @@ void init_solar_system(
 	);
 	data->name = scene->data;
 	data->root = init_solar_system_menu_root(window, data);
+
+	data->selected_body_id = BODIES_BUTTONS;
+	data->selected_body = get_body_from_node_id(data, data->selected_body_id);
 
 	scene->data = data;
 }
@@ -56,7 +74,15 @@ void cleanup_solar_system(void *data) {
 }
 
 void handle_input_solar_system(void *data, SDL_Event *event) {
-	// TODO
+	Data *solar_data = data;
+
+	int clicked_id = menu_has_clicked(solar_data->root, event);
+
+	if (clicked_id >= BODIES_BUTTONS) {
+		solar_data->selected_body =
+			get_body_from_node_id(solar_data, clicked_id);
+		solar_data->selected_body_id = clicked_id;
+	}
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
