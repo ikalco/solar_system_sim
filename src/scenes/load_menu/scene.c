@@ -7,7 +7,7 @@
 
 #include "scenes/solar_system/scene.h"
 
-Scene *create_save_file_scene(Data *data, char *save_file_name) {
+Scene *create_save_file_scene(char *save_file_name) {
 	Scene *solar_system_scene = create_scene(
 		init_solar_system,
 		cleanup_solar_system,
@@ -58,7 +58,7 @@ void handle_input_load_menu(void *data, SDL_Event *event) {
 		);
 
 		Scene *save_file_scene =
-			create_save_file_scene(data, create_string(save_file_name));
+			create_save_file_scene(create_string(save_file_name));
 
 		int scene_i = add_scene_manager(menu_data->manager, save_file_scene);
 
