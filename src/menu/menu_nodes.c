@@ -94,6 +94,9 @@ void free_menu_node(MenuNode *node) {
 		case MENU_BUTTON:
 			free_menu_button(node->node);
 			break;
+		case MENU_LINE_BREAK:
+			free_menu_line_break(node->node);
+			break;
 		}
 	}
 
@@ -183,3 +186,13 @@ void free_menu_button(MenuButton *button) {
 
 	free(button);
 }
+
+MenuLineBreak *create_menu_line_break(Color bg_color) {
+	MenuLineBreak *line_break = malloc(sizeof(MenuLineBreak));
+
+	line_break->bg_color = bg_color;
+
+	return line_break;
+}
+
+void free_menu_line_break(MenuLineBreak *line_break) { free(line_break); }

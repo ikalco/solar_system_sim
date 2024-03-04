@@ -8,7 +8,13 @@
 #define MENU_MAX_SIZE -1
 #define MENU_MIN_SIZE -2
 
-typedef enum { MENU_NONE, MENU_LIST, MENU_TEXT, MENU_BUTTON } MenuType;
+typedef enum {
+	MENU_NONE,
+	MENU_LIST,
+	MENU_TEXT,
+	MENU_BUTTON,
+	MENU_LINE_BREAK
+} MenuType;
 
 typedef enum { TEXT_LEFT, TEXT_CENTER, TEXT_RIGHT } MenuTextAlign;
 
@@ -58,6 +64,10 @@ typedef struct {
 	char *text;
 } MenuButton;
 
+typedef struct {
+	Color bg_color;
+} MenuLineBreak;
+
 MenuRoot *create_menu_root(
 	SDL_Window *window,
 	VectorD position,
@@ -95,5 +105,8 @@ MenuButton *create_menu_button(
 	char *text
 );
 void free_menu_button(MenuButton *button);
+
+MenuLineBreak *create_menu_line_break(Color bg_color);
+void free_menu_line_break(MenuLineBreak *line_break);
 
 #endif

@@ -4,6 +4,7 @@ void render_menu_node(MenuRoot *root, MenuNode *node);
 VectorD render_menu_vlist(MenuRoot *root, MenuNode *list);
 VectorD render_menu_text(MenuRoot *root, MenuNode *text);
 VectorD render_menu_button(MenuRoot *root, MenuNode *button);
+VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break);
 
 SDL_Rect get_menu_offset(MenuNode *node) {
 	MenuNode *parent = node->parent;
@@ -100,6 +101,9 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 	case MENU_BUTTON:
 		node->render_pos = render_menu_button(root, node);
 		break;
+	case MENU_LINE_BREAK:
+		node->render_pos = render_menu_line_break(root, node);
+		break;
 	}
 }
 
@@ -190,7 +194,7 @@ VectorD render_menu_text(MenuRoot *root, MenuNode *text_node) {
 
 VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	if (button_node->type != MENU_BUTTON) {
-		printf("Tried to render menu text with a non menu text node\n");
+		printf("Tried to render menu button with a non menu button node\n");
 		exit(1);
 	}
 
@@ -225,4 +229,33 @@ VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	SDL_FreeSurface(rendered_text);
 
 	return (VectorD){offset.x, offset.y};
+}
+
+VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
+	if (line_break_node->type != MENU_LINE_BREAK) {
+		printf(
+			"Tried to render menu line break with a non menu line break node\n"
+		);
+		exit(1);
+	}
+
+	MenuLineBreak *line_break = line_break_node->node;
+
+	if (line_break_node->parent->type == MENU_LIST) {
+		MenuVerticalList *list = line_break_node->parent->node;
+		line_break_node->offset.x = -list->padding.x;
+		line_break_node->size.x =
+			line_break_node->parent->size.x + list->padding.x * 2;
+	}
+
+	// draw background
+	SDL_Rect offset = get_menu_offset(line_break_node);
+	SDL_SetRenderDrawColor(
+		root->menu_renderer,
+		line_break->bg_color.red,
+		line_break->bg_color.green,
+		line_break->bg_color.blue,
+		line_break->bg_color.alpha
+	);
+	SDL_RenderFillRect(root->menu_renderer, &offset);
 }
