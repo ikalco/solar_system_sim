@@ -258,4 +258,6 @@ VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 		line_break->bg_color.alpha
 	);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
+
+	return (VectorD){offset.x, offset.y};
 }
