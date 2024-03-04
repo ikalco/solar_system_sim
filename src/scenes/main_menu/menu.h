@@ -27,7 +27,6 @@ typedef struct {
 	SceneManager *manager;
 	SDL_Window *window;
 	MenuRoot *root;
-	int clicked_id;
 } Data;
 
 MenuRoot *init_main_menu_root(SDL_Window *window);

@@ -39,6 +39,8 @@ typedef struct {
 	SDL_Texture *menu_texture;
 	TTF_Font *font;
 
+	int prev_clicked_id;
+
 	MenuNode *root;
 } MenuRoot;
 

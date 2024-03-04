@@ -9,7 +9,6 @@ typedef struct {
 	SceneManager *manager;
 	SDL_Window *window;
 	MenuRoot *root;
-	int clicked_id;
 	int num_saves;
 } Data;
 

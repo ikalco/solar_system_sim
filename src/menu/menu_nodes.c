@@ -12,6 +12,7 @@ MenuRoot *create_menu_root(
 	root->position = position;
 	root->size = size;
 	root->root = root_node;
+	root->prev_clicked_id = -1;
 
 	root->font = TTF_OpenFontDPI(fontname, 12, 1000, 1000);
 	if (root->font == NULL) {

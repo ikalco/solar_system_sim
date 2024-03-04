@@ -8,4 +8,6 @@ int find_mouse_menu_root(MenuRoot *root, int mouse_x, int mouse_y);
 
 MenuNode *find_menu_node_id(MenuNode *node, int id);
 
+int menu_has_clicked(MenuRoot *root, SDL_Event *event);
+
 #endif

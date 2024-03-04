@@ -8,7 +8,6 @@ void init_main_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
 	data->manager = manager;
 	data->window = window;
 	data->root = init_main_menu_root(window);
-	data->clicked_id = -1;
 
 	scene->data = data;
 }
@@ -26,34 +25,20 @@ void cleanup_main_menu(void *data) {
 void handle_input_main_menu(void *data, SDL_Event *event) {
 	Data *menu_data = data;
 
-	if (event->type == SDL_MOUSEBUTTONDOWN) {
-		menu_data->clicked_id = find_mouse_menu_root(
-			menu_data->root, event->button.x, event->button.y
-		);
-	} else if (event->type == SDL_MOUSEBUTTONUP) {
-		int new_clicked_id = find_mouse_menu_root(
-			menu_data->root, event->button.x, event->button.y
-		);
+	int clicked_id = menu_has_clicked(menu_data->root, event);
 
-		// if we clicked something but then dragged mouse off and let go
-		// somewhere else, then just don't do anything
-		if (menu_data->clicked_id != new_clicked_id) return;
-
-		switch (menu_data->clicked_id) {
-		case EXIT_BUTTON:
-			exit(0);
-		case CREATE_BUTTON:
-			break;
-		case LOAD_BUTTON:
-			select_scene_manager(menu_data->manager, menu_data->window, 1);
-			break;
-		case SETTINGS_BUTTON:
-			break;
-		default:
-			break;
-		}
-
-		menu_data->clicked_id = -1;
+	switch (clicked_id) {
+	case EXIT_BUTTON:
+		exit(0);
+	case CREATE_BUTTON:
+		break;
+	case LOAD_BUTTON:
+		select_scene_manager(menu_data->manager, menu_data->window, 1);
+		break;
+	case SETTINGS_BUTTON:
+		break;
+	default:
+		break;
 	}
 }
 

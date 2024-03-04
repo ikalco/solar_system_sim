@@ -71,3 +71,21 @@ MenuNode *find_menu_node_id(MenuNode *node, int id) {
 
 	return NULL;
 }
+
+int menu_has_clicked(MenuRoot *root, SDL_Event *event) {
+	if (event->type == SDL_MOUSEBUTTONDOWN) {
+		root->prev_clicked_id =
+			find_mouse_menu_root(root, event->button.x, event->button.y);
+	} else if (event->type == SDL_MOUSEBUTTONUP) {
+		int new_clicked_id =
+			find_mouse_menu_root(root, event->button.x, event->button.y);
+
+		// clicked and released in same menu node
+		if (root->prev_clicked_id == new_clicked_id) {
+			root->prev_clicked_id = -1;
+			return new_clicked_id;
+		}
+	}
+
+	return -1;
+}
