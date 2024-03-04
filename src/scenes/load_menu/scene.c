@@ -71,7 +71,7 @@ void handle_input_load_menu(void *data, SDL_Event *event) {
 			);
 
 			Scene *save_file_scene =
-				create_save_file_scene(data, save_file_name);
+				create_save_file_scene(data, create_string(save_file_name));
 
 			int scene_i =
 				add_scene_manager(menu_data->manager, save_file_scene);

@@ -1,16 +1,10 @@
 #include "scene.h"
+#include "menu.h"
 
 #include "engine/bodies.h"
 #include "engine/save.h"
 #include "engine/viewport.h"
 #include "options.h"
-
-typedef struct {
-	SceneManager *manager;
-	SDL_Window *window;
-	List *bodies;
-	Viewport *viewport;
-} Data;
 
 // this expects scene->data to be a char* string containing a save file name
 void init_solar_system(
@@ -29,8 +23,12 @@ void init_solar_system(
 	data->window = window;
 	data->bodies = read_save_file(scene->data);
 	data->viewport = init_viewport(
-		(VectorD){0, 0}, (VectorD){WINDOW_WIDTH, WINDOW_HEIGHT}, 3.5 * AU
+		(VectorD){400, 0},
+		(VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
+		3.5 * AU
 	);
+	data->name = scene->data;
+	data->root = init_solar_system_menu_root(window, data);
 
 	scene->data = data;
 }
@@ -44,6 +42,14 @@ void cleanup_solar_system(void *data) {
 
 	if (solar_data->viewport != NULL) {
 		free(solar_data->viewport);
+	}
+
+	if (solar_data->name != NULL) {
+		free(solar_data->name);
+	}
+
+	if (solar_data->root != NULL) {
+		free_menu_root(solar_data->root);
 	}
 
 	free(solar_data);
@@ -61,6 +67,11 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
+	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+	SDL_RenderFillRect(renderer, &(SDL_Rect){395, 0, 10, WINDOW_HEIGHT});
+
 	draw_viewport_grid(renderer, solar_data->viewport);
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
+
+	draw_menu_root(solar_data->root);
 }
