@@ -14,7 +14,7 @@ void add_bodies_list_bodies(MenuNode *bodies_list_node, List *bodies) {
 	for (Node *current = bodies->first; current != NULL;
 		 current = current->next) {
 		// only draw 5 bodies
-		if (body_id == BODIES_BUTTONS + 5) {
+		if (body_id == BODIES_BUTTONS + NUM_BODIES_BUTTONS) {
 			break;
 		}
 

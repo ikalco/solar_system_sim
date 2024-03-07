@@ -28,6 +28,7 @@ typedef struct {
 #define LINE_BREAK 2
 #define BODIES_LIST 3
 #define BODIES_BUTTONS 4
+#define NUM_BODIES_BUTTONS 5
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data);
 

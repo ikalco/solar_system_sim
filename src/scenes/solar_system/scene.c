@@ -90,28 +90,32 @@ void cleanup_solar_system(void *data) {
 	free(solar_data);
 }
 
+void handle_input_body_selector(int clicked_id, Data *data) {
+	if (clicked_id < BODIES_BUTTONS ||
+		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
+		return;
+
+	if (data->selected_body_node != NULL) {
+		MenuButton *body_button = data->selected_body_node->node;
+		body_button->bg_color = DEFAULT_BUTTON_COLOR;
+	}
+
+	data->selected_body_node = find_menu_node_id(data->root->root, clicked_id);
+
+	data->selected_body = get_body_from_node(data, data->selected_body_node);
+
+	MenuButton *body_button = data->selected_body_node->node;
+	body_button->bg_color = SELECTED_BUTTON_COLOR;
+
+	render_menu_root(data->root);
+}
+
 void handle_input_solar_system(void *data, SDL_Event *event) {
 	Data *solar_data = data;
 
 	int clicked_id = menu_has_clicked(solar_data->root, event);
 
-	if (clicked_id >= BODIES_BUTTONS) {
-		if (solar_data->selected_body_node != NULL) {
-			MenuButton *body_button = solar_data->selected_body_node->node;
-			body_button->bg_color = DEFAULT_BUTTON_COLOR;
-		}
-
-		solar_data->selected_body_node =
-			find_menu_node_id(solar_data->root->root, clicked_id);
-
-		solar_data->selected_body =
-			get_body_from_node(solar_data, solar_data->selected_body_node);
-
-		MenuButton *body_button = solar_data->selected_body_node->node;
-		body_button->bg_color = SELECTED_BUTTON_COLOR;
-
-		render_menu_root(solar_data->root);
-	}
+	handle_input_body_selector(clicked_id, data);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
