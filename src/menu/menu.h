@@ -18,6 +18,8 @@ typedef enum {
 
 typedef enum { TEXT_LEFT, TEXT_CENTER, TEXT_RIGHT } MenuTextAlign;
 
+typedef enum { MENU_VERTICAL, MENU_HORIZONTAL } MenuDirection;
+
 typedef struct menunode {
 	int id;
 	VectorD render_pos;
@@ -51,7 +53,9 @@ typedef struct {
 
 	MenuNode *child;
 	int size;
-} MenuVerticalList;
+
+	MenuDirection direction;
+} MenuList;
 
 typedef struct {
 	Color text_color;
@@ -66,6 +70,7 @@ typedef struct {
 	char *text;
 } MenuButton;
 
+// might also make line break have a direction in the future
 typedef struct {
 	Color bg_color;
 } MenuLineBreak;
@@ -92,10 +97,14 @@ MenuNode *create_menu_node(
 );
 void free_menu_node(MenuNode *node);
 
-MenuVerticalList *
-create_menu_vlist(Color bg_color, VectorD padding, double spacing);
-void free_menu_vlist(MenuVerticalList *list);
-void add_menu_vlist(MenuVerticalList *list, MenuNode *node);
+MenuList *create_menu_list(
+	Color bg_color,
+	VectorD padding,
+	double spacing,
+	MenuDirection direction
+);
+void free_menu_list(MenuList *list);
+void add_menu_list(MenuList *list, MenuNode *node);
 
 MenuText *create_menu_text(Color text_color, MenuTextAlign align, char *text);
 void free_menu_text(MenuText *text);

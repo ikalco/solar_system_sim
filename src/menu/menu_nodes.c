@@ -87,7 +87,7 @@ void free_menu_node(MenuNode *node) {
 		case MENU_NONE:
 			break;
 		case MENU_LIST:
-			free_menu_vlist(node->node);
+			free_menu_list(node->node);
 			break;
 		case MENU_TEXT:
 			free_menu_text(node->node);
@@ -104,13 +104,18 @@ void free_menu_node(MenuNode *node) {
 	free(node);
 }
 
-MenuVerticalList *
-create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
-	MenuVerticalList *list = malloc(sizeof(MenuVerticalList));
+MenuList *create_menu_list(
+	Color bg_color,
+	VectorD padding,
+	double spacing,
+	MenuDirection direction
+) {
+	MenuList *list = malloc(sizeof(MenuList));
 
 	list->bg_color = bg_color;
 	list->padding = padding;
 	list->spacing = spacing;
+	list->direction = direction;
 
 	list->child = NULL;
 	list->size = 0;
@@ -118,7 +123,7 @@ create_menu_vlist(Color bg_color, VectorD padding, double spacing) {
 	return list;
 }
 
-void free_menu_vlist(MenuVerticalList *list) {
+void free_menu_list(MenuList *list) {
 	MenuNode *current = list->child;
 	while (current != NULL) {
 		MenuNode *next = current->next;
@@ -129,7 +134,7 @@ void free_menu_vlist(MenuVerticalList *list) {
 	free(list);
 }
 
-void add_menu_vlist(MenuVerticalList *list, MenuNode *node) {
+void add_menu_list(MenuList *list, MenuNode *node) {
 	if (list->child == NULL) {
 		list->child = node;
 		list->size++;

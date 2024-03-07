@@ -1,7 +1,7 @@
 #include "menu.h"
 
 void render_menu_node(MenuRoot *root, MenuNode *node);
-VectorD render_menu_vlist(MenuRoot *root, MenuNode *list);
+VectorD render_menu_list(MenuRoot *root, MenuNode *list);
 VectorD render_menu_text(MenuRoot *root, MenuNode *text);
 VectorD render_menu_button(MenuRoot *root, MenuNode *button);
 VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break);
@@ -93,7 +93,7 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 	case MENU_NONE:
 		break;
 	case MENU_LIST:
-		node->render_pos = render_menu_vlist(root, node);
+		node->render_pos = render_menu_list(root, node);
 		break;
 	case MENU_TEXT:
 		node->render_pos = render_menu_text(root, node);
@@ -107,21 +107,24 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 	}
 }
 
-VectorD render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
+VectorD render_menu_list(MenuRoot *root, MenuNode *list_node) {
 	if (list_node->type != MENU_LIST) {
 		printf("Tried to render menu list with a non menu list node\n");
 		exit(1);
 	}
 
-	MenuVerticalList *list = list_node->node;
+	MenuList *list = list_node->node;
 
 	int min_height = 0;
+	int min_width = 0;
 	for (MenuNode *current = list->child; current != NULL;
 		 current = current->next) {
 		min_height += list->spacing + current->offset.y + current->size.y;
+		min_width += list->spacing + current->offset.x + current->size.x;
 	}
 
 	if (list_node->size.y < min_height) list_node->size.y = min_height;
+	if (list_node->size.x < min_width) list_node->size.x = min_width;
 
 	// draw background
 	SDL_Rect offset = get_menu_offset(list_node);
@@ -143,15 +146,30 @@ VectorD render_menu_vlist(MenuRoot *root, MenuNode *list_node) {
 	double spacing_offset = 0;
 
 	// draw children
-	for (MenuNode *current = list->child; current != NULL;
-		 current = current->next) {
-		current->offset.y += spacing_offset;
+	if (list->direction == MENU_VERTICAL) {
+		for (MenuNode *current = list->child; current != NULL;
+			 current = current->next) {
+			current->offset.y += spacing_offset;
 
-		render_menu_node(root, current);
+			render_menu_node(root, current);
 
-		current->offset.y -= spacing_offset;
+			current->offset.y -= spacing_offset;
 
-		spacing_offset += list->spacing + current->offset.y + current->size.y;
+			spacing_offset +=
+				list->spacing + current->offset.y + current->size.y;
+		}
+	} else if (list->direction == MENU_HORIZONTAL) {
+		for (MenuNode *current = list->child; current != NULL;
+			 current = current->next) {
+			current->offset.x += spacing_offset;
+
+			render_menu_node(root, current);
+
+			current->offset.x -= spacing_offset;
+
+			spacing_offset +=
+				list->spacing + current->offset.x + current->size.x;
+		}
 	}
 
 	// undo padding
@@ -242,7 +260,7 @@ VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 	MenuLineBreak *line_break = line_break_node->node;
 
 	if (line_break_node->parent->type == MENU_LIST) {
-		MenuVerticalList *list = line_break_node->parent->node;
+		MenuList *list = line_break_node->parent->node;
 		line_break_node->offset.x = -list->padding.x;
 		line_break_node->size.x =
 			line_break_node->parent->size.x + list->padding.x * 2;
