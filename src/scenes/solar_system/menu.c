@@ -21,7 +21,7 @@ void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
 		PhysicalBody *body = current->data;
 
 		MenuButton *body_button = create_menu_button(
-			(Color){40, 40, 40, 255},
+			DEFAULT_BUTTON_COLOR,
 			(Color){235, 235, 235, 255},
 			TEXT_CENTER,
 			create_string(body->name)

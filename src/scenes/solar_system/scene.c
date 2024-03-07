@@ -7,9 +7,14 @@
 #include "menu/menu_util.h"
 #include "options.h"
 
-PhysicalBody *get_body_from_node_id(Data *data, int clicked_id) {
+PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
+	if (node->type != MENU_BUTTON || node->id < BODIES_BUTTONS) {
+		printf("Trying to find unknown body.\n");
+		exit(1);
+	}
+
 	Node *current = data->bodies->first;
-	for (int i = 0; i < clicked_id - BODIES_BUTTONS; i++) {
+	for (int i = 0; i < node->id - BODIES_BUTTONS; i++) {
 		if (current == NULL) {
 			printf("Trying to find unknown body.\n");
 			exit(1);
@@ -45,10 +50,22 @@ void init_solar_system(
 	data->name = scene->data;
 	data->root = init_solar_system_menu_root(window, data);
 
-	data->selected_body_id = BODIES_BUTTONS;
-	data->selected_body = get_body_from_node_id(data, data->selected_body_id);
+	data->selected_body = NULL;
+	data->selected_body_node = NULL;
 
 	scene->data = data;
+
+	if (data->bodies->size == 0) return;
+
+	data->selected_body_node =
+		find_menu_node_id(data->root->root, BODIES_BUTTONS);
+
+	data->selected_body = get_body_from_node(data, data->selected_body_node);
+
+	MenuButton *body_button = data->selected_body_node->node;
+	body_button->bg_color = SELECTED_BUTTON_COLOR;
+
+	render_menu_root(data->root);
 }
 
 void cleanup_solar_system(void *data) {
@@ -79,9 +96,21 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 	int clicked_id = menu_has_clicked(solar_data->root, event);
 
 	if (clicked_id >= BODIES_BUTTONS) {
+		if (solar_data->selected_body_node != NULL) {
+			MenuButton *body_button = solar_data->selected_body_node->node;
+			body_button->bg_color = DEFAULT_BUTTON_COLOR;
+		}
+
+		solar_data->selected_body_node =
+			find_menu_node_id(solar_data->root->root, clicked_id);
+
 		solar_data->selected_body =
-			get_body_from_node_id(solar_data, clicked_id);
-		solar_data->selected_body_id = clicked_id;
+			get_body_from_node(solar_data, solar_data->selected_body_node);
+
+		MenuButton *body_button = solar_data->selected_body_node->node;
+		body_button->bg_color = SELECTED_BUTTON_COLOR;
+
+		render_menu_root(solar_data->root);
 	}
 }
 

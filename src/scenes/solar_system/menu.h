@@ -15,8 +15,13 @@ typedef struct {
 	char *name;
 	MenuRoot *root;
 	PhysicalBody *selected_body;
-	int selected_body_id;
+	MenuNode *selected_body_node;
 } Data;
+
+#define DEFAULT_BUTTON_COLOR                                                   \
+	(Color) { 40, 40, 40, 255 }
+#define SELECTED_BUTTON_COLOR                                                  \
+	(Color) { 50, 50, 50, 255 }
 
 #define ROOT_LIST 0
 #define TITLE_TEXT 1
