@@ -116,15 +116,15 @@ VectorD render_menu_list(MenuRoot *root, MenuNode *list_node) {
 	MenuList *list = list_node->node;
 
 	int min_height = 0;
-	int min_width = 0;
+	// int min_width = 0;
 	for (MenuNode *current = list->child; current != NULL;
 		 current = current->next) {
 		min_height += list->spacing + current->offset.y + current->size.y;
-		min_width += list->spacing + current->offset.x + current->size.x;
+		// min_width += list->spacing + current->offset.x + current->size.x;
 	}
 
 	if (list_node->size.y < min_height) list_node->size.y = min_height;
-	if (list_node->size.x < min_width) list_node->size.x = min_width;
+	// if (list_node->size.x < min_width) list_node->size.x = min_width;
 
 	// draw background
 	SDL_Rect offset = get_menu_offset(list_node);

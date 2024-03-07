@@ -15,7 +15,7 @@ int find_mouse_menu_node(MenuNode *node, int mouse_x, int mouse_y) {
 	if (node->type != MENU_LIST) return node->id;
 
 	// find which list element was clicked
-	MenuVerticalList *list = node->node;
+	MenuList *list = node->node;
 
 	MenuNode *next = list->child;
 	int res = -1;
@@ -23,13 +23,27 @@ int find_mouse_menu_node(MenuNode *node, int mouse_x, int mouse_y) {
 	double spacing_offset = 0;
 
 	while (next != NULL) {
-		next->offset.y += spacing_offset;
+		if (list->direction == MENU_VERTICAL) {
+			next->offset.y += spacing_offset;
+		} else if (list->direction == MENU_HORIZONTAL) {
+			next->offset.x += spacing_offset;
+		}
+
 		res = find_mouse_menu_node(next, mouse_x, mouse_y);
-		next->offset.y -= spacing_offset;
+
+		if (list->direction == MENU_VERTICAL) {
+			next->offset.y -= spacing_offset;
+		} else if (list->direction == MENU_HORIZONTAL) {
+			next->offset.x -= spacing_offset;
+		}
 
 		if (res != -1) break;
 
-		spacing_offset += list->spacing + next->offset.y + next->size.y;
+		if (list->direction == MENU_VERTICAL) {
+			spacing_offset += list->spacing + next->offset.y + next->size.y;
+		} else if (list->direction == MENU_HORIZONTAL) {
+			spacing_offset += list->spacing + next->offset.x + next->size.x;
+		}
 
 		next = next->next;
 	}
@@ -56,7 +70,7 @@ MenuNode *find_menu_node_id(MenuNode *node, int id) {
 	if (node->id == id) return node;
 	if (node->type != MENU_LIST) return NULL;
 
-	MenuVerticalList *list = node->node;
+	MenuList *list = node->node;
 
 	MenuNode *next = list->child;
 	MenuNode *res = NULL;

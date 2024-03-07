@@ -7,7 +7,7 @@
 // interaction with more that 5 bodies
 
 void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
-	MenuVerticalList *bodies_list = bodies_list_node->node;
+	MenuList *bodies_list = bodies_list_node->node;
 	int body_id = BODIES_BUTTONS;
 
 	// yes this loops backwards through the bodies, might want to fix later
@@ -40,15 +40,16 @@ void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
 			body_button_node->offset.y = 5;
 		}
 
-		add_menu_vlist(bodies_list, body_button_node);
+		add_menu_list(bodies_list, body_button_node);
 
 		body_id++;
 	}
 }
 
 MenuNode *init_bodies_list(MenuNode *root_node, Data *data) {
-	MenuVerticalList *bodies_list =
-		create_menu_vlist((Color){35, 35, 35, 255}, (VectorD){10, 10}, 5);
+	MenuList *bodies_list = create_menu_list(
+		(Color){35, 35, 35, 255}, (VectorD){10, 10}, 5, MENU_VERTICAL
+	);
 
 	// will only fit 5 body buttons
 	MenuNode *bodies_list_node = create_menu_node(
@@ -71,7 +72,7 @@ MenuNode *init_bodies_list(MenuNode *root_node, Data *data) {
 		MENU_TEXT,
 		title_text
 	);
-	add_menu_vlist(bodies_list, title_text_node);
+	add_menu_list(bodies_list, title_text_node);
 
 	add_bodies_list(bodies_list_node, data->bodies);
 
@@ -81,8 +82,9 @@ MenuNode *init_bodies_list(MenuNode *root_node, Data *data) {
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 	Color text_color = {235, 235, 235, 255};
 
-	MenuVerticalList *root_list =
-		create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
+	MenuList *root_list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL
+	);
 	MenuNode *root_node = create_menu_node(
 		ROOT_LIST,
 		(VectorD){0, 0},
@@ -104,7 +106,7 @@ MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 		MENU_TEXT,
 		title_text
 	);
-	add_menu_vlist(root_list, title_text_node);
+	add_menu_list(root_list, title_text_node);
 
 	MenuLineBreak *line_break =
 		create_menu_line_break((Color){55, 55, 55, 255});
@@ -116,10 +118,10 @@ MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 		MENU_LINE_BREAK,
 		line_break
 	);
-	add_menu_vlist(root_list, line_break_node);
+	add_menu_list(root_list, line_break_node);
 
 	MenuNode *bodies_list_node = init_bodies_list(root_node, data);
-	add_menu_vlist(root_list, bodies_list_node);
+	add_menu_list(root_list, bodies_list_node);
 
 	MenuRoot *root = create_menu_root(
 		window,

@@ -38,7 +38,7 @@ bool valid_save_file_name(char *save_file_name) {
 	return 1;
 }
 
-int add_saves_to_list(MenuNode *save_list_node, MenuVerticalList *save_list) {
+int add_saves_to_list(MenuNode *save_list_node, MenuList *save_list) {
 	struct dirent *save_file;
 	DIR *directory;
 
@@ -72,7 +72,7 @@ int add_saves_to_list(MenuNode *save_list_node, MenuVerticalList *save_list) {
 			save_file_button
 		);
 
-		add_menu_vlist(save_list, save_file_node);
+		add_menu_list(save_list, save_file_node);
 
 		save_file_id++;
 	}
@@ -83,8 +83,9 @@ int add_saves_to_list(MenuNode *save_list_node, MenuVerticalList *save_list) {
 }
 
 MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
-	MenuVerticalList *save_list =
-		create_menu_vlist((Color){50, 50, 50, 240}, (VectorD){5, 5}, 10);
+	MenuList *save_list = create_menu_list(
+		(Color){50, 50, 50, 240}, (VectorD){5, 5}, 10, MENU_VERTICAL
+	);
 	MenuNode *save_list_node = create_menu_node(
 		SAVE_LIST,
 		(VectorD){0, 0},
@@ -103,8 +104,9 @@ MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
 MenuRoot *init_menu_root(SDL_Window *window, Data *data) {
 	Color text_color = {235, 235, 235, 255};
 
-	MenuVerticalList *root_list =
-		create_menu_vlist((Color){40, 40, 40, 255}, (VectorD){20, 20}, 10);
+	MenuList *root_list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL
+	);
 	MenuNode *root_node = create_menu_node(
 		ROOT_LIST,
 		(VectorD){10, 10},
@@ -124,10 +126,10 @@ MenuRoot *init_menu_root(SDL_Window *window, Data *data) {
 		MENU_TEXT,
 		title_text
 	);
-	add_menu_vlist(root_list, title_text_node);
+	add_menu_list(root_list, title_text_node);
 
 	MenuNode *saves_list_node = init_saves_list(root_node, data);
-	add_menu_vlist(root_list, saves_list_node);
+	add_menu_list(root_list, saves_list_node);
 
 	MenuRoot *root = create_menu_root(
 		window,
