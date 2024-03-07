@@ -6,7 +6,7 @@
 // TODO: make some sort of scrolling or searching system in order to allow
 // interaction with more that 5 bodies
 
-void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
+void add_bodies_list_bodies(MenuNode *bodies_list_node, List *bodies) {
 	MenuList *bodies_list = bodies_list_node->node;
 	int body_id = BODIES_BUTTONS;
 
@@ -46,7 +46,7 @@ void add_bodies_list(MenuNode *bodies_list_node, List *bodies) {
 	}
 }
 
-MenuNode *init_bodies_list(MenuNode *root_node, Data *data) {
+void add_bodies_list(MenuNode *root_node, Data *data) {
 	MenuList *bodies_list = create_menu_list(
 		(Color){35, 35, 35, 255}, (VectorD){10, 10}, 5, MENU_VERTICAL
 	);
@@ -74,25 +74,15 @@ MenuNode *init_bodies_list(MenuNode *root_node, Data *data) {
 	);
 	add_menu_list(bodies_list, title_text_node);
 
-	add_bodies_list(bodies_list_node, data->bodies);
+	add_bodies_list_bodies(bodies_list_node, data->bodies);
 
-	return bodies_list_node;
+	MenuList *root_list = root_node->node;
+	add_menu_list(root_list, bodies_list_node);
 }
 
-MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
+void add_title(MenuNode *root_node, Data *data) {
+	MenuList *root_list = root_node->node;
 	Color text_color = {235, 235, 235, 255};
-
-	MenuList *root_list = create_menu_list(
-		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL
-	);
-	MenuNode *root_node = create_menu_node(
-		ROOT_LIST,
-		(VectorD){0, 0},
-		(VectorD){400, WINDOW_HEIGHT},
-		NULL,
-		MENU_LIST,
-		root_list
-	);
 
 	// will probably change data->name to hold something from inisde the file
 	// later rn will just use the path
@@ -119,9 +109,33 @@ MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 		line_break
 	);
 	add_menu_list(root_list, line_break_node);
+}
 
-	MenuNode *bodies_list_node = init_bodies_list(root_node, data);
-	add_menu_list(root_list, bodies_list_node);
+void add_bodies_editor(MenuNode *root_node, Data *data) {
+	// the outline for the editor
+	// the "[]" are a text editing box
+	// the first 2 edit what's inside them
+
+	// [name]      [color]
+	// mass: [           ]
+	// position:
+	//     x: [  ] y: [  ]
+	// velocity
+	//     x: [  ] y: [  ]
+}
+
+MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
+	MenuList *root_list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL
+	);
+	MenuNode *root_node = create_menu_node(
+		ROOT_LIST,
+		(VectorD){0, 0},
+		(VectorD){400, WINDOW_HEIGHT},
+		NULL,
+		MENU_LIST,
+		root_list
+	);
 
 	MenuRoot *root = create_menu_root(
 		window,
@@ -130,6 +144,12 @@ MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 		"fonts/Roboto-Regular.ttf",
 		root_node
 	);
+
+	add_title(root_node, data);
+
+	add_bodies_list(root_node, data);
+
+	add_bodies_editor(root_node, data);
 
 	render_menu_root(root);
 
