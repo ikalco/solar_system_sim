@@ -122,6 +122,21 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 	//     x: [  ] y: [  ]
 	// velocity
 	//     x: [  ] y: [  ]
+
+	MenuList *root_list = root_node->node;
+
+	MenuText *title_text = create_menu_text(
+		(Color){235, 235, 235, 255}, TEXT_CENTER, create_string("3.141")
+	);
+	MenuNode *title_text_node = create_menu_node(
+		BODIES_EDITOR_LIST,
+		(VectorD){0, 0},
+		(VectorD){MENU_MAX_SIZE, 35},
+		root_node,
+		MENU_TEXT,
+		title_text
+	);
+	add_menu_list(root_list, title_text_node);
 }
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {

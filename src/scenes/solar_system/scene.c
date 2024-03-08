@@ -53,6 +53,8 @@ void init_solar_system(
 	data->selected_body = NULL;
 	data->selected_body_node = NULL;
 
+	data->selected_editor = NULL;
+
 	scene->data = data;
 
 	if (data->bodies->size == 0) return;
@@ -90,7 +92,7 @@ void cleanup_solar_system(void *data) {
 	free(solar_data);
 }
 
-void handle_input_body_selector(int clicked_id, Data *data) {
+void handle_mouse_body_selector(int clicked_id, Data *data) {
 	if (clicked_id < BODIES_BUTTONS ||
 		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
 		return;
@@ -110,12 +112,57 @@ void handle_input_body_selector(int clicked_id, Data *data) {
 	render_menu_root(data->root);
 }
 
+void handle_mouse_body_text_editor(int clicked_id, Data *data) {
+	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
+
+	if (clicked_id < BODIES_EDITOR_LIST) {
+		if (data->selected_editor != NULL) {
+			SDL_StopTextInput();
+			data->selected_editor = NULL;
+		}
+	} else {
+		if (clicked_node->type == MENU_TEXT) {
+			data->selected_editor = clicked_node;
+			SDL_StartTextInput();
+		}
+	}
+}
+
+void handle_keys_body_text_editor(Data *data, SDL_Event *event) {
+	if (data->selected_editor == NULL) return;
+
+	if (event->type == SDL_KEYDOWN) {
+		switch (event->key.keysym.sym) {
+		case SDLK_RETURN:
+			break;
+		case SDLK_ESCAPE:
+			break;
+		case SDLK_LEFT:
+			break;
+		case SDLK_RIGHT:
+			break;
+		case SDLK_BACKSPACE:
+			break;
+		}
+	}
+
+	if (event->type == SDL_TEXTINPUT) {
+		MenuText *text = data->selected_editor->node;
+		strcat(text->text, event->text.text);
+		render_menu_root(data->root);
+	}
+}
+
 void handle_input_solar_system(void *data, SDL_Event *event) {
 	Data *solar_data = data;
 
 	int clicked_id = menu_has_clicked(solar_data->root, event);
+	if (clicked_id != -1) {
+		handle_mouse_body_selector(clicked_id, solar_data);
+		handle_mouse_body_text_editor(clicked_id, solar_data);
+	}
 
-	handle_input_body_selector(clicked_id, data);
+	handle_keys_body_text_editor(solar_data, event);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {

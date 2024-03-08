@@ -16,6 +16,7 @@ typedef struct {
 	MenuRoot *root;
 	PhysicalBody *selected_body;
 	MenuNode *selected_body_node;
+	MenuNode *selected_editor;
 } Data;
 
 #define DEFAULT_BUTTON_COLOR                                                   \
@@ -27,8 +28,12 @@ typedef struct {
 #define TITLE_TEXT 1
 #define LINE_BREAK 2
 #define BODIES_LIST 3
+
 #define BODIES_BUTTONS 4
 #define NUM_BODIES_BUTTONS 5
+
+// BODIES_BUTTONS is the 0th button, so this would be after all of them
+#define BODIES_EDITOR_LIST BODIES_BUTTONS + NUM_BODIES_BUTTONS
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data);
 
