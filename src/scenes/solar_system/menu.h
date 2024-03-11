@@ -17,6 +17,9 @@ typedef struct {
 	PhysicalBody *selected_body;
 	MenuNode *selected_body_node;
 	MenuNode *selected_editor;
+
+	char *save_text;
+	int cursor_offset;
 } Data;
 
 #define DEFAULT_BUTTON_COLOR                                                   \
