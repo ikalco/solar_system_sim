@@ -22,7 +22,7 @@ typedef enum { MENU_VERTICAL, MENU_HORIZONTAL } MenuDirection;
 
 typedef struct menunode {
 	int id;
-	VectorD render_pos;
+	SDL_Rect render_offset;
 	VectorD offset;
 	VectorD size;
 

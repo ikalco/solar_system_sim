@@ -69,7 +69,7 @@ MenuNode *create_menu_node(
 	MenuNode *ret = malloc(sizeof(MenuNode));
 
 	ret->id = id;
-	ret->render_pos = (VectorD){0, 0};
+	ret->render_offset = (SDL_Rect){0, 0, 0, 0};
 	ret->offset = offset;
 	ret->size = size;
 	ret->type = type;

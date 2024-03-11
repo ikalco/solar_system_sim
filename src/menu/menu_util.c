@@ -3,9 +3,9 @@
 
 bool inside_node(MenuNode *node, int mouse_x, int mouse_y) {
 	return (
-		mouse_x > node->render_pos.x && mouse_y > node->render_pos.y &&
-		mouse_x < node->render_pos.x + node->size.x &&
-		mouse_y < node->render_pos.y + node->size.y
+		mouse_x > node->render_offset.x && mouse_y > node->render_offset.y &&
+		mouse_x < node->render_offset.x + node->size.x &&
+		mouse_y < node->render_offset.y + node->size.y
 	);
 }
 

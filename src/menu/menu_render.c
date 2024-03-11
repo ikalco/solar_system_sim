@@ -1,10 +1,10 @@
 #include "menu.h"
 
 void render_menu_node(MenuRoot *root, MenuNode *node);
-VectorD render_menu_list(MenuRoot *root, MenuNode *list);
-VectorD render_menu_text(MenuRoot *root, MenuNode *text);
-VectorD render_menu_button(MenuRoot *root, MenuNode *button);
-VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break);
+SDL_Rect render_menu_list(MenuRoot *root, MenuNode *list);
+SDL_Rect render_menu_text(MenuRoot *root, MenuNode *text);
+SDL_Rect render_menu_button(MenuRoot *root, MenuNode *button);
+SDL_Rect render_menu_line_break(MenuRoot *root, MenuNode *line_break);
 
 SDL_Rect get_menu_offset(MenuNode *node) {
 	MenuNode *parent = node->parent;
@@ -93,21 +93,21 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 	case MENU_NONE:
 		break;
 	case MENU_LIST:
-		node->render_pos = render_menu_list(root, node);
+		node->render_offset = render_menu_list(root, node);
 		break;
 	case MENU_TEXT:
-		node->render_pos = render_menu_text(root, node);
+		node->render_offset = render_menu_text(root, node);
 		break;
 	case MENU_BUTTON:
-		node->render_pos = render_menu_button(root, node);
+		node->render_offset = render_menu_button(root, node);
 		break;
 	case MENU_LINE_BREAK:
-		node->render_pos = render_menu_line_break(root, node);
+		node->render_offset = render_menu_line_break(root, node);
 		break;
 	}
 }
 
-VectorD render_menu_list(MenuRoot *root, MenuNode *list_node) {
+SDL_Rect render_menu_list(MenuRoot *root, MenuNode *list_node) {
 	if (list_node->type != MENU_LIST) {
 		printf("Tried to render menu list with a non menu list node\n");
 		exit(1);
@@ -178,10 +178,10 @@ VectorD render_menu_list(MenuRoot *root, MenuNode *list_node) {
 	list_node->size.x += list->padding.x * 2;
 	list_node->size.y += list->padding.y * 2;
 
-	return (VectorD){offset.x, offset.y};
+	return offset;
 }
 
-VectorD render_menu_text(MenuRoot *root, MenuNode *text_node) {
+SDL_Rect render_menu_text(MenuRoot *root, MenuNode *text_node) {
 	if (text_node->type != MENU_TEXT) {
 		printf("Tried to render menu text with a non menu text node\n");
 		exit(1);
@@ -207,10 +207,10 @@ VectorD render_menu_text(MenuRoot *root, MenuNode *text_node) {
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(rendered_text);
 
-	return (VectorD){offset.x, offset.y};
+	return offset;
 }
 
-VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
+SDL_Rect render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	if (button_node->type != MENU_BUTTON) {
 		printf("Tried to render menu button with a non menu button node\n");
 		exit(1);
@@ -246,10 +246,10 @@ VectorD render_menu_button(MenuRoot *root, MenuNode *button_node) {
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(rendered_text);
 
-	return (VectorD){offset.x, offset.y};
+	return offset;
 }
 
-VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
+SDL_Rect render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 	if (line_break_node->type != MENU_LINE_BREAK) {
 		printf(
 			"Tried to render menu line break with a non menu line break node\n"
@@ -277,5 +277,5 @@ VectorD render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 	);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
-	return (VectorD){offset.x, offset.y};
+	return offset;
 }
