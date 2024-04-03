@@ -10,4 +10,6 @@ MenuNode *find_menu_node_id(MenuNode *node, int id);
 
 int menu_has_clicked(MenuRoot *root, SDL_Event *event);
 
+SDL_Rect get_menu_offset(MenuNode *node);
+
 #endif
