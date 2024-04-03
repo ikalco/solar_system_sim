@@ -92,6 +92,9 @@ void free_menu_node(MenuNode *node) {
 		case MENU_TEXT:
 			free_menu_text(node->node);
 			break;
+		case MENU_TEXT_EDIT:
+			free_menu_text_edit(node->node);
+			break;
 		case MENU_BUTTON:
 			free_menu_button(node->node);
 			break;
@@ -162,6 +165,26 @@ MenuText *create_menu_text(Color text_color, MenuTextAlign align, char *text) {
 }
 
 void free_menu_text(MenuText *text) {
+	if (text->text != NULL) {
+		free(text->text);
+	}
+
+	free(text);
+}
+
+MenuText *
+create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
+	MenuTextEdit *menu_text = malloc(sizeof(*menu_text));
+
+	menu_text->text_color = text_color;
+	menu_text->text = text;
+	menu_text->align = align;
+	menu_text->selected = 0;
+
+	return menu_text;
+}
+
+void free_menu_text_edit(MenuText *text) {
 	if (text->text != NULL) {
 		free(text->text);
 	}

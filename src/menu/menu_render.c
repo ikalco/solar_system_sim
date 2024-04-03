@@ -1,81 +1,12 @@
 #include "menu.h"
+#include "menu_text_edit.h"
+#include "menu_util.h"
 
 void render_menu_node(MenuRoot *root, MenuNode *node);
 SDL_Rect render_menu_list(MenuRoot *root, MenuNode *list);
 SDL_Rect render_menu_text(MenuRoot *root, MenuNode *text);
 SDL_Rect render_menu_button(MenuRoot *root, MenuNode *button);
 SDL_Rect render_menu_line_break(MenuRoot *root, MenuNode *line_break);
-
-SDL_Rect get_menu_offset(MenuNode *node) {
-	MenuNode *parent = node->parent;
-
-	if (node->size.x == MENU_MAX_SIZE) node->size.x = node->parent->size.x;
-
-	SDL_Rect offset = {
-		node->offset.x, node->offset.y, node->size.x, node->size.y
-	};
-
-	while (parent != NULL) {
-		offset.x += parent->offset.x;
-		offset.y += parent->offset.y;
-		parent = parent->parent;
-	}
-
-	return offset;
-}
-
-SDL_Rect get_menu_text_offset(
-	MenuRoot *root,
-	MenuNode *node,
-	SDL_Rect offset,
-	double padding,
-	char *text,
-	MenuTextAlign align
-) {
-	if (node->type != MENU_TEXT && node->type != MENU_BUTTON) {
-		printf("mistake\n");
-	}
-
-	int text_width, text_height;
-	TTF_SizeUTF8(root->font, text, &text_width, &text_height);
-
-	offset.w = node->size.x - padding;
-	offset.h = node->size.y - padding;
-
-	// make sure text doesn't go outside bounds
-	double ratio_width = (offset.h * ((double)text_width / text_height));
-	double ratio_height = (offset.w * ((double)text_height / text_width));
-
-	if (node->size.y < node->size.x) {
-		if (ratio_width > node->size.x) {
-			offset.h = ratio_height;
-		} else {
-			offset.w = ratio_width;
-		}
-	} else {
-		if (ratio_height > node->size.y) {
-			offset.w = ratio_width;
-		} else {
-			offset.h = ratio_height;
-		}
-	}
-
-	// always verticaly centered
-	offset.y += (node->size.y / 2.0) - (offset.h / 2.0);
-
-	switch (align) {
-	case TEXT_LEFT:
-		break;
-	case TEXT_CENTER:
-		offset.x += (node->size.x / 2.0) - (offset.w / 2.0);
-		break;
-	case TEXT_RIGHT:
-		offset.x += node->size.x - (offset.w / 2.0);
-		break;
-	}
-
-	return offset;
-}
 
 void render_menu_root(MenuRoot *root) {
 	// set renderer to render to our texture
@@ -97,6 +28,9 @@ void render_menu_node(MenuRoot *root, MenuNode *node) {
 		break;
 	case MENU_TEXT:
 		node->render_offset = render_menu_text(root, node);
+		break;
+	case MENU_TEXT_EDIT:
+		node->render_offset = render_menu_text_edit(root, node);
 		break;
 	case MENU_BUTTON:
 		node->render_offset = render_menu_button(root, node);

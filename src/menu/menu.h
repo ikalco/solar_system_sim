@@ -12,6 +12,7 @@ typedef enum {
 	MENU_NONE,
 	MENU_LIST,
 	MENU_TEXT,
+	MENU_TEXT_EDIT,
 	MENU_BUTTON,
 	MENU_LINE_BREAK
 } MenuType;
@@ -64,6 +65,13 @@ typedef struct {
 } MenuText;
 
 typedef struct {
+	Color text_color;
+	MenuTextAlign align;
+	char *text;
+	int selected;
+} MenuTextEdit;
+
+typedef struct {
 	Color bg_color;
 	Color text_color;
 	MenuTextAlign text_align;
@@ -108,6 +116,10 @@ void add_menu_list(MenuList *list, MenuNode *node);
 
 MenuText *create_menu_text(Color text_color, MenuTextAlign align, char *text);
 void free_menu_text(MenuText *text);
+
+MenuText *
+create_menu_text_edit(Color text_color, MenuTextAlign align, char *text);
+void free_menu_text_edit(MenuText *text);
 
 MenuButton *create_menu_button(
 	Color bg_color,
