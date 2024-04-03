@@ -4,6 +4,7 @@
 #include "engine/bodies.h"
 #include "engine/save.h"
 #include "engine/viewport.h"
+#include "menu/menu_text_edit.h"
 #include "menu/menu_util.h"
 #include "options.h"
 
@@ -99,7 +100,7 @@ void cleanup_solar_system(void *data) {
 	free(solar_data);
 }
 
-void handle_mouse_body_selector(int clicked_id, Data *data) {
+void handle_select_body(int clicked_id, Data *data) {
 	if (clicked_id < BODIES_BUTTONS ||
 		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
 		return;
@@ -119,66 +120,16 @@ void handle_mouse_body_selector(int clicked_id, Data *data) {
 	render_menu_root(data->root);
 }
 
-void stop_editing(Data *data) {
-	SDL_StopTextInput();
-
-	if (data->save_text != NULL) free(data->save_text);
-	data->cursor_offset = -1;
-
-	data->selected_editor = NULL;
-}
-
-void start_editing(Data *data, MenuNode *node) {
-	data->selected_editor = node;
-
-	MenuText *text = data->selected_editor->node;
-
-	data->save_text = create_string(text->text);
-	data->cursor_offset = strlen(data->save_text);
-
-	SDL_StartTextInput();
-}
-
-void handle_mouse_body_text_editor(int clicked_id, Data *data) {
+void handle_select_text_editor(int clicked_id, Data *data) {
 	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
 
 	if (clicked_id < BODIES_EDITOR_LIST) {
 		if (data->selected_editor == NULL) return;
-		stop_editing(data);
+		menu_text_edit_stop_edit(data->selected_editor->node);
 	} else {
-		if (clicked_node->type != MENU_TEXT) return;
-		start_editing(data, clicked_node);
-	}
-}
-
-void handle_keys_body_text_editor(Data *data, SDL_Event *event) {
-	if (data->selected_editor == NULL) return;
-
-	if (event->type == SDL_KEYDOWN) {
-		switch (event->key.keysym.sym) {
-		case SDLK_RETURN:
-			// save changed text
-			break;
-		case SDLK_ESCAPE:
-			// discard changed text
-			break;
-		case SDLK_LEFT:
-			// move cursor left
-			break;
-		case SDLK_RIGHT:
-			// move cursor right
-			break;
-		case SDLK_BACKSPACE:
-			// delete character at cursor
-			break;
-		}
-	}
-
-	if (event->type == SDL_TEXTINPUT) {
-		MenuText *text = data->selected_editor->node;
-		data->cursor_offset += strlen(event->text.text);
-		strcat(text->text, event->text.text);
-		render_menu_root(data->root);
+		if (clicked_node->type != MENU_TEXT_EDIT) return;
+		data->selected_editor = clicked_node;
+		menu_text_edit_start_edit(data->selected_editor);
 	}
 }
 
@@ -187,31 +138,12 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 
 	int clicked_id = menu_has_clicked(solar_data->root, event);
 	if (clicked_id != -1) {
-		handle_mouse_body_selector(clicked_id, solar_data);
-		handle_mouse_body_text_editor(clicked_id, solar_data);
+		handle_select_body(clicked_id, solar_data);
+		handle_select_text_editor(clicked_id, solar_data);
 	}
 
-	handle_keys_body_text_editor(solar_data, event);
-}
-
-void draw_cursor(SDL_Renderer *renderer, Data *data) {
-	if (data->selected_editor == NULL) return;
-
-	MenuText *text = data->selected_editor->node;
-
-	int text_width, text_height;
-	TTF_SizeUTF8(data->root->font, text->text, &text_width, &text_height);
-
-	SDL_Rect offset = {
-		data->selected_editor->render_offset.x +
-			data->selected_editor->render_offset.w + 5,
-		data->selected_editor->render_offset.y,
-		5,
-		data->selected_editor->render_offset.h
-	};
-
-	SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
-	SDL_RenderFillRect(renderer, &offset);
+	if (solar_data->selected_editor != NULL)
+		menu_text_edit_handle_events(solar_data->selected_editor->node, event);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
