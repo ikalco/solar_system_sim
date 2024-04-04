@@ -47,13 +47,15 @@ SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text_node) {
 
 void menu_text_edit_stop_edit(MenuRoot *root, MenuTextEdit *text) {
 	SDL_StopTextInput();
-	text->selected = 1;
+	text->selected = 0;
 	if (text->save_text != NULL) free(text->save_text);
+	text->save_text = NULL;
 	render_menu_root(root);
 }
 
 void menu_text_edit_start_edit(MenuRoot *root, MenuTextEdit *text) {
-	text->save_text = create_string(text->text);
+	text->save_text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE]));
+	strncpy(text->save_text, text->text, MENU_TEXT_EDIT_SIZE);
 	text->selected = 1;
 	SDL_StartTextInput();
 	render_menu_root(root);
@@ -70,23 +72,29 @@ void menu_text_edit_handle_events(
 		switch (event->key.keysym.sym) {
 		case SDLK_RETURN:
 			// save changed text
+			menu_text_edit_stop_edit(root, text);
 			break;
 		case SDLK_ESCAPE:
 			// discard changed text
-			break;
-		case SDLK_LEFT:
-			// move cursor left
-			break;
-		case SDLK_RIGHT:
-			// move cursor right
+			strncpy(text->text, text->save_text, MENU_TEXT_EDIT_SIZE);
+			menu_text_edit_stop_edit(root, text);
 			break;
 		case SDLK_BACKSPACE:
 			// delete character at cursor
+			int len = strlen(text->text);
+			if (len == 0) return;
+			text->text[len - 1] = 0;
+
 			break;
 		}
+
+		render_menu_root(root);
 	}
 
 	if (event->type == SDL_TEXTINPUT) {
+		if (strlen(text->text) + strlen(event->text.text) >=
+			MENU_TEXT_EDIT_SIZE)
+			return;
 		strcat(text->text, event->text.text);
 		render_menu_root(root);
 	}

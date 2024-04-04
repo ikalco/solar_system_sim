@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "menu_text_edit.h"
 
 MenuRoot *create_menu_root(
 	SDL_Window *window,
@@ -177,9 +178,12 @@ create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 	MenuTextEdit *menu_text = malloc(sizeof(*menu_text));
 
 	menu_text->text_color = text_color;
-	menu_text->text = text;
+	menu_text->save_text = NULL;
 	menu_text->align = align;
 	menu_text->selected = 0;
+
+	menu_text->text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE]));
+	strncpy(menu_text->text, text, MENU_TEXT_EDIT_SIZE);
 
 	return menu_text;
 }
@@ -187,6 +191,10 @@ create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 void free_menu_text_edit(MenuTextEdit *text) {
 	if (text->text != NULL) {
 		free(text->text);
+	}
+
+	if (text->save_text != NULL) {
+		free(text->save_text);
 	}
 
 	free(text);

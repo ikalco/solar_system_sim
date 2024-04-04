@@ -3,6 +3,8 @@
 
 #include "menu.h"
 
+#define MENU_TEXT_EDIT_SIZE 16
+
 SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text);
 void menu_text_edit_handle_events(
 	MenuRoot *root,
