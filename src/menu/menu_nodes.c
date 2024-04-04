@@ -172,7 +172,7 @@ void free_menu_text(MenuText *text) {
 	free(text);
 }
 
-MenuText *
+MenuTextEdit *
 create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 	MenuTextEdit *menu_text = malloc(sizeof(*menu_text));
 
@@ -184,7 +184,7 @@ create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 	return menu_text;
 }
 
-void free_menu_text_edit(MenuText *text) {
+void free_menu_text_edit(MenuTextEdit *text) {
 	if (text->text != NULL) {
 		free(text->text);
 	}

@@ -118,9 +118,9 @@ void add_menu_list(MenuList *list, MenuNode *node);
 MenuText *create_menu_text(Color text_color, MenuTextAlign align, char *text);
 void free_menu_text(MenuText *text);
 
-MenuText *
+MenuTextEdit *
 create_menu_text_edit(Color text_color, MenuTextAlign align, char *text);
-void free_menu_text_edit(MenuText *text);
+void free_menu_text_edit(MenuTextEdit *text);
 
 MenuButton *create_menu_button(
 	Color bg_color,
