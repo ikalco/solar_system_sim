@@ -63,8 +63,8 @@ void init_solar_system(
 
 	if (data->bodies->size == 0) return;
 
-	data->selected_body_node
-		= find_menu_node_id(data->root->root, BODIES_BUTTONS);
+	data->selected_body_node =
+		find_menu_node_id(data->root->root, BODIES_BUTTONS);
 
 	data->selected_body = get_body_from_node(data, data->selected_body_node);
 
@@ -101,8 +101,8 @@ void cleanup_solar_system(void *data) {
 }
 
 void handle_select_body(int clicked_id, Data *data) {
-	if (clicked_id < BODIES_BUTTONS
-		|| clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
+	if (clicked_id < BODIES_BUTTONS ||
+		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
 		return;
 
 	if (data->selected_body_node != NULL) {

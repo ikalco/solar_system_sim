@@ -14,8 +14,8 @@ SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text_node) {
 		root->font, text->text, *(SDL_Color *)&text->text_color
 	);
 
-	SDL_Texture *texture
-		= SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
+	SDL_Texture *texture =
+		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect offset = get_menu_offset(text_node);
 	SDL_Rect textrect = get_menu_text_offset(
