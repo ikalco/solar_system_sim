@@ -63,8 +63,8 @@ void init_solar_system(
 
 	if (data->bodies->size == 0) return;
 
-	data->selected_body_node =
-		find_menu_node_id(data->root->root, BODIES_BUTTONS);
+	data->selected_body_node
+		= find_menu_node_id(data->root->root, BODIES_BUTTONS);
 
 	data->selected_body = get_body_from_node(data, data->selected_body_node);
 
@@ -101,8 +101,8 @@ void cleanup_solar_system(void *data) {
 }
 
 void handle_select_body(int clicked_id, Data *data) {
-	if (clicked_id < BODIES_BUTTONS ||
-		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
+	if (clicked_id < BODIES_BUTTONS
+		|| clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
 		return;
 
 	if (data->selected_body_node != NULL) {
@@ -125,11 +125,11 @@ void handle_select_text_editor(int clicked_id, Data *data) {
 
 	if (clicked_id < BODIES_EDITOR_LIST) {
 		if (data->selected_editor == NULL) return;
-		menu_text_edit_stop_edit(data->selected_editor->node);
+		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
 	} else {
 		if (clicked_node->type != MENU_TEXT_EDIT) return;
 		data->selected_editor = clicked_node;
-		menu_text_edit_start_edit(data->selected_editor);
+		menu_text_edit_start_edit(data->root, data->selected_editor->node);
 	}
 }
 
@@ -163,6 +163,4 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
 
 	draw_menu_root(solar_data->root);
-
-	draw_cursor(renderer, solar_data);
 }

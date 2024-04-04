@@ -9,7 +9,7 @@ void menu_text_edit_handle_events(
 	MenuTextEdit *text,
 	SDL_Event *event
 );
-void menu_text_edit_start_edit(MenuTextEdit *text);
-void menu_text_edit_stop_edit(MenuTextEdit *text);
+void menu_text_edit_start_edit(MenuRoot *root, MenuTextEdit *text);
+void menu_text_edit_stop_edit(MenuRoot *root, MenuTextEdit *text);
 
 #endif

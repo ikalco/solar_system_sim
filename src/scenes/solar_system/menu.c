@@ -125,7 +125,7 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 
 	MenuList *root_list = root_node->node;
 
-	MenuText *title_text = create_menu_text(
+	MenuTextEdit *title_text = create_menu_text_edit(
 		(Color){235, 235, 235, 255}, TEXT_CENTER, create_string("3.141")
 	);
 	MenuNode *title_text_node = create_menu_node(
@@ -133,7 +133,7 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 		(VectorD){0, 0},
 		(VectorD){MENU_MAX_SIZE, 35},
 		root_node,
-		MENU_TEXT,
+		MENU_TEXT_EDIT,
 		title_text
 	);
 	add_menu_list(root_list, title_text_node);

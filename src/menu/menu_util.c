@@ -130,7 +130,8 @@ SDL_Rect get_menu_text_offset(
 	char *text,
 	MenuTextAlign align
 ) {
-	if (node->type != MENU_TEXT && node->type != MENU_BUTTON) {
+	if (node->type != MENU_TEXT && node->type != MENU_TEXT_EDIT &&
+		node->type != MENU_BUTTON) {
 		printf("mistake\n");
 	}
 
