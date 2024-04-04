@@ -13,21 +13,17 @@ int main() {
 	atexit(cleanup_SDL);
 
 	// create menu scene
-	Scene *menu_scene = create_scene(
-		init_main_menu,
-		cleanup_main_menu,
-		handle_input_main_menu,
-		draw_main_menu,
-		NULL
-	);
+	Scene *menu_scene = create_scene(init_main_menu,
+									 cleanup_main_menu,
+									 handle_input_main_menu,
+									 draw_main_menu,
+									 NULL);
 
-	Scene *load_scene = create_scene(
-		init_load_menu,
-		cleanup_load_menu,
-		handle_input_load_menu,
-		draw_load_menu,
-		NULL
-	);
+	Scene *load_scene = create_scene(init_load_menu,
+									 cleanup_load_menu,
+									 handle_input_load_menu,
+									 draw_load_menu,
+									 NULL);
 
 	// create scene manager, add menu_scene, and select it
 	manager = create_scene_manager(menu_scene);
@@ -76,14 +72,12 @@ void init_SDL() {
 	}
 
 	// create window
-	window = SDL_CreateWindow(
-		WINDOW_TITLE,
-		SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
-		SDL_WINDOW_SHOWN
-	);
+	window = SDL_CreateWindow(WINDOW_TITLE,
+							  SDL_WINDOWPOS_UNDEFINED,
+							  SDL_WINDOWPOS_UNDEFINED,
+							  WINDOW_WIDTH,
+							  WINDOW_HEIGHT,
+							  SDL_WINDOW_SHOWN);
 
 	// if window is undefined print error and exit
 	if (window == NULL) {

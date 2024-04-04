@@ -1,13 +1,11 @@
 #include "menu.h"
 #include "menu_text_edit.h"
 
-MenuRoot *create_menu_root(
-	SDL_Window *window,
-	VectorD position,
-	VectorD size,
-	const char *fontname,
-	MenuNode *root_node
-) {
+MenuRoot *create_menu_root(SDL_Window *window,
+						   VectorD position,
+						   VectorD size,
+						   const char *fontname,
+						   MenuNode *root_node) {
 	MenuRoot *root = malloc(sizeof(MenuRoot));
 
 	root->position = position;
@@ -24,8 +22,7 @@ MenuRoot *create_menu_root(
 	Uint32 format = SDL_GetWindowPixelFormat(window);
 	root->menu_renderer = SDL_GetRenderer(window);
 	root->menu_texture = SDL_CreateTexture(
-		root->menu_renderer, format, SDL_TEXTUREACCESS_TARGET, size.x, size.y
-	);
+		root->menu_renderer, format, SDL_TEXTUREACCESS_TARGET, size.x, size.y);
 
 	// might want to change this later, but it's supposed to blend alpha which
 	// sounds right
@@ -40,9 +37,8 @@ void draw_menu_root(MenuRoot *root) {
 		root->menu_renderer,
 		root->menu_texture,
 		NULL,
-		&(SDL_Rect
-		){root->position.x, root->position.y, root->size.x, root->size.y}
-	);
+		&(SDL_Rect){
+			root->position.x, root->position.y, root->size.x, root->size.y});
 }
 
 void free_menu_root(MenuRoot *root) {
@@ -59,14 +55,12 @@ void free_menu_root(MenuRoot *root) {
 	}
 }
 
-MenuNode *create_menu_node(
-	int id,
-	VectorD offset,
-	VectorD size,
-	MenuNode *parent,
-	MenuType type,
-	void *node
-) {
+MenuNode *create_menu_node(int id,
+						   VectorD offset,
+						   VectorD size,
+						   MenuNode *parent,
+						   MenuType type,
+						   void *node) {
 	MenuNode *ret = malloc(sizeof(MenuNode));
 
 	ret->id = id;
@@ -108,12 +102,10 @@ void free_menu_node(MenuNode *node) {
 	free(node);
 }
 
-MenuList *create_menu_list(
-	Color bg_color,
-	VectorD padding,
-	double spacing,
-	MenuDirection direction
-) {
+MenuList *create_menu_list(Color bg_color,
+						   VectorD padding,
+						   double spacing,
+						   MenuDirection direction) {
 	MenuList *list = malloc(sizeof(MenuList));
 
 	list->bg_color = bg_color;
@@ -200,12 +192,10 @@ void free_menu_text_edit(MenuTextEdit *text) {
 	free(text);
 }
 
-MenuButton *create_menu_button(
-	Color bg_color,
-	Color text_color,
-	MenuTextAlign align,
-	char *text
-) {
+MenuButton *create_menu_button(Color bg_color,
+							   Color text_color,
+							   MenuTextAlign align,
+							   char *text) {
 	MenuButton *button = malloc(sizeof(MenuButton));
 
 	button->bg_color = bg_color;

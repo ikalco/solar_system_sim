@@ -8,13 +8,11 @@
 #include "scenes/solar_system/scene.h"
 
 Scene *create_save_file_scene(char *save_file_name) {
-	Scene *solar_system_scene = create_scene(
-		init_solar_system,
-		cleanup_solar_system,
-		handle_input_solar_system,
-		draw_solar_system,
-		save_file_name
-	);
+	Scene *solar_system_scene = create_scene(init_solar_system,
+											 cleanup_solar_system,
+											 handle_input_solar_system,
+											 draw_solar_system,
+											 save_file_name);
 
 	return solar_system_scene;
 }
@@ -50,12 +48,10 @@ void handle_input_load_menu(void *data, SDL_Event *event) {
 		MenuButton *save_file_button = save_file_button_node->node;
 		char save_file_name[512];
 
-		sprintf(
-			save_file_name,
-			"%s/%s.save",
-			DEFAULT_SAVE_PATH,
-			save_file_button->text
-		);
+		sprintf(save_file_name,
+				"%s/%s.save",
+				DEFAULT_SAVE_PATH,
+				save_file_button->text);
 
 		Scene *save_file_scene =
 			create_save_file_scene(create_string(save_file_name));

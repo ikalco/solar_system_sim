@@ -5,7 +5,7 @@ PointerAlignment: Right
 UseTab: Always
 IndentWidth: 4
 TabWidth: 4
-AlignAfterOpenBracket: BlockIndent
+AlignAfterOpenBracket: Align
 BinPackArguments: false
 BinPackParameters: false
 ExperimentalAutoDetectBinPacking: false

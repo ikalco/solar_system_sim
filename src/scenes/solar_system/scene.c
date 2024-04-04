@@ -28,11 +28,9 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 }
 
 // this expects scene->data to be a char* string containing a save file name
-void init_solar_system(
-	SceneManager *manager,
-	Scene *scene,
-	SDL_Window *window
-) {
+void init_solar_system(SceneManager *manager,
+					   Scene *scene,
+					   SDL_Window *window) {
 	if (scene->data == NULL) {
 		printf("Failed to load solar system scene\n");
 		exit(1);
@@ -43,11 +41,9 @@ void init_solar_system(
 	data->manager = manager;
 	data->window = window;
 	data->bodies = read_save_file(scene->data);
-	data->viewport = init_viewport(
-		(VectorD){400, 0},
-		(VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
-		3.5 * AU
-	);
+	data->viewport = init_viewport((VectorD){400, 0},
+								   (VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
+								   3.5 * AU);
 	data->name = scene->data;
 	data->root = init_solar_system_menu_root(window, data);
 
@@ -144,8 +140,7 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 
 	if (solar_data->selected_editor != NULL)
 		menu_text_edit_handle_events(
-			solar_data->root, solar_data->selected_editor->node, event
-		);
+			solar_data->root, solar_data->selected_editor->node, event);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {

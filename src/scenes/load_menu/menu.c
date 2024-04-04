@@ -56,21 +56,19 @@ int add_saves_to_list(MenuNode *save_list_node, MenuList *save_list) {
 	while ((save_file = readdir(directory))) {
 		if (!valid_save_file_name(save_file->d_name)) continue;
 
-		MenuButton *save_file_button = create_menu_button(
-			(Color){130, 130, 130, 255},
-			(Color){235, 235, 235, 255},
-			TEXT_CENTER,
-			create_string(save_file->d_name)
-		);
+		MenuButton *save_file_button =
+			create_menu_button((Color){130, 130, 130, 255},
+							   (Color){235, 235, 235, 255},
+							   TEXT_CENTER,
+							   create_string(save_file->d_name));
 
-		MenuNode *save_file_node = create_menu_node(
-			save_file_id,
-			(VectorD){0, 0},
-			(VectorD){MENU_MAX_SIZE, 60},
-			save_list_node,
-			MENU_BUTTON,
-			save_file_button
-		);
+		MenuNode *save_file_node =
+			create_menu_node(save_file_id,
+							 (VectorD){0, 0},
+							 (VectorD){MENU_MAX_SIZE, 60},
+							 save_list_node,
+							 MENU_BUTTON,
+							 save_file_button);
 
 		add_menu_list(save_list, save_file_node);
 
@@ -84,16 +82,13 @@ int add_saves_to_list(MenuNode *save_list_node, MenuList *save_list) {
 
 MenuNode *init_saves_list(MenuNode *root_node, Data *data) {
 	MenuList *save_list = create_menu_list(
-		(Color){50, 50, 50, 240}, (VectorD){5, 5}, 10, MENU_VERTICAL
-	);
-	MenuNode *save_list_node = create_menu_node(
-		SAVE_LIST,
-		(VectorD){0, 0},
-		(VectorD){MENU_MAX_SIZE, 0},
-		root_node,
-		MENU_LIST,
-		save_list
-	);
+		(Color){50, 50, 50, 240}, (VectorD){5, 5}, 10, MENU_VERTICAL);
+	MenuNode *save_list_node = create_menu_node(SAVE_LIST,
+												(VectorD){0, 0},
+												(VectorD){MENU_MAX_SIZE, 0},
+												root_node,
+												MENU_LIST,
+												save_list);
 
 	// returns numbers of saves added to list, so we save it
 	data->num_saves = add_saves_to_list(save_list_node, save_list);
@@ -105,39 +100,32 @@ MenuRoot *init_menu_root(SDL_Window *window, Data *data) {
 	Color text_color = {235, 235, 235, 255};
 
 	MenuList *root_list = create_menu_list(
-		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL
-	);
-	MenuNode *root_node = create_menu_node(
-		ROOT_LIST,
-		(VectorD){10, 10},
-		(VectorD){260, 460},
-		NULL,
-		MENU_LIST,
-		root_list
-	);
+		(Color){40, 40, 40, 255}, (VectorD){20, 20}, 10, MENU_VERTICAL);
+	MenuNode *root_node = create_menu_node(ROOT_LIST,
+										   (VectorD){10, 10},
+										   (VectorD){260, 460},
+										   NULL,
+										   MENU_LIST,
+										   root_list);
 
 	MenuText *title_text =
 		create_menu_text(text_color, TEXT_CENTER, create_string("Saves"));
-	MenuNode *title_text_node = create_menu_node(
-		TITLE_TEXT,
-		(VectorD){0, 0},
-		(VectorD){MENU_MAX_SIZE, 30},
-		root_node,
-		MENU_TEXT,
-		title_text
-	);
+	MenuNode *title_text_node = create_menu_node(TITLE_TEXT,
+												 (VectorD){0, 0},
+												 (VectorD){MENU_MAX_SIZE, 30},
+												 root_node,
+												 MENU_TEXT,
+												 title_text);
 	add_menu_list(root_list, title_text_node);
 
 	MenuNode *saves_list_node = init_saves_list(root_node, data);
 	add_menu_list(root_list, saves_list_node);
 
-	MenuRoot *root = create_menu_root(
-		window,
-		(VectorD){100, 100},
-		(VectorD){300, 500},
-		"fonts/Roboto-Regular.ttf",
-		root_node
-	);
+	MenuRoot *root = create_menu_root(window,
+									  (VectorD){100, 100},
+									  (VectorD){300, 500},
+									  "fonts/Roboto-Regular.ttf",
+									  root_node);
 
 	render_menu_root(root);
 

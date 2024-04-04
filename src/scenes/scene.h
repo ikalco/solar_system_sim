@@ -15,11 +15,9 @@ typedef struct {
 
 // cleanup should also free (void *data)
 typedef struct scene {
-	void (*init)(
-		SceneManager *manager,
-		struct scene *scene,
-		SDL_Window *window
-	);
+	void (*init)(SceneManager *manager,
+				 struct scene *scene,
+				 SDL_Window *window);
 	void (*cleanup)(void *data);
 	void (*handle_input)(void *data, SDL_Event *event);
 	void (*draw)(void *data, SDL_Renderer *renderer);
@@ -27,13 +25,13 @@ typedef struct scene {
 	void *data;
 } Scene;
 
-Scene *create_scene(
-	void (*init)(SceneManager *manager, Scene *scene, SDL_Window *window),
-	void (*cleanup)(void *data),
-	void (*handle_input)(void *data, SDL_Event *event),
-	void (*draw)(void *data, SDL_Renderer *renderer),
-	void *data
-);
+Scene *create_scene(void (*init)(SceneManager *manager,
+								 Scene *scene,
+								 SDL_Window *window),
+					void (*cleanup)(void *data),
+					void (*handle_input)(void *data, SDL_Event *event),
+					void (*draw)(void *data, SDL_Renderer *renderer),
+					void *data);
 
 void destroy_scene(Scene *scene);
 

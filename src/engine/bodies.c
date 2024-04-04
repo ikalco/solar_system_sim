@@ -54,13 +54,11 @@ void draw_bodies(SDL_Renderer *renderer, Viewport *viewport, List *bodies) {
 		 current_node = current_node->next) {
 		body = (PhysicalBody *)current_node->data;
 
-		SDL_SetRenderDrawColor(
-			renderer,
-			body->color.red,
-			body->color.green,
-			body->color.blue,
-			body->color.alpha
-		);
+		SDL_SetRenderDrawColor(renderer,
+							   body->color.red,
+							   body->color.green,
+							   body->color.blue,
+							   body->color.alpha);
 
 		rect.x = (body->position.x * viewport->conversion) + viewport->offset.x;
 		rect.y =
@@ -131,13 +129,11 @@ void update_bodies(List *bodies, double time_step) {
 }
 
 void print_phyiscal_body(PhysicalBody *body) {
-	printf(
-		"(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n",
-		body->name,
-		body->position.x,
-		body->position.y,
-		body->velocity.x,
-		body->velocity.y,
-		body->mass
-	);
+	printf("(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n",
+		   body->name,
+		   body->position.x,
+		   body->position.y,
+		   body->velocity.x,
+		   body->velocity.y,
+		   body->mass);
 }

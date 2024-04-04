@@ -84,34 +84,28 @@ typedef struct {
 	Color bg_color;
 } MenuLineBreak;
 
-MenuRoot *create_menu_root(
-	SDL_Window *window,
-	VectorD position,
-	VectorD size,
-	const char *font,
-	MenuNode *root_node
-);
+MenuRoot *create_menu_root(SDL_Window *window,
+						   VectorD position,
+						   VectorD size,
+						   const char *font,
+						   MenuNode *root_node);
 
 void render_menu_root(MenuRoot *root);
 void draw_menu_root(MenuRoot *root);
 void free_menu_root(MenuRoot *root);
 
-MenuNode *create_menu_node(
-	int id,
-	VectorD offset,
-	VectorD size,
-	MenuNode *parent,
-	MenuType type,
-	void *node
-);
+MenuNode *create_menu_node(int id,
+						   VectorD offset,
+						   VectorD size,
+						   MenuNode *parent,
+						   MenuType type,
+						   void *node);
 void free_menu_node(MenuNode *node);
 
-MenuList *create_menu_list(
-	Color bg_color,
-	VectorD padding,
-	double spacing,
-	MenuDirection direction
-);
+MenuList *create_menu_list(Color bg_color,
+						   VectorD padding,
+						   double spacing,
+						   MenuDirection direction);
 void free_menu_list(MenuList *list);
 void add_menu_list(MenuList *list, MenuNode *node);
 
@@ -122,12 +116,10 @@ MenuTextEdit *
 create_menu_text_edit(Color text_color, MenuTextAlign align, char *text);
 void free_menu_text_edit(MenuTextEdit *text);
 
-MenuButton *create_menu_button(
-	Color bg_color,
-	Color text_color,
-	MenuTextAlign align,
-	char *text
-);
+MenuButton *create_menu_button(Color bg_color,
+							   Color text_color,
+							   MenuTextAlign align,
+							   char *text);
 void free_menu_button(MenuButton *button);
 
 MenuLineBreak *create_menu_line_break(Color bg_color);

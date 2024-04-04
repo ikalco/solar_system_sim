@@ -11,31 +11,28 @@ SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text_node) {
 
 	// type punning here, so don't change size/order of Color
 	SDL_Surface *rendered_text = TTF_RenderUTF8_Blended(
-		root->font, text->text, *(SDL_Color *)&text->text_color
-	);
+		root->font, text->text, *(SDL_Color *)&text->text_color);
 
 	SDL_Texture *texture =
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect offset = get_menu_offset(text_node);
 	SDL_Rect textrect = get_menu_text_offset(
-		root, text_node, (SDL_Rect){0, 0, 0, 0}, 0, text->text, text->align
-	);
+		root, text_node, (SDL_Rect){0, 0, 0, 0}, 0, text->text, text->align);
 
 	SDL_Rect dstrect;
 
 	if (text->selected) {
-		dstrect = (SDL_Rect
-		){offset.x + offset.w - textrect.x,
-		  offset.y + textrect.y,
-		  15,
-		  textrect.h};
+		dstrect = (SDL_Rect){offset.x + offset.w - textrect.x,
+							 offset.y + textrect.y,
+							 15,
+							 textrect.h};
 		SDL_SetRenderDrawColor(root->menu_renderer, 235, 235, 235, 255);
 		SDL_RenderFillRect(root->menu_renderer, &dstrect);
 	}
 
-	dstrect = (SDL_Rect
-	){offset.x + textrect.x, offset.y + textrect.y, textrect.w, textrect.h};
+	dstrect = (SDL_Rect){
+		offset.x + textrect.x, offset.y + textrect.y, textrect.w, textrect.h};
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
@@ -61,11 +58,9 @@ void menu_text_edit_start_edit(MenuRoot *root, MenuTextEdit *text) {
 	render_menu_root(root);
 }
 
-void menu_text_edit_handle_events(
-	MenuRoot *root,
-	MenuTextEdit *text,
-	SDL_Event *event
-) {
+void menu_text_edit_handle_events(MenuRoot *root,
+								  MenuTextEdit *text,
+								  SDL_Event *event) {
 	if (!text->selected) return;
 
 	if (event->type == SDL_KEYDOWN) {

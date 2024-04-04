@@ -62,13 +62,11 @@ SDL_Rect render_menu_list(MenuRoot *root, MenuNode *list_node) {
 
 	// draw background
 	SDL_Rect offset = get_menu_offset(list_node);
-	SDL_SetRenderDrawColor(
-		root->menu_renderer,
-		list->bg_color.red,
-		list->bg_color.green,
-		list->bg_color.blue,
-		list->bg_color.alpha
-	);
+	SDL_SetRenderDrawColor(root->menu_renderer,
+						   list->bg_color.red,
+						   list->bg_color.green,
+						   list->bg_color.blue,
+						   list->bg_color.alpha);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
 	// padding
@@ -125,16 +123,14 @@ SDL_Rect render_menu_text(MenuRoot *root, MenuNode *text_node) {
 
 	// type punning here, so don't change size/order of Color
 	SDL_Surface *rendered_text = TTF_RenderUTF8_Blended(
-		root->font, text->text, *(SDL_Color *)&text->text_color
-	);
+		root->font, text->text, *(SDL_Color *)&text->text_color);
 
 	SDL_Texture *texture =
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect offset = get_menu_offset(text_node);
 	SDL_Rect dstrect = get_menu_text_offset(
-		root, text_node, offset, 0, text->text, text->align
-	);
+		root, text_node, offset, 0, text->text, text->align);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
@@ -154,26 +150,22 @@ SDL_Rect render_menu_button(MenuRoot *root, MenuNode *button_node) {
 
 	// draw background
 	SDL_Rect offset = get_menu_offset(button_node);
-	SDL_SetRenderDrawColor(
-		root->menu_renderer,
-		button->bg_color.red,
-		button->bg_color.green,
-		button->bg_color.blue,
-		button->bg_color.alpha
-	);
+	SDL_SetRenderDrawColor(root->menu_renderer,
+						   button->bg_color.red,
+						   button->bg_color.green,
+						   button->bg_color.blue,
+						   button->bg_color.alpha);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
 	// type punning here, so don't change size/order of Color
 	SDL_Surface *rendered_text = TTF_RenderUTF8_Blended(
-		root->font, button->text, *(SDL_Color *)&button->text_color
-	);
+		root->font, button->text, *(SDL_Color *)&button->text_color);
 
 	SDL_Texture *texture =
 		SDL_CreateTextureFromSurface(root->menu_renderer, rendered_text);
 
 	SDL_Rect dstrect = get_menu_text_offset(
-		root, button_node, offset, 10, button->text, button->text_align
-	);
+		root, button_node, offset, 10, button->text, button->text_align);
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
 
@@ -185,9 +177,8 @@ SDL_Rect render_menu_button(MenuRoot *root, MenuNode *button_node) {
 
 SDL_Rect render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 	if (line_break_node->type != MENU_LINE_BREAK) {
-		printf(
-			"Tried to render menu line break with a non menu line break node\n"
-		);
+		printf("Tried to render menu line break with a non menu line break "
+			   "node\n");
 		exit(1);
 	}
 
@@ -202,13 +193,11 @@ SDL_Rect render_menu_line_break(MenuRoot *root, MenuNode *line_break_node) {
 
 	// draw background
 	SDL_Rect offset = get_menu_offset(line_break_node);
-	SDL_SetRenderDrawColor(
-		root->menu_renderer,
-		line_break->bg_color.red,
-		line_break->bg_color.green,
-		line_break->bg_color.blue,
-		line_break->bg_color.alpha
-	);
+	SDL_SetRenderDrawColor(root->menu_renderer,
+						   line_break->bg_color.red,
+						   line_break->bg_color.green,
+						   line_break->bg_color.blue,
+						   line_break->bg_color.alpha);
 	SDL_RenderFillRect(root->menu_renderer, &offset);
 
 	return offset;

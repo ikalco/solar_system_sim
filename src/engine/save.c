@@ -83,11 +83,9 @@ List *read_save_file(char *filename) {
 
 		if (body == NULL) {
 			free_body(body);
-			printf(
-				"Invalid line in save file: %s at line %d",
-				filename,
-				line_number
-			);
+			printf("Invalid line in save file: %s at line %d",
+				   filename,
+				   line_number);
 			// yes i'm using line_number as a failure flag
 			line_number = -1;
 			break;
@@ -128,20 +126,18 @@ void write_save_file(char *filename, List *bodies) {
 
 		// using same char buffer size to ensure read_save_file will function
 		// properly when this save file is read
-		int res = snprintf(
-			line,
-			MAX_SAVE_LINE_LEN,
-			"%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
-			body->position.x,
-			body->position.y,
-			body->velocity.x,
-			body->velocity.y,
-			body->mass,
-			body->color.red,
-			body->color.green,
-			body->color.blue,
-			body->name
-		);
+		int res = snprintf(line,
+						   MAX_SAVE_LINE_LEN,
+						   "%lf,%lf,%lf,%lf,%lf,%hhu,%hhu,%hhu,%s\n",
+						   body->position.x,
+						   body->position.y,
+						   body->velocity.x,
+						   body->velocity.y,
+						   body->mass,
+						   body->color.red,
+						   body->color.green,
+						   body->color.blue,
+						   body->name);
 
 		if (res < 0) {
 			printf("Failed to write save file: %s", filename);
@@ -151,8 +147,7 @@ void write_save_file(char *filename, List *bodies) {
 		if (res >= MAX_SAVE_LINE_LEN) {
 			printf(
 				"Failed to write save file because the line was too long: %s",
-				filename
-			);
+				filename);
 			break;
 		}
 

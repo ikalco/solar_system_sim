@@ -2,11 +2,10 @@
 #include <stdbool.h>
 
 bool inside_node(MenuNode *node, int mouse_x, int mouse_y) {
-	return (
-		mouse_x > node->render_offset.x && mouse_y > node->render_offset.y &&
-		mouse_x < node->render_offset.x + node->size.x &&
-		mouse_y < node->render_offset.y + node->size.y
-	);
+	return (mouse_x > node->render_offset.x &&
+			mouse_y > node->render_offset.y &&
+			mouse_x < node->render_offset.x + node->size.x &&
+			mouse_y < node->render_offset.y + node->size.y);
 }
 
 int find_mouse_menu_node(MenuNode *node, int mouse_x, int mouse_y) {
@@ -110,8 +109,7 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 	if (node->size.x == MENU_MAX_SIZE) node->size.x = node->parent->size.x;
 
 	SDL_Rect offset = {
-		node->offset.x, node->offset.y, node->size.x, node->size.y
-	};
+		node->offset.x, node->offset.y, node->size.x, node->size.y};
 
 	while (parent != NULL) {
 		offset.x += parent->offset.x;
@@ -122,14 +120,12 @@ SDL_Rect get_menu_offset(MenuNode *node) {
 	return offset;
 }
 
-SDL_Rect get_menu_text_offset(
-	MenuRoot *root,
-	MenuNode *node,
-	SDL_Rect offset,
-	double padding,
-	char *text,
-	MenuTextAlign align
-) {
+SDL_Rect get_menu_text_offset(MenuRoot *root,
+							  MenuNode *node,
+							  SDL_Rect offset,
+							  double padding,
+							  char *text,
+							  MenuTextAlign align) {
 	if (node->type != MENU_TEXT && node->type != MENU_TEXT_EDIT &&
 		node->type != MENU_BUTTON) {
 		printf("mistake\n");

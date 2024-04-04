@@ -1,12 +1,12 @@
 #include "scene.h"
 
-Scene *create_scene(
-	void (*init)(SceneManager *manager, Scene *scene, SDL_Window *window),
-	void (*cleanup)(void *data),
-	void (*handle_input)(void *data, SDL_Event *event),
-	void (*draw)(void *data, SDL_Renderer *renderer),
-	void *data
-) {
+Scene *create_scene(void (*init)(SceneManager *manager,
+								 Scene *scene,
+								 SDL_Window *window),
+					void (*cleanup)(void *data),
+					void (*handle_input)(void *data, SDL_Event *event),
+					void (*draw)(void *data, SDL_Renderer *renderer),
+					void *data) {
 	Scene *scene = malloc(sizeof(Scene));
 
 	scene->init = init;
@@ -67,9 +67,8 @@ int add_scene_manager(SceneManager *manager, Scene *scene) {
 
 void remove_scene_manager(SceneManager *manager, int index) {
 	if (index >= manager->num_scenes) {
-		printf(
-			"Tried to remove invalid scene index from scene manager: %d", index
-		);
+		printf("Tried to remove invalid scene index from scene manager: %d",
+			   index);
 		exit(1);
 	}
 
@@ -85,15 +84,12 @@ void remove_scene_manager(SceneManager *manager, int index) {
 	manager->num_scenes--;
 }
 
-void select_scene_manager(
-	SceneManager *manager,
-	SDL_Window *window,
-	int index
-) {
+void select_scene_manager(SceneManager *manager,
+						  SDL_Window *window,
+						  int index) {
 	if (index >= manager->num_scenes) {
-		printf(
-			"Tried to select invalid scene index from scene manager: %d", index
-		);
+		printf("Tried to select invalid scene index from scene manager: %d",
+			   index);
 		exit(1);
 	}
 
