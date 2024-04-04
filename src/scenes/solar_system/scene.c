@@ -143,7 +143,9 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 	}
 
 	if (solar_data->selected_editor != NULL)
-		menu_text_edit_handle_events(solar_data->selected_editor->node, event);
+		menu_text_edit_handle_events(
+			solar_data->root, solar_data->selected_editor->node, event
+		);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {

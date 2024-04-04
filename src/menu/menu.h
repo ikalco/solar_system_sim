@@ -67,8 +67,9 @@ typedef struct {
 typedef struct {
 	Color text_color;
 	MenuTextAlign align;
-	char *text;
 	int selected;
+	char *text;
+	char *save_text;
 } MenuTextEdit;
 
 typedef struct {
