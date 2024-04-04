@@ -22,19 +22,30 @@ SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text_node) {
 
 	SDL_Rect dstrect;
 
+	SDL_SetRenderDrawColor(root->menu_renderer, 235, 235, 235, 255);
+
 	if (text->selected) {
-		dstrect = (SDL_Rect){offset.x + offset.w - textrect.x,
-							 offset.y + textrect.y,
-							 15,
-							 textrect.h};
-		SDL_SetRenderDrawColor(root->menu_renderer, 235, 235, 235, 255);
+		dstrect = (SDL_Rect){.x = offset.x + offset.w - textrect.x,
+							 .y = offset.y + textrect.y,
+							 .w = 15,
+							 .h = textrect.h};
+
 		SDL_RenderFillRect(root->menu_renderer, &dstrect);
 	}
 
-	dstrect = (SDL_Rect){
-		offset.x + textrect.x, offset.y + textrect.y, textrect.w, textrect.h};
+	dstrect = (SDL_Rect){.x = offset.x + textrect.x,
+						 .y = offset.y + textrect.y,
+						 .w = textrect.w,
+						 .h = textrect.h};
 
 	SDL_RenderCopy(root->menu_renderer, texture, NULL, &dstrect);
+
+	if (text->selected) dstrect.w += 15;
+	dstrect.x -= 5;
+	dstrect.y -= 3;
+	dstrect.w += 10;
+	dstrect.h += 6;
+	SDL_RenderDrawRect(root->menu_renderer, &dstrect);
 
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(rendered_text);
