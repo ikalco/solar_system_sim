@@ -40,32 +40,23 @@ void init_solar_system(SceneManager *manager,
 
 	data->manager = manager;
 	data->window = window;
-	data->bodies = read_save_file(scene->data);
-	data->viewport = init_viewport((VectorD){400, 0},
-								   (VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
-								   3.5 * AU);
-	data->name = scene->data;
-	data->root = init_solar_system_menu_root(window, data);
+	data->filename = scene->data; // see above
+	data->bodies = read_save_file(data->filename);
 
 	data->selected_body = NULL;
 	data->selected_body_node = NULL;
-
 	data->selected_editor = NULL;
 
-	data->save_text = NULL;
-	data->cursor_offset = -1;
+	data->viewport = init_viewport((VectorD){400, 0},
+								   (VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
+								   3.5 * AU);
+	data->root = init_solar_system_menu_root(window, data);
 
 	scene->data = data;
 
 	if (data->bodies->size == 0) return;
 
-	data->selected_body_node =
-		find_menu_node_id(data->root->root, BODIES_BUTTONS);
-
-	data->selected_body = get_body_from_node(data, data->selected_body_node);
-
-	MenuButton *body_button = data->selected_body_node->node;
-	body_button->bg_color = SELECTED_BUTTON_COLOR;
+	handle_select_body(BODIES_BUTTONS, data);
 
 	render_menu_root(data->root);
 }
@@ -81,16 +72,12 @@ void cleanup_solar_system(void *data) {
 		free(solar_data->viewport);
 	}
 
-	if (solar_data->name != NULL) {
-		free(solar_data->name);
-	}
-
 	if (solar_data->root != NULL) {
 		free_menu_root(solar_data->root);
 	}
 
-	if (solar_data->save_text != NULL) {
-		free(solar_data->save_text);
+	if (solar_data->filename != NULL) {
+		free(solar_data->filename);
 	}
 
 	free(solar_data);
@@ -107,11 +94,12 @@ void handle_select_body(int clicked_id, Data *data) {
 	}
 
 	data->selected_body_node = find_menu_node_id(data->root->root, clicked_id);
-
 	data->selected_body = get_body_from_node(data, data->selected_body_node);
 
 	MenuButton *body_button = data->selected_body_node->node;
 	body_button->bg_color = SELECTED_BUTTON_COLOR;
+
+	// edit fields in body editor to use data->selected_body
 
 	render_menu_root(data->root);
 }

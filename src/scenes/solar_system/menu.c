@@ -78,8 +78,8 @@ void add_title(MenuNode *root_node, Data *data) {
 
 	// will probably change data->name to hold something from inisde the file
 	// later rn will just use the path
-	MenuText *title_text =
-		create_menu_text(text_color, TEXT_CENTER, create_string(data->name));
+	MenuText *title_text = create_menu_text(
+		text_color, TEXT_CENTER, create_string(data->filename));
 	MenuNode *title_text_node = create_menu_node(TITLE_TEXT,
 												 (VectorD){0, 0},
 												 (VectorD){MENU_MAX_SIZE, 30},
@@ -99,6 +99,7 @@ void add_title(MenuNode *root_node, Data *data) {
 	add_menu_list(root_list, line_break_node);
 }
 
+// TODO: flesh out rest of editor described below
 void add_bodies_editor(MenuNode *root_node, Data *data) {
 	// the outline for the editor
 	// the "[]" are a text editing box
@@ -113,8 +114,8 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 
 	MenuList *root_list = root_node->node;
 
-	MenuTextEdit *title_text = create_menu_text_edit(
-		(Color){235, 235, 235, 255}, TEXT_CENTER, create_string("3.141"));
+	MenuTextEdit *title_text =
+		create_menu_text_edit((Color){235, 235, 235, 255}, TEXT_CENTER, "");
 	MenuNode *title_text_node = create_menu_node(BODIES_EDITOR_LIST,
 												 (VectorD){0, 0},
 												 (VectorD){MENU_MAX_SIZE, 35},

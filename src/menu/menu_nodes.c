@@ -165,6 +165,7 @@ void free_menu_text(MenuText *text) {
 	free(text);
 }
 
+// this allocates its own char *text, so dont use create_string
 MenuTextEdit *
 create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 	MenuTextEdit *menu_text = malloc(sizeof(*menu_text));

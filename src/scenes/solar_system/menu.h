@@ -12,14 +12,11 @@ typedef struct {
 	SDL_Window *window;
 	List *bodies;
 	Viewport *viewport;
-	char *name;
 	MenuRoot *root;
 	PhysicalBody *selected_body;
 	MenuNode *selected_body_node;
 	MenuNode *selected_editor;
-
-	char *save_text;
-	int cursor_offset;
+	char *filename;
 } Data;
 
 #define DEFAULT_BUTTON_COLOR                                                   \
