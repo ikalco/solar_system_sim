@@ -27,6 +27,57 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 	return (PhysicalBody *)(current->data);
 }
 
+void handle_select_body(int clicked_id, Data *data) {
+	if (clicked_id < BODIES_BUTTONS ||
+		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
+		return;
+
+	if (data->selected_body_node != NULL) {
+		MenuButton *body_button = data->selected_body_node->node;
+		body_button->bg_color = DEFAULT_BUTTON_COLOR;
+	}
+
+	data->selected_body_node = find_menu_node_id(data->root->root, clicked_id);
+	data->selected_body = get_body_from_node(data, data->selected_body_node);
+
+	MenuButton *body_button = data->selected_body_node->node;
+	body_button->bg_color = SELECTED_BUTTON_COLOR;
+
+	MenuTextEdit *body_title =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_TEXT)->node;
+
+	strncpy(body_title->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
+
+	render_menu_root(data->root);
+}
+
+void handle_select_text_editor(int clicked_id, Data *data) {
+	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
+
+	if (clicked_id < BODIES_EDITOR_START) {
+		if (data->selected_editor == NULL) return;
+		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
+	} else {
+		if (clicked_node->type != MENU_TEXT_EDIT) return;
+		data->selected_editor = clicked_node;
+		menu_text_edit_start_edit(data->root, data->selected_editor->node);
+	}
+}
+
+void handle_input_solar_system(void *data, SDL_Event *event) {
+	Data *solar_data = data;
+
+	int clicked_id = menu_has_clicked(solar_data->root, event);
+	if (clicked_id != -1) {
+		handle_select_text_editor(clicked_id, solar_data);
+		handle_select_body(clicked_id, solar_data);
+	}
+
+	if (solar_data->selected_editor != NULL)
+		menu_text_edit_handle_events(
+			solar_data->root, solar_data->selected_editor->node, event);
+}
+
 // this expects scene->data to be a char* string containing a save file name
 void init_solar_system(SceneManager *manager,
 					   Scene *scene,
@@ -81,54 +132,6 @@ void cleanup_solar_system(void *data) {
 	}
 
 	free(solar_data);
-}
-
-void handle_select_body(int clicked_id, Data *data) {
-	if (clicked_id < BODIES_BUTTONS ||
-		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
-		return;
-
-	if (data->selected_body_node != NULL) {
-		MenuButton *body_button = data->selected_body_node->node;
-		body_button->bg_color = DEFAULT_BUTTON_COLOR;
-	}
-
-	data->selected_body_node = find_menu_node_id(data->root->root, clicked_id);
-	data->selected_body = get_body_from_node(data, data->selected_body_node);
-
-	MenuButton *body_button = data->selected_body_node->node;
-	body_button->bg_color = SELECTED_BUTTON_COLOR;
-
-	// edit fields in body editor to use data->selected_body
-
-	render_menu_root(data->root);
-}
-
-void handle_select_text_editor(int clicked_id, Data *data) {
-	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
-
-	if (clicked_id < BODIES_EDITOR_LIST) {
-		if (data->selected_editor == NULL) return;
-		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
-	} else {
-		if (clicked_node->type != MENU_TEXT_EDIT) return;
-		data->selected_editor = clicked_node;
-		menu_text_edit_start_edit(data->root, data->selected_editor->node);
-	}
-}
-
-void handle_input_solar_system(void *data, SDL_Event *event) {
-	Data *solar_data = data;
-
-	int clicked_id = menu_has_clicked(solar_data->root, event);
-	if (clicked_id != -1) {
-		handle_select_body(clicked_id, solar_data);
-		handle_select_text_editor(clicked_id, solar_data);
-	}
-
-	if (solar_data->selected_editor != NULL)
-		menu_text_edit_handle_events(
-			solar_data->root, solar_data->selected_editor->node, event);
 }
 
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
