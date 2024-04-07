@@ -113,16 +113,50 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 	//     x: [  ] y: [  ]
 
 	MenuList *root_list = root_node->node;
+	Color text_color = {235, 235, 235, 255};
 
+	// will add color editing later
 	MenuTextEdit *title_text =
-		create_menu_text_edit((Color){235, 235, 235, 255}, TEXT_CENTER, "");
-	MenuNode *title_text_node = create_menu_node(BODIES_EDITOR_LIST,
+		create_menu_text_edit(text_color, TEXT_CENTER, "");
+	MenuNode *title_text_node = create_menu_node(BODIES_EDITOR_TITLE,
 												 (VectorD){0, 0},
 												 (VectorD){MENU_MAX_SIZE, 35},
 												 root_node,
 												 MENU_TEXT_EDIT,
 												 title_text);
 	add_menu_list(root_list, title_text_node);
+
+	MenuList *mass_list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){0, 10}, 0, MENU_HORIZONTAL);
+	MenuNode *mass_list_node = create_menu_node(BODIES_EDITOR_MASS,
+												(VectorD){0, 0},
+												(VectorD){MENU_MAX_SIZE, 35},
+												root_node,
+												MENU_LIST,
+												mass_list);
+
+	MenuText *mass_text =
+		create_menu_text(text_color, TEXT_LEFT, create_string("Mass:"));
+	MenuNode *mass_text_node = create_menu_node(BODIES_EDITOR_MASS_TEXT,
+												(VectorD){0, 0},
+												(VectorD){100, 35},
+												mass_list_node,
+												MENU_TEXT,
+												mass_text);
+	add_menu_list(mass_list, mass_text_node);
+
+	MenuTextEdit *mass_text_edit =
+		create_menu_text_edit(text_color, TEXT_RIGHT, "");
+	MenuNode *mass_text_edit_node =
+		create_menu_node(BODIES_EDITOR_MASS_TEXT_EDIT,
+						 (VectorD){0, 0},
+						 (VectorD){120, 35},
+						 mass_list_node,
+						 MENU_TEXT_EDIT,
+						 mass_text_edit);
+	add_menu_list(mass_list, mass_text_edit_node);
+
+	add_menu_list(root_list, mass_list_node);
 }
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {

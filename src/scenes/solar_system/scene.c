@@ -43,10 +43,18 @@ void handle_select_body(int clicked_id, Data *data) {
 	MenuButton *body_button = data->selected_body_node->node;
 	body_button->bg_color = SELECTED_BUTTON_COLOR;
 
-	MenuTextEdit *body_title =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_TEXT)->node;
+	MenuTextEdit *text_edit =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
 
-	strncpy(body_title->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
+	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
+
+	text_edit =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_TEXT_EDIT)->node;
+
+	snprintf(text_edit->text,
+			 MENU_TEXT_EDIT_SIZE,
+			 "%.3e",
+			 data->selected_body->mass);
 
 	render_menu_root(data->root);
 }
