@@ -188,12 +188,23 @@ void add_bodies_editor(MenuNode *root_node) {
 	add_menu_list(root_list, y_vel_node);
 }
 
-// TODO: make solar system properties editor
-// [<-] 1x [<<] [<] [>] [>>] [⏯]
-// back arrow
-// playback speed display
-// change playback speed, 0.25x, 0.5x, 2x, 4x
-// pause/play, ⏵, ⏸, ⏯
+void add_solar_editor(MenuNode *root_node, Data *data) {
+	MenuList *list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){0, 0}, 10, MENU_HORIZONTAL);
+	MenuNode *list_node = create_menu_node(SOLAR_EDITOR,
+										   (VectorD){0, 0},
+										   (VectorD){MENU_MAX_SIZE, 35},
+										   root_node,
+										   MENU_LIST,
+										   list);
+
+	// TODO: make solar system properties editor
+	// [<-] 1x [<<] [<] [>] [>>] [⏯]
+	// back arrow
+	// playback speed display
+	// change playback speed, 0.25x, 0.5x, 2x, 4x
+	// pause/play, ⏵, ⏸, ⏯
+}
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 	MenuList *root_list = create_menu_list(
