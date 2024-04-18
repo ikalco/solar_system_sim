@@ -6,10 +6,6 @@ real astronomical numbers and makes it look a little nice.
 
 ### Build and Run (linux only)
 
-The path for the save file is hardcoded as ./saves/solar_system.save
-which means that you must have that file structure wherever you invoke
-the program. However it will work if you follow the steps below.
-
 #### Build Requirements
 - gcc
 - gnu make
