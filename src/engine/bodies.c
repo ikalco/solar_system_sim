@@ -129,7 +129,7 @@ void update_bodies(List *bodies, double time_step) {
 }
 
 void print_phyiscal_body(PhysicalBody *body) {
-	printf("(%s) pos_x %f | pos_y %f | vel_x %f | vel_y %f | mass %f\n",
+	printf("(%s) pos_x %e | pos_y %e | vel_x %e | vel_y %e | mass %e\n",
 		   body->name,
 		   body->position.x,
 		   body->position.y,

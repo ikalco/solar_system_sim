@@ -74,6 +74,8 @@ List *read_save_file(char *filename) {
 		exit(1);
 	}
 
+	printf("Loading solar system from: %s\n", filename);
+
 	char buf[MAX_SAVE_LINE_LEN];
 	int line_number = 1;
 	List *bodies = create_list();
