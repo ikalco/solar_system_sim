@@ -139,18 +139,18 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 		create_menu_text(text_color, TEXT_LEFT, create_string("Mass:"));
 	MenuNode *mass_text_node = create_menu_node(BODIES_EDITOR_MASS_TEXT,
 												(VectorD){0, 0},
-												(VectorD){100, 35},
+												(VectorD){80, 35},
 												mass_list_node,
 												MENU_TEXT,
 												mass_text);
 	add_menu_list(mass_list, mass_text_node);
 
 	MenuTextEdit *mass_text_edit =
-		create_menu_text_edit(text_color, TEXT_RIGHT, "");
+		create_menu_text_edit(text_color, TEXT_LEFT, "");
 	MenuNode *mass_text_edit_node =
 		create_menu_node(BODIES_EDITOR_MASS_TEXT_EDIT,
-						 (VectorD){0, 0},
-						 (VectorD){120, 35},
+						 (VectorD){20, 0},
+						 (VectorD){MENU_MAX_SIZE, 35},
 						 mass_list_node,
 						 MENU_TEXT_EDIT,
 						 mass_text_edit);

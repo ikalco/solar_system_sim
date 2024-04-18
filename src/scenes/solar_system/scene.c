@@ -67,6 +67,9 @@ void handle_select_text_editor(int clicked_id, Data *data) {
 		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
 	} else {
 		if (clicked_node->type != MENU_TEXT_EDIT) return;
+		if (data->selected_editor != NULL)
+			menu_text_edit_stop_edit(data->root, data->selected_editor->node);
+
 		data->selected_editor = clicked_node;
 		menu_text_edit_start_edit(data->root, data->selected_editor->node);
 	}
