@@ -119,6 +119,12 @@ void handle_select_text_editor(int clicked_id, Data *data) {
 	}
 }
 
+void handle_back(int clicked_id, Data *data) {
+	if (clicked_id == SOLAR_EDITOR_BACK) {
+		select_scene_manager(data->manager, data->window, SCENE_LOAD_MENU_ID);
+	}
+}
+
 void handle_input_solar_system(void *data, SDL_Event *event) {
 	Data *solar_data = data;
 
@@ -126,6 +132,8 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 	if (clicked_id != -1) {
 		handle_select_text_editor(clicked_id, solar_data);
 		handle_select_body(clicked_id, solar_data);
+
+		handle_back(clicked_id, solar_data);
 	}
 
 	if (solar_data->selected_editor != NULL)

@@ -25,6 +25,7 @@ int main() {
 									 draw_load_menu,
 									 NULL);
 
+	// make sure order of scenes stay the same, look at scenes/scene.h
 	// create scene manager, add menu_scene, and select it
 	manager = create_scene_manager(menu_scene);
 	add_scene_manager(manager, load_scene);

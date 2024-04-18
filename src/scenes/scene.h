@@ -4,6 +4,10 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
+// make sure this is always correct
+#define SCENE_MAIN_MENU_ID 0
+#define SCENE_LOAD_MENU_ID 1
+
 struct scene;
 
 typedef struct {
