@@ -25,7 +25,7 @@ SDL_Rect render_menu_text_edit(MenuRoot *root, MenuNode *text_node) {
 	SDL_SetRenderDrawColor(root->menu_renderer, 235, 235, 235, 255);
 
 	if (text->selected) {
-		dstrect = (SDL_Rect){.x = offset.x + offset.w - textrect.x,
+		dstrect = (SDL_Rect){.x = textrect.x + offset.x + textrect.w,
 							 .y = offset.y + textrect.y,
 							 .w = 15,
 							 .h = textrect.h};
