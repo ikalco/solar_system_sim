@@ -3,6 +3,8 @@
 
 #include "engine/bodies.h"
 
+Color text_color = {235, 235, 235, 255};
+
 // TODO: make some sort of scrolling or searching system in order to allow
 // interaction with more that 5 bodies
 
@@ -20,11 +22,10 @@ void add_bodies_list_bodies(MenuNode *bodies_list_node, List *bodies) {
 
 		PhysicalBody *body = current->data;
 
-		MenuButton *body_button =
-			create_menu_button(DEFAULT_BUTTON_COLOR,
-							   (Color){235, 235, 235, 255},
-							   TEXT_CENTER,
-							   create_string(body->name));
+		MenuButton *body_button = create_menu_button(DEFAULT_BUTTON_COLOR,
+													 text_color,
+													 TEXT_CENTER,
+													 create_string(body->name));
 
 		MenuNode *body_button_node =
 			create_menu_node(body_id,
@@ -56,8 +57,8 @@ void add_bodies_list(MenuNode *root_node, Data *data) {
 												  MENU_LIST,
 												  bodies_list);
 
-	MenuText *title_text = create_menu_text(
-		(Color){235, 235, 235, 255}, TEXT_CENTER, create_string("Bodies"));
+	MenuText *title_text =
+		create_menu_text(text_color, TEXT_CENTER, create_string("Bodies"));
 	MenuNode *title_text_node = create_menu_node(TITLE_TEXT,
 												 (VectorD){0, 0},
 												 (VectorD){MENU_MAX_SIZE, 35},
@@ -74,7 +75,6 @@ void add_bodies_list(MenuNode *root_node, Data *data) {
 
 void add_title(MenuNode *root_node, Data *data) {
 	MenuList *root_list = root_node->node;
-	Color text_color = {235, 235, 235, 255};
 
 	// will probably change data->name to hold something from inisde the file
 	// later rn will just use the path
@@ -104,8 +104,6 @@ MenuNode *make_scientific_editor(MenuNode *root_node,
 								 Data *data,
 								 const char *editor_text,
 								 int id) {
-	Color text_color = {235, 235, 235, 255};
-
 	MenuList *list = create_menu_list(
 		(Color){40, 40, 40, 255}, (VectorD){0, 10}, 0, MENU_HORIZONTAL);
 	MenuNode *list_node = create_menu_node(id,
@@ -159,7 +157,6 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 	//     x: [  ] y: [  ]
 
 	MenuList *root_list = root_node->node;
-	Color text_color = {235, 235, 235, 255};
 
 	// will add color editing later
 	MenuTextEdit *title_text =
