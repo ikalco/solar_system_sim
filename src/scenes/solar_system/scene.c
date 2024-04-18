@@ -27,6 +27,27 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 	return (PhysicalBody *)(current->data);
 }
 
+void set_scientific_editor(Data *data,
+						   int decimal_id,
+						   int exponent_id,
+						   double value) {
+	// might add decimal percision parameter later
+
+	MenuTextEdit *text_edit =
+		find_menu_node_id(data->root->root, decimal_id)->node;
+
+	char *sci = text_edit->text;
+
+	snprintf(text_edit->text, MENU_TEXT_EDIT_SIZE, "%.5e", value);
+
+	text_edit = find_menu_node_id(data->root->root, exponent_id)->node;
+
+	strncpy(text_edit->text, sci + 7, 4);
+
+	// cut off decimal at e+ since its shown by exponent
+	sci[7] = 0;
+}
+
 void handle_select_body(int clicked_id, Data *data) {
 	if (clicked_id < BODIES_BUTTONS ||
 		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
@@ -48,25 +69,10 @@ void handle_select_body(int clicked_id, Data *data) {
 
 	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
 
-	text_edit =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_DECIMAL_EDIT)
-			->node;
-
-	snprintf(text_edit->text,
-			 MENU_TEXT_EDIT_SIZE,
-			 "%.5e",
-			 data->selected_body->mass);
-
-	char *sci_mass = text_edit->text;
-
-	text_edit =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_EXPONENT_EDIT)
-			->node;
-
-	strncpy(text_edit->text, sci_mass + 7, 4);
-
-	// cut off decimal at e+ since its shown by exponent
-	sci_mass[7] = 0;
+	set_scientific_editor(data,
+						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
+						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
+						  data->selected_body->mass);
 
 	render_menu_root(data->root);
 }
