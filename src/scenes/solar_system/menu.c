@@ -141,7 +141,7 @@ make_scientific_editor(MenuNode *root_node, const char *editor_text, int id) {
 	return list_node;
 }
 
-// TODO: flesh out rest of editor described below
+// TODO: maybe make a nice color editor...
 void add_bodies_editor(MenuNode *root_node) {
 	// the outline for the editor
 	// the "[]" are a text editing box
@@ -187,6 +187,13 @@ void add_bodies_editor(MenuNode *root_node) {
 		make_scientific_editor(root_node, "Y vel:", BODIES_EDITOR_Y_VEL);
 	add_menu_list(root_list, y_vel_node);
 }
+
+// TODO: make solar system properties editor
+// [<-] 1x [<<] [<] [>] [>>] [⏯]
+// back arrow
+// playback speed display
+// change playback speed, 0.25x, 0.5x, 2x, 4x
+// pause/play, ⏵, ⏸, ⏯
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
 	MenuList *root_list = create_menu_list(

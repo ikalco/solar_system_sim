@@ -27,6 +27,8 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 	return (PhysicalBody *)(current->data);
 }
 
+// TODO: fix negative sign changing cut off offset
+// TODO: fix being set to 0 on system load
 void set_scientific_editor(Data *data,
 						   int decimal_id,
 						   int exponent_id,
