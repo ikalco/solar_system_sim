@@ -99,6 +99,52 @@ void add_title(MenuNode *root_node, Data *data) {
 	add_menu_list(root_list, line_break_node);
 }
 
+// always make sure that id + 3 doesn't overlap other menu nodes
+MenuNode *make_scientific_editor(MenuNode *root_node,
+								 Data *data,
+								 const char *editor_text,
+								 int id) {
+	Color text_color = {235, 235, 235, 255};
+
+	MenuList *list = create_menu_list(
+		(Color){40, 40, 40, 255}, (VectorD){0, 10}, 0, MENU_HORIZONTAL);
+	MenuNode *list_node = create_menu_node(id,
+										   (VectorD){0, 0},
+										   (VectorD){MENU_MAX_SIZE, 35},
+										   root_node,
+										   MENU_LIST,
+										   list);
+
+	MenuText *text =
+		create_menu_text(text_color, TEXT_LEFT, create_string(editor_text));
+	MenuNode *text_node = create_menu_node(
+		id + 1, (VectorD){0, 0}, (VectorD){80, 35}, list_node, MENU_TEXT, text);
+	add_menu_list(list, text_node);
+
+	MenuTextEdit *decimal_edit =
+		create_menu_text_edit(text_color, TEXT_LEFT, "");
+	MenuNode *decimal_edit_node = create_menu_node(id + 2,
+												   (VectorD){20, 0},
+												   (VectorD){120, 35},
+												   list_node,
+												   MENU_TEXT_EDIT,
+												   decimal_edit);
+	add_menu_list(list, decimal_edit_node);
+
+	MenuTextEdit *exponent_edit =
+		create_menu_text_edit(text_color, TEXT_LEFT, "");
+	MenuNode *exponent_edit_node =
+		create_menu_node(id + 3,
+						 (VectorD){20, 0},
+						 (VectorD){MENU_MAX_SIZE, 35},
+						 list_node,
+						 MENU_TEXT_EDIT,
+						 exponent_edit);
+	add_menu_list(list, exponent_edit_node);
+
+	return list_node;
+}
+
 // TODO: flesh out rest of editor described below
 void add_bodies_editor(MenuNode *root_node, Data *data) {
 	// the outline for the editor
@@ -126,48 +172,9 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 												 title_text);
 	add_menu_list(root_list, title_text_node);
 
-	MenuList *mass_list = create_menu_list(
-		(Color){40, 40, 40, 255}, (VectorD){0, 10}, 0, MENU_HORIZONTAL);
-	MenuNode *mass_list_node = create_menu_node(BODIES_EDITOR_MASS,
-												(VectorD){0, 0},
-												(VectorD){MENU_MAX_SIZE, 35},
-												root_node,
-												MENU_LIST,
-												mass_list);
-
-	MenuText *mass_text =
-		create_menu_text(text_color, TEXT_LEFT, create_string("Mass:"));
-	MenuNode *mass_text_node = create_menu_node(BODIES_EDITOR_MASS_TEXT,
-												(VectorD){0, 0},
-												(VectorD){80, 35},
-												mass_list_node,
-												MENU_TEXT,
-												mass_text);
-	add_menu_list(mass_list, mass_text_node);
-
-	MenuTextEdit *mass_decimal_edit =
-		create_menu_text_edit(text_color, TEXT_LEFT, "");
-	MenuNode *mass_decimal_edit_node =
-		create_menu_node(BODIES_EDITOR_MASS_DECIMAL_EDIT,
-						 (VectorD){20, 0},
-						 (VectorD){120, 35},
-						 mass_list_node,
-						 MENU_TEXT_EDIT,
-						 mass_decimal_edit);
-	add_menu_list(mass_list, mass_decimal_edit_node);
-
-	MenuTextEdit *mass_exponent_edit =
-		create_menu_text_edit(text_color, TEXT_LEFT, "");
-	MenuNode *mass_exponent_edit_node =
-		create_menu_node(BODIES_EDITOR_MASS_EXPONENT_EDIT,
-						 (VectorD){20, 0},
-						 (VectorD){MENU_MAX_SIZE, 35},
-						 mass_list_node,
-						 MENU_TEXT_EDIT,
-						 mass_exponent_edit);
-	add_menu_list(mass_list, mass_exponent_edit_node);
-
-	add_menu_list(root_list, mass_list_node);
+	MenuNode *mass_node =
+		make_scientific_editor(root_node, data, "Mass:", BODIES_EDITOR_MASS);
+	add_menu_list(root_list, mass_node);
 }
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
