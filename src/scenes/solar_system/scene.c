@@ -27,8 +27,6 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 	return (PhysicalBody *)(current->data);
 }
 
-// TODO: fix negative sign changing cut off offset
-// TODO: fix being set to 0 on system load
 void set_scientific_editor(Data *data,
 						   int decimal_id,
 						   int exponent_id,
@@ -52,6 +50,38 @@ void set_scientific_editor(Data *data,
 	sci[offset] = 0;
 }
 
+void set_body_editor(Data *data, PhysicalBody *body) {
+	MenuTextEdit *text_edit =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
+
+	strncpy(text_edit->text, body->name, MENU_TEXT_EDIT_SIZE);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
+						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
+						  body->mass);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_X_DECIMAL_EDIT,
+						  BODIES_EDITOR_X_EXPONENT_EDIT,
+						  body->position.x);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_Y_DECIMAL_EDIT,
+						  BODIES_EDITOR_Y_EXPONENT_EDIT,
+						  body->position.y);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_X_VEL_DECIMAL_EDIT,
+						  BODIES_EDITOR_X_VEL_EXPONENT_EDIT,
+						  body->velocity.x);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
+						  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
+						  body->velocity.y);
+}
+
 void handle_select_body(int clicked_id, Data *data) {
 	if (clicked_id < BODIES_BUTTONS ||
 		clicked_id >= BODIES_BUTTONS + NUM_BODIES_BUTTONS)
@@ -68,34 +98,7 @@ void handle_select_body(int clicked_id, Data *data) {
 	MenuButton *body_button = data->selected_body_node->node;
 	body_button->bg_color = SELECTED_BUTTON_COLOR;
 
-	MenuTextEdit *text_edit =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
-
-	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
-
-	set_scientific_editor(data,
-						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
-						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
-						  data->selected_body->mass);
-
-	set_scientific_editor(data,
-						  BODIES_EDITOR_X_DECIMAL_EDIT,
-						  BODIES_EDITOR_X_EXPONENT_EDIT,
-						  data->selected_body->position.x);
-	set_scientific_editor(data,
-						  BODIES_EDITOR_Y_DECIMAL_EDIT,
-						  BODIES_EDITOR_Y_EXPONENT_EDIT,
-						  data->selected_body->position.y);
-
-	set_scientific_editor(data,
-						  BODIES_EDITOR_X_VEL_DECIMAL_EDIT,
-						  BODIES_EDITOR_X_VEL_EXPONENT_EDIT,
-						  data->selected_body->velocity.x);
-
-	set_scientific_editor(data,
-						  BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
-						  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
-						  data->selected_body->velocity.y);
+	set_body_editor(data, data->selected_body);
 
 	render_menu_root(data->root);
 }
@@ -199,6 +202,10 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 
 	draw_viewport_grid(renderer, solar_data->viewport);
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
+
+	set_body_editor(solar_data, solar_data->selected_body);
+	// yes this is inefficient, will fix when it becomes a problem
+	render_menu_root(solar_data->root);
 
 	draw_menu_root(solar_data->root);
 }
