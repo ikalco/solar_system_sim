@@ -44,10 +44,12 @@ void set_scientific_editor(Data *data,
 
 	text_edit = find_menu_node_id(data->root->root, exponent_id)->node;
 
-	strncpy(text_edit->text, sci + 7, 4);
+	int offset = value < 0 ? 8 : 7;
+
+	strncpy(text_edit->text, sci + offset, 4);
 
 	// cut off decimal at e+ since its shown by exponent
-	sci[7] = 0;
+	sci[offset] = 0;
 }
 
 void handle_select_body(int clicked_id, Data *data) {
