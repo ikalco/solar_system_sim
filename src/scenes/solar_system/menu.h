@@ -17,6 +17,7 @@ typedef struct {
 	MenuNode *selected_body_node;
 	MenuNode *selected_editor;
 	char *filename;
+	float playback_speed;
 } Data;
 
 #define DEFAULT_BUTTON_COLOR                                                   \

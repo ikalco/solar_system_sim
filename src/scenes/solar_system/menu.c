@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "menu/menu_text_edit.h"
 #include "options.h"
 
 #include "engine/bodies.h"
@@ -200,15 +201,69 @@ void add_solar_editor(MenuNode *root_node, Data *data) {
 
 	MenuButton *back_button = create_menu_button(
 		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string("<-"));
-
 	MenuNode *back_button_node = create_menu_node(SOLAR_EDITOR_BACK,
 												  (VectorD){0, 0},
 												  (VectorD){38, 38},
 												  list_node,
 												  MENU_BUTTON,
 												  back_button);
-
 	add_menu_list(list, back_button_node);
+
+	MenuText *playback_speed = create_menu_text(
+		text_color, TEXT_CENTER, malloc(sizeof(char[MENU_TEXT_EDIT_SIZE])));
+
+	snprintf(playback_speed->text,
+			 MENU_TEXT_EDIT_SIZE,
+			 data->playback_speed < 1 ? "%.6fx" : "%.0fx",
+			 data->playback_speed);
+	MenuNode *playback_speed_node = create_menu_node(SOLAR_EDITOR_SPEED,
+													 (VectorD){0, 0},
+													 (VectorD){95, 38},
+													 list_node,
+													 MENU_TEXT,
+													 playback_speed);
+	add_menu_list(list, playback_speed_node);
+
+	MenuButton *slow1 = create_menu_button(
+		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string("<<"));
+	MenuNode *slow1_node = create_menu_node(SOLAR_EDITOR_SLOW1,
+											(VectorD){0, 0},
+											(VectorD){38, 38},
+											list_node,
+											MENU_BUTTON,
+											slow1);
+	add_menu_list(list, slow1_node);
+
+	MenuButton *slow2 = create_menu_button(
+		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string("<"));
+	MenuNode *slow2_node = create_menu_node(SOLAR_EDITOR_SLOW2,
+											(VectorD){0, 0},
+											(VectorD){38, 38},
+											list_node,
+											MENU_BUTTON,
+											slow2);
+	add_menu_list(list, slow2_node);
+
+	MenuButton *fast1 = create_menu_button(
+		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string(">"));
+	MenuNode *fast1_node = create_menu_node(SOLAR_EDITOR_FAST1,
+											(VectorD){0, 0},
+											(VectorD){38, 38},
+											list_node,
+											MENU_BUTTON,
+											fast1);
+	add_menu_list(list, fast1_node);
+
+	MenuButton *fast2 = create_menu_button(
+		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string(">>"));
+	MenuNode *fast2_node = create_menu_node(SOLAR_EDITOR_FAST2,
+											(VectorD){0, 0},
+											(VectorD){38, 38},
+											list_node,
+											MENU_BUTTON,
+											fast2);
+	add_menu_list(list, fast2_node);
+
 	// TODO: make solar system properties editor
 	// [<-] 1x [<<] [<] [>] [>>] [⏯]
 	// back arrow

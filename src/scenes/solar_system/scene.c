@@ -119,10 +119,36 @@ void handle_select_text_editor(int clicked_id, Data *data) {
 	}
 }
 
-void handle_back(int clicked_id, Data *data) {
+void handle_solar_editor(int clicked_id, Data *data) {
+	if (clicked_id < SOLAR_EDITOR_START) return;
+
 	if (clicked_id == SOLAR_EDITOR_BACK) {
 		select_scene_manager(data->manager, data->window, SCENE_LOAD_MENU_ID);
 	}
+
+	MenuText *playback_speed =
+		find_menu_node_id(data->root->root, SOLAR_EDITOR_SPEED)->node;
+
+	if (clicked_id == SOLAR_EDITOR_SLOW1) {
+		data->playback_speed *= 0.25;
+	}
+
+	if (clicked_id == SOLAR_EDITOR_SLOW2) {
+		data->playback_speed *= 0.5;
+	}
+
+	if (clicked_id == SOLAR_EDITOR_FAST1) {
+		data->playback_speed *= 2;
+	}
+
+	if (clicked_id == SOLAR_EDITOR_FAST2) {
+		data->playback_speed *= 4;
+	}
+
+	snprintf(playback_speed->text,
+			 MENU_TEXT_EDIT_SIZE,
+			 data->playback_speed < 1 ? "%.6fx" : "%.0fx",
+			 data->playback_speed);
 }
 
 void handle_input_solar_system(void *data, SDL_Event *event) {
@@ -133,7 +159,7 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 		handle_select_text_editor(clicked_id, solar_data);
 		handle_select_body(clicked_id, solar_data);
 
-		handle_back(clicked_id, solar_data);
+		handle_solar_editor(clicked_id, solar_data);
 	}
 
 	if (solar_data->selected_editor != NULL)
@@ -155,6 +181,7 @@ void init_solar_system(SceneManager *manager,
 	data->manager = manager;
 	data->window = window;
 	data->filename = scene->data; // see above
+	data->playback_speed = 1;
 	data->bodies = read_save_file(data->filename);
 
 	data->selected_body = NULL;
@@ -212,8 +239,9 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
 
 	set_body_editor(solar_data, solar_data->selected_body);
-	// yes this is inefficient, will fix when it becomes a problem
-	render_menu_root(solar_data->root);
 
 	draw_menu_root(solar_data->root);
+
+	// yes this is inefficient, will fix when it becomes a problem
+	render_menu_root(solar_data->root);
 }
