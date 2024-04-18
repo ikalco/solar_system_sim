@@ -51,10 +51,17 @@ SDL_Rect render_menu_list(MenuRoot *root, MenuNode *list_node) {
 
 	int min_height = 0;
 	// int min_width = 0;
+
 	for (MenuNode *current = list->child; current != NULL;
 		 current = current->next) {
-		min_height += list->spacing + current->offset.y + current->size.y;
-		// min_width += list->spacing + current->offset.x + current->size.x;
+		if (list->direction == MENU_VERTICAL) {
+			min_height += list->spacing + current->offset.y + current->size.y;
+		}
+		if (list->direction == MENU_HORIZONTAL) {
+			if (current->offset.y + current->size.y > min_height)
+				min_height = current->offset.y + current->size.y;
+			// min_width += list->spacing + current->offset.x + current->size.x;
+		}
 	}
 
 	if (list_node->size.y < min_height) list_node->size.y = min_height;
