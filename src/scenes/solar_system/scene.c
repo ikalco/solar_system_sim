@@ -49,12 +49,24 @@ void handle_select_body(int clicked_id, Data *data) {
 	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
 
 	text_edit =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_TEXT_EDIT)->node;
+		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_DECIMAL_EDIT)
+			->node;
 
 	snprintf(text_edit->text,
 			 MENU_TEXT_EDIT_SIZE,
-			 "%.3e",
+			 "%.5e",
 			 data->selected_body->mass);
+
+	char *sci_mass = text_edit->text;
+
+	text_edit =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_MASS_EXPONENT_EDIT)
+			->node;
+
+	strncpy(text_edit->text, sci_mass + 7, 4);
+
+	// cut off decimal at e+ since its shown by exponent
+	sci_mass[7] = 0;
 
 	render_menu_root(data->root);
 }

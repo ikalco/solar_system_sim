@@ -145,16 +145,27 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 												mass_text);
 	add_menu_list(mass_list, mass_text_node);
 
-	MenuTextEdit *mass_text_edit =
+	MenuTextEdit *mass_decimal_edit =
 		create_menu_text_edit(text_color, TEXT_LEFT, "");
-	MenuNode *mass_text_edit_node =
-		create_menu_node(BODIES_EDITOR_MASS_TEXT_EDIT,
+	MenuNode *mass_decimal_edit_node =
+		create_menu_node(BODIES_EDITOR_MASS_DECIMAL_EDIT,
+						 (VectorD){20, 0},
+						 (VectorD){120, 35},
+						 mass_list_node,
+						 MENU_TEXT_EDIT,
+						 mass_decimal_edit);
+	add_menu_list(mass_list, mass_decimal_edit_node);
+
+	MenuTextEdit *mass_exponent_edit =
+		create_menu_text_edit(text_color, TEXT_LEFT, "");
+	MenuNode *mass_exponent_edit_node =
+		create_menu_node(BODIES_EDITOR_MASS_EXPONENT_EDIT,
 						 (VectorD){20, 0},
 						 (VectorD){MENU_MAX_SIZE, 35},
 						 mass_list_node,
 						 MENU_TEXT_EDIT,
-						 mass_text_edit);
-	add_menu_list(mass_list, mass_text_edit_node);
+						 mass_exponent_edit);
+	add_menu_list(mass_list, mass_exponent_edit_node);
 
 	add_menu_list(root_list, mass_list_node);
 }
