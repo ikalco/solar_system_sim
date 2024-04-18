@@ -74,6 +74,25 @@ void handle_select_body(int clicked_id, Data *data) {
 						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
 						  data->selected_body->mass);
 
+	set_scientific_editor(data,
+						  BODIES_EDITOR_X_DECIMAL_EDIT,
+						  BODIES_EDITOR_X_EXPONENT_EDIT,
+						  data->selected_body->position.x);
+	set_scientific_editor(data,
+						  BODIES_EDITOR_Y_DECIMAL_EDIT,
+						  BODIES_EDITOR_Y_EXPONENT_EDIT,
+						  data->selected_body->position.y);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_X_VEL_DECIMAL_EDIT,
+						  BODIES_EDITOR_X_VEL_EXPONENT_EDIT,
+						  data->selected_body->velocity.x);
+
+	set_scientific_editor(data,
+						  BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
+						  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
+						  data->selected_body->velocity.y);
+
 	render_menu_root(data->root);
 }
 
