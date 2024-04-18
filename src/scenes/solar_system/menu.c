@@ -170,8 +170,24 @@ void add_bodies_editor(MenuNode *root_node, Data *data) {
 	add_menu_list(root_list, title_text_node);
 
 	MenuNode *mass_node =
-		make_scientific_editor(root_node, data, "Mass:", BODIES_EDITOR_MASS);
+		make_scientific_editor(root_node, data, "Mass: ", BODIES_EDITOR_MASS);
 	add_menu_list(root_list, mass_node);
+
+	MenuNode *x_node =
+		make_scientific_editor(root_node, data, "X:    ", BODIES_EDITOR_X);
+	add_menu_list(root_list, x_node);
+
+	MenuNode *y_node =
+		make_scientific_editor(root_node, data, "Y:    ", BODIES_EDITOR_Y);
+	add_menu_list(root_list, y_node);
+
+	MenuNode *x_vel_node =
+		make_scientific_editor(root_node, data, "X vel:", BODIES_EDITOR_X_VEL);
+	add_menu_list(root_list, x_vel_node);
+
+	MenuNode *y_vel_node =
+		make_scientific_editor(root_node, data, "Y vel:", BODIES_EDITOR_Y_VEL);
+	add_menu_list(root_list, y_vel_node);
 }
 
 MenuRoot *init_solar_system_menu_root(SDL_Window *window, Data *data) {
