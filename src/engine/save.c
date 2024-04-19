@@ -61,8 +61,9 @@ PhysicalBody *parse_save_line(char *line) {
 		length--;
 	}
 
-	body->name = malloc(sizeof(char) * length);
+	body->name = malloc(sizeof(char) * length + 1);
 	strcpy(body->name, token);
+	body->name[length] = 0;
 
 	return body;
 }

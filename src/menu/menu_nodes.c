@@ -175,8 +175,9 @@ create_menu_text_edit(Color text_color, MenuTextAlign align, char *text) {
 	menu_text->align = align;
 	menu_text->selected = 0;
 
-	menu_text->text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE]));
+	menu_text->text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE + 1]));
 	strncpy(menu_text->text, text, MENU_TEXT_EDIT_SIZE);
+	menu_text->text[MENU_TEXT_EDIT_SIZE] = 0;
 
 	return menu_text;
 }

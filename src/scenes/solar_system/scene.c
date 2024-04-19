@@ -43,6 +43,8 @@ void set_scientific_editor(MenuRoot *root,
 
 	int offset = value < 0 ? 8 : 7;
 
+	// probably don't need to null terminate since MenuTextEdit->text is
+	// allocated to 16 chars and we're copying 4 chars
 	strncpy(text_edit->text, sci + offset, 4);
 
 	// cut off decimal at e+ since its shown by exponent
@@ -103,14 +105,16 @@ void write_body_editor(MenuRoot *root,
 	switch (editor->id) {
 	case BODIES_EDITOR_TITLE:;
 		int new_len = strlen(text_edit->text);
-		body->name = realloc(body->name, sizeof(char) * new_len);
+		body->name = realloc(body->name, sizeof(char) * new_len + 1);
 		strncpy(body->name, text_edit->text, new_len);
+		body->name[new_len] = 0;
 
 		// if the title changed, change it in the body selector also
 		MenuButton *body_selector_title = body_node->node;
 		body_selector_title->text =
-			realloc(body_selector_title->text, sizeof(char) * new_len);
+			realloc(body_selector_title->text, sizeof(char) * new_len + 1);
 		strncpy(body_selector_title->text, text_edit->text, new_len);
+		body_selector_title->text[new_len] = 0;
 		break;
 		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_MASS_DECIMAL_EDIT,
 							  BODIES_EDITOR_MASS_EXPONENT_EDIT,
@@ -135,6 +139,7 @@ void write_body_editor(MenuRoot *root,
 	text_edit = find_menu_node_id(root->root, BODIES_EDITOR_TITLE)->node;
 
 	strncpy(text_edit->text, body->name, MENU_TEXT_EDIT_SIZE);
+	text_edit->text[MENU_TEXT_EDIT_SIZE] = 0;
 
 	set_scientific_editor(root,
 						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
@@ -166,6 +171,7 @@ void handle_select_body(int clicked_id, Data *data) {
 		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
 
 	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
+	text_edit->text[MENU_TEXT_EDIT_SIZE] = 0;
 
 	set_scientific_editor(data->root,
 						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
@@ -338,6 +344,7 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 		update_bodies(solar_data->bodies,
 					  TIME_STEP * solar_data->playback_speed);
 		set_body_editor_fields(solar_data->root, solar_data->selected_body);
+		// we know toggle->text will always be 2 chars with NULL at end
 		strncpy(toggle->text, "||", 2);
 	} else {
 		strncpy(toggle->text, ">", 2);

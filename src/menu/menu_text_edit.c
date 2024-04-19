@@ -62,8 +62,9 @@ void menu_text_edit_stop_edit(MenuRoot *root, MenuTextEdit *text) {
 }
 
 void menu_text_edit_start_edit(MenuRoot *root, MenuTextEdit *text) {
-	text->save_text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE]));
+	text->save_text = malloc(sizeof(char[MENU_TEXT_EDIT_SIZE + 1]));
 	strncpy(text->save_text, text->text, MENU_TEXT_EDIT_SIZE);
+	text->save_text[MENU_TEXT_EDIT_SIZE] = 0;
 	text->selected = 1;
 	SDL_StartTextInput();
 	render_menu_root(root);
@@ -83,6 +84,7 @@ void menu_text_edit_handle_events(MenuRoot *root,
 		case SDLK_ESCAPE:
 			// discard changed text
 			strncpy(text->text, text->save_text, MENU_TEXT_EDIT_SIZE);
+			text->text[MENU_TEXT_EDIT_SIZE] = 0;
 			menu_text_edit_stop_edit(root, text);
 			break;
 		case SDLK_BACKSPACE:
@@ -98,9 +100,9 @@ void menu_text_edit_handle_events(MenuRoot *root,
 	}
 
 	if (event->type == SDL_TEXTINPUT) {
-		if (strlen(text->text) + strlen(event->text.text) >=
-			MENU_TEXT_EDIT_SIZE)
+		if (strlen(text->text) + strlen(event->text.text) > MENU_TEXT_EDIT_SIZE)
 			return;
+		// this should never overflow... i think
 		strcat(text->text, event->text.text);
 		render_menu_root(root);
 	}
