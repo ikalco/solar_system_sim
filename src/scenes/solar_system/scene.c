@@ -331,10 +331,16 @@ void cleanup_solar_system(void *data) {
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	Data *solar_data = data;
 
+	MenuButton *toggle =
+		find_menu_node_id(solar_data->root->root, SOLAR_EDITOR_PLAY_TOGGLE)
+			->node;
 	if (solar_data->run_solar_system) {
 		update_bodies(solar_data->bodies,
 					  TIME_STEP * solar_data->playback_speed);
 		set_body_editor_fields(solar_data->root, solar_data->selected_body);
+		strncpy(toggle->text, "||", 2);
+	} else {
+		strncpy(toggle->text, ">", 2);
 	}
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

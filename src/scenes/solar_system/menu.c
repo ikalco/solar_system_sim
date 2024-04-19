@@ -271,8 +271,10 @@ void add_solar_editor(MenuNode *root_node, Data *data) {
 	add_menu_list(list, fast2_node);
 
 	// fix font not rendering play/pause icon
-	MenuButton *play_toggle = create_menu_button(
-		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string("⏯"));
+	MenuButton *play_toggle = create_menu_button(DEFAULT_BUTTON_COLOR,
+												 text_color,
+												 TEXT_CENTER,
+												 create_string("||" /*"⏯"*/));
 	MenuNode *play_toggle_node = create_menu_node(SOLAR_EDITOR_PLAY_TOGGLE,
 												  (VectorD){0, 0},
 												  (VectorD){38, 38},
