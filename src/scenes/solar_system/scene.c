@@ -106,17 +106,21 @@ void handle_select_body(int clicked_id, Data *data) {
 void handle_select_text_editor(int clicked_id, Data *data) {
 	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
 
-	if (clicked_id < BODIES_EDITOR_START) {
+	if (clicked_id < BODIES_EDITOR_START || clicked_id > BODIES_EDITOR_LAST) {
 		if (data->selected_editor == NULL) return;
 		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
-	} else {
-		if (clicked_node->type != MENU_TEXT_EDIT) return;
-		if (data->selected_editor != NULL)
-			menu_text_edit_stop_edit(data->root, data->selected_editor->node);
-
-		data->selected_editor = clicked_node;
-		menu_text_edit_start_edit(data->root, data->selected_editor->node);
+		return;
 	}
+
+	if (clicked_node->type != MENU_TEXT_EDIT) return;
+
+	if (clicked_id != BODIES_EDITOR_TITLE) data->run_solar_system = false;
+
+	if (data->selected_editor != NULL)
+		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
+
+	data->selected_editor = clicked_node;
+	menu_text_edit_start_edit(data->root, data->selected_editor->node);
 }
 
 void handle_solar_editor(int clicked_id, Data *data) {
@@ -168,9 +172,16 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 		handle_solar_editor(clicked_id, solar_data);
 	}
 
-	if (solar_data->selected_editor != NULL)
+	if (solar_data->selected_editor != NULL) {
 		menu_text_edit_handle_events(
 			solar_data->root, solar_data->selected_editor->node, event);
+
+		// stopped editing, so selected_editor should be null
+		if (((MenuTextEdit *)solar_data->selected_editor->node)->selected ==
+			false) {
+			solar_data->selected_editor = NULL;
+		}
+	}
 }
 
 // this expects scene->data to be a char* string containing a save file name
@@ -234,9 +245,11 @@ void cleanup_solar_system(void *data) {
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	Data *solar_data = data;
 
-	if (solar_data->run_solar_system)
+	if (solar_data->run_solar_system) {
 		update_bodies(solar_data->bodies,
 					  TIME_STEP * solar_data->playback_speed);
+		set_body_editor_fields(solar_data, solar_data->selected_body);
+	}
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -246,9 +259,6 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 
 	draw_viewport_grid(renderer, solar_data->viewport);
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
-
-	set_body_editor_fields(solar_data, solar_data->selected_body);
-
 	draw_menu_root(solar_data->root);
 
 	// yes this is inefficient, will fix when it becomes a problem
