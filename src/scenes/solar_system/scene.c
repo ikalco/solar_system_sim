@@ -72,6 +72,8 @@ void set_body_editor_fields(Data *data, PhysicalBody *body) {
 						  body->velocity.y);
 }
 
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+
 #define WRITE_BODY_SCIENTIFIC(d, e, p)                                         \
 	case d:                                                                    \
 		other = find_menu_node_id(root->root, e)->node;                        \
@@ -121,6 +123,8 @@ void write_body_editor(MenuRoot *root, PhysicalBody *body, MenuNode *editor) {
 		break;
 	}
 }
+
+#pragma GCC diagnostic warning "-Wimplicit-fallthrough"
 
 void handle_select_body(int clicked_id, Data *data) {
 	if (clicked_id < BODIES_BUTTONS ||
