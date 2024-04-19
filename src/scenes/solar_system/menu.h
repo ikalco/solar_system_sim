@@ -18,6 +18,7 @@ typedef struct {
 	MenuNode *selected_editor;
 	char *filename;
 	float playback_speed;
+	bool run_solar_system;
 } Data;
 
 #define DEFAULT_BUTTON_COLOR                                                   \

@@ -124,6 +124,12 @@ void handle_solar_editor(int clicked_id, Data *data) {
 
 	if (clicked_id == SOLAR_EDITOR_BACK) {
 		select_scene_manager(data->manager, data->window, SCENE_LOAD_MENU_ID);
+		return;
+	}
+
+	if (clicked_id == SOLAR_EDITOR_PLAY_TOGGLE) {
+		data->run_solar_system = data->run_solar_system ? false : true;
+		return;
 	}
 
 	MenuText *playback_speed =
@@ -182,6 +188,7 @@ void init_solar_system(SceneManager *manager,
 	data->window = window;
 	data->filename = scene->data; // see above
 	data->playback_speed = 1;
+	data->run_solar_system = true;
 	data->bodies = read_save_file(data->filename);
 
 	data->selected_body = NULL;
@@ -227,7 +234,9 @@ void cleanup_solar_system(void *data) {
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	Data *solar_data = data;
 
-	update_bodies(solar_data->bodies, TIME_STEP * solar_data->playback_speed);
+	if (solar_data->run_solar_system)
+		update_bodies(solar_data->bodies,
+					  TIME_STEP * solar_data->playback_speed);
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);

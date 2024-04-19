@@ -190,6 +190,12 @@ void add_bodies_editor(MenuNode *root_node) {
 }
 
 void add_solar_editor(MenuNode *root_node, Data *data) {
+	// [<-] 1x [<<] [<] [>] [>>] [⏯]
+	// back arrow
+	// playback speed display
+	// change playback speed, 0.25x, 0.5x, 2x, 4x
+	// pause/play, ⏵, ⏸, ⏯
+
 	MenuList *list = create_menu_list(
 		(Color){55, 55, 55, 255}, (VectorD){10, 10}, 10, MENU_HORIZONTAL);
 	MenuNode *list_node = create_menu_node(SOLAR_EDITOR,
@@ -264,12 +270,16 @@ void add_solar_editor(MenuNode *root_node, Data *data) {
 											fast2);
 	add_menu_list(list, fast2_node);
 
-	// TODO: make solar system properties editor
-	// [<-] 1x [<<] [<] [>] [>>] [⏯]
-	// back arrow
-	// playback speed display
-	// change playback speed, 0.25x, 0.5x, 2x, 4x
-	// pause/play, ⏵, ⏸, ⏯
+	// fix font not rendering play/pause icon
+	MenuButton *play_toggle = create_menu_button(
+		DEFAULT_BUTTON_COLOR, text_color, TEXT_CENTER, create_string("⏯"));
+	MenuNode *play_toggle_node = create_menu_node(SOLAR_EDITOR_PLAY_TOGGLE,
+												  (VectorD){0, 0},
+												  (VectorD){38, 38},
+												  list_node,
+												  MENU_BUTTON,
+												  play_toggle);
+	add_menu_list(list, play_toggle_node);
 
 	add_menu_list(root_node->node, list_node);
 }
