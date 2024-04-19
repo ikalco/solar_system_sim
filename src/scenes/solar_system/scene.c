@@ -27,20 +27,19 @@ PhysicalBody *get_body_from_node(Data *data, MenuNode *node) {
 	return (PhysicalBody *)(current->data);
 }
 
-void set_scientific_editor(Data *data,
+void set_scientific_editor(MenuRoot *root,
 						   int decimal_id,
 						   int exponent_id,
 						   double value) {
 	// might add decimal percision parameter later
 
-	MenuTextEdit *text_edit =
-		find_menu_node_id(data->root->root, decimal_id)->node;
+	MenuTextEdit *text_edit = find_menu_node_id(root->root, decimal_id)->node;
 
 	char *sci = text_edit->text;
 
 	snprintf(text_edit->text, MENU_TEXT_EDIT_SIZE, "%.5e", value);
 
-	text_edit = find_menu_node_id(data->root->root, exponent_id)->node;
+	text_edit = find_menu_node_id(root->root, exponent_id)->node;
 
 	int offset = value < 0 ? 8 : 7;
 
@@ -50,23 +49,23 @@ void set_scientific_editor(Data *data,
 	sci[offset] = 0;
 }
 
-void set_body_editor_fields(Data *data, PhysicalBody *body) {
-	set_scientific_editor(data,
+void set_body_editor_fields(MenuRoot *root, PhysicalBody *body) {
+	set_scientific_editor(root,
 						  BODIES_EDITOR_X_DECIMAL_EDIT,
 						  BODIES_EDITOR_X_EXPONENT_EDIT,
 						  body->position.x);
 
-	set_scientific_editor(data,
+	set_scientific_editor(root,
 						  BODIES_EDITOR_Y_DECIMAL_EDIT,
 						  BODIES_EDITOR_Y_EXPONENT_EDIT,
 						  body->position.y);
 
-	set_scientific_editor(data,
+	set_scientific_editor(root,
 						  BODIES_EDITOR_X_VEL_DECIMAL_EDIT,
 						  BODIES_EDITOR_X_VEL_EXPONENT_EDIT,
 						  body->velocity.x);
 
-	set_scientific_editor(data,
+	set_scientific_editor(root,
 						  BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
 						  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
 						  body->velocity.y);
@@ -88,7 +87,10 @@ void set_body_editor_fields(Data *data, PhysicalBody *body) {
 		break;
 
 // this uses macro just above for more concise code
-void write_body_editor(MenuRoot *root, PhysicalBody *body, MenuNode *editor) {
+void write_body_editor(MenuRoot *root,
+					   PhysicalBody *body,
+					   MenuNode *body_node,
+					   MenuNode *editor) {
 	if (editor->id < BODIES_EDITOR_START || editor->id > BODIES_EDITOR_LAST)
 		return;
 
@@ -103,6 +105,12 @@ void write_body_editor(MenuRoot *root, PhysicalBody *body, MenuNode *editor) {
 		int new_len = strlen(text_edit->text);
 		body->name = realloc(body->name, sizeof(char) * new_len);
 		strncpy(body->name, text_edit->text, new_len);
+
+		// if the title changed, change it in the body selector also
+		MenuButton *body_selector_title = body_node->node;
+		body_selector_title->text =
+			realloc(body_selector_title->text, sizeof(char) * new_len);
+		strncpy(body_selector_title->text, text_edit->text, new_len);
 		break;
 		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_MASS_DECIMAL_EDIT,
 							  BODIES_EDITOR_MASS_EXPONENT_EDIT,
@@ -122,6 +130,18 @@ void write_body_editor(MenuRoot *root, PhysicalBody *body, MenuNode *editor) {
 	default:
 		break;
 	}
+
+	// write to all fields as well
+	text_edit = find_menu_node_id(root->root, BODIES_EDITOR_TITLE)->node;
+
+	strncpy(text_edit->text, body->name, MENU_TEXT_EDIT_SIZE);
+
+	set_scientific_editor(root,
+						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
+						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
+						  body->mass);
+
+	set_body_editor_fields(root, body);
 }
 
 #pragma GCC diagnostic warning "-Wimplicit-fallthrough"
@@ -147,12 +167,12 @@ void handle_select_body(int clicked_id, Data *data) {
 
 	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
 
-	set_scientific_editor(data,
+	set_scientific_editor(data->root,
 						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
 						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
 						  data->selected_body->mass);
 
-	set_body_editor_fields(data, data->selected_body);
+	set_body_editor_fields(data->root, data->selected_body);
 
 	render_menu_root(data->root);
 }
@@ -175,8 +195,10 @@ void handle_select_text_editor(int clicked_id, Data *data) {
 	// we clicked off so write values from body editor
 	if (data->selected_editor != NULL) {
 		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
-		write_body_editor(
-			data->root, data->selected_body, data->selected_editor);
+		write_body_editor(data->root,
+						  data->selected_body,
+						  data->selected_body_node,
+						  data->selected_editor);
 	}
 
 	data->selected_editor = clicked_node;
@@ -241,6 +263,7 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 			false) {
 			write_body_editor(solar_data->root,
 							  solar_data->selected_body,
+							  solar_data->selected_body_node,
 							  solar_data->selected_editor);
 			solar_data->selected_editor = NULL;
 		}
@@ -311,7 +334,7 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	if (solar_data->run_solar_system) {
 		update_bodies(solar_data->bodies,
 					  TIME_STEP * solar_data->playback_speed);
-		set_body_editor_fields(solar_data, solar_data->selected_body);
+		set_body_editor_fields(solar_data->root, solar_data->selected_body);
 	}
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
