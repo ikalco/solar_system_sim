@@ -50,12 +50,7 @@ void set_scientific_editor(Data *data,
 	sci[offset] = 0;
 }
 
-void set_body_editor(Data *data, PhysicalBody *body) {
-	MenuTextEdit *text_edit =
-		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
-
-	strncpy(text_edit->text, body->name, MENU_TEXT_EDIT_SIZE);
-
+void set_body_editor_fields(Data *data, PhysicalBody *body) {
 	set_scientific_editor(data,
 						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
 						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
@@ -98,7 +93,12 @@ void handle_select_body(int clicked_id, Data *data) {
 	MenuButton *body_button = data->selected_body_node->node;
 	body_button->bg_color = SELECTED_BUTTON_COLOR;
 
-	set_body_editor(data, data->selected_body);
+	MenuTextEdit *text_edit =
+		find_menu_node_id(data->root->root, BODIES_EDITOR_TITLE)->node;
+
+	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
+
+	set_body_editor_fields(data, data->selected_body);
 
 	render_menu_root(data->root);
 }
@@ -247,7 +247,7 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	draw_viewport_grid(renderer, solar_data->viewport);
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
 
-	set_body_editor(solar_data, solar_data->selected_body);
+	set_body_editor_fields(solar_data, solar_data->selected_body);
 
 	draw_menu_root(solar_data->root);
 
