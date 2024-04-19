@@ -227,7 +227,7 @@ void cleanup_solar_system(void *data) {
 void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	Data *solar_data = data;
 
-	update_bodies(solar_data->bodies, TIME_STEP);
+	update_bodies(solar_data->bodies, TIME_STEP * solar_data->playback_speed);
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
