@@ -52,11 +52,6 @@ void set_scientific_editor(Data *data,
 
 void set_body_editor_fields(Data *data, PhysicalBody *body) {
 	set_scientific_editor(data,
-						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
-						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
-						  body->mass);
-
-	set_scientific_editor(data,
 						  BODIES_EDITOR_X_DECIMAL_EDIT,
 						  BODIES_EDITOR_X_EXPONENT_EDIT,
 						  body->position.x);
@@ -75,6 +70,56 @@ void set_body_editor_fields(Data *data, PhysicalBody *body) {
 						  BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
 						  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
 						  body->velocity.y);
+}
+
+#define WRITE_BODY_SCIENTIFIC(d, e, p)                                         \
+	case d:                                                                    \
+		other = find_menu_node_id(root->root, e)->node;                        \
+	case e:                                                                    \
+		if (other == NULL) {                                                   \
+			other = text_edit;                                                 \
+			text_edit = find_menu_node_id(root->root, d)->node;                \
+		}                                                                      \
+		sscanf(text_edit->text, "%lf", &coefficient);                          \
+		sscanf(other->text, "e+%lf", &exponent);                               \
+		p = coefficient * pow(10, exponent);                                   \
+		break;
+
+// this uses macro just above for more concise code
+void write_body_editor(MenuRoot *root, PhysicalBody *body, MenuNode *editor) {
+	if (editor->id < BODIES_EDITOR_START || editor->id > BODIES_EDITOR_LAST)
+		return;
+
+	if (editor->type != MENU_TEXT_EDIT) return;
+
+	MenuTextEdit *text_edit = editor->node;
+	MenuTextEdit *other = NULL;
+	double coefficient, exponent;
+
+	switch (editor->id) {
+	case BODIES_EDITOR_TITLE:;
+		int new_len = strlen(text_edit->text);
+		body->name = realloc(body->name, sizeof(char) * new_len);
+		strncpy(body->name, text_edit->text, new_len);
+		break;
+		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_MASS_DECIMAL_EDIT,
+							  BODIES_EDITOR_MASS_EXPONENT_EDIT,
+							  body->mass)
+		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_X_DECIMAL_EDIT,
+							  BODIES_EDITOR_X_EXPONENT_EDIT,
+							  body->position.x)
+		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_Y_DECIMAL_EDIT,
+							  BODIES_EDITOR_Y_EXPONENT_EDIT,
+							  body->position.y)
+		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_X_VEL_DECIMAL_EDIT,
+							  BODIES_EDITOR_X_VEL_EXPONENT_EDIT,
+							  body->velocity.x)
+		WRITE_BODY_SCIENTIFIC(BODIES_EDITOR_Y_VEL_DECIMAL_EDIT,
+							  BODIES_EDITOR_Y_VEL_EXPONENT_EDIT,
+							  body->velocity.y)
+	default:
+		break;
+	}
 }
 
 void handle_select_body(int clicked_id, Data *data) {
@@ -98,6 +143,11 @@ void handle_select_body(int clicked_id, Data *data) {
 
 	strncpy(text_edit->text, data->selected_body->name, MENU_TEXT_EDIT_SIZE);
 
+	set_scientific_editor(data,
+						  BODIES_EDITOR_MASS_DECIMAL_EDIT,
+						  BODIES_EDITOR_MASS_EXPONENT_EDIT,
+						  data->selected_body->mass);
+
 	set_body_editor_fields(data, data->selected_body);
 
 	render_menu_root(data->root);
@@ -106,18 +156,24 @@ void handle_select_body(int clicked_id, Data *data) {
 void handle_select_text_editor(int clicked_id, Data *data) {
 	MenuNode *clicked_node = find_menu_node_id(data->root->root, clicked_id);
 
-	if (clicked_id < BODIES_EDITOR_START || clicked_id > BODIES_EDITOR_LAST) {
+	if (clicked_id < BODIES_EDITOR_START || clicked_id > BODIES_EDITOR_LAST ||
+		clicked_node->type != MENU_TEXT_EDIT) {
 		if (data->selected_editor == NULL) return;
 		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
 		return;
 	}
 
-	if (clicked_node->type != MENU_TEXT_EDIT) return;
+	if (clicked_id != BODIES_EDITOR_TITLE &&
+		clicked_id != BODIES_EDITOR_MASS_DECIMAL_EDIT &&
+		clicked_id != BODIES_EDITOR_MASS_EXPONENT_EDIT)
+		data->run_solar_system = false;
 
-	if (clicked_id != BODIES_EDITOR_TITLE) data->run_solar_system = false;
-
-	if (data->selected_editor != NULL)
+	// we clicked off so write values from body editor
+	if (data->selected_editor != NULL) {
 		menu_text_edit_stop_edit(data->root, data->selected_editor->node);
+		write_body_editor(
+			data->root, data->selected_body, data->selected_editor);
+	}
 
 	data->selected_editor = clicked_node;
 	menu_text_edit_start_edit(data->root, data->selected_editor->node);
@@ -179,6 +235,9 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 		// stopped editing, so selected_editor should be null
 		if (((MenuTextEdit *)solar_data->selected_editor->node)->selected ==
 			false) {
+			write_body_editor(solar_data->root,
+							  solar_data->selected_body,
+							  solar_data->selected_editor);
 			solar_data->selected_editor = NULL;
 		}
 	}
