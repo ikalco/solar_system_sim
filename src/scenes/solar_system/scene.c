@@ -216,6 +216,11 @@ void handle_solar_editor(int clicked_id, Data *data) {
 
 	if (clicked_id == SOLAR_EDITOR_BACK) {
 		select_scene_manager(data->manager, data->window, SCENE_LOAD_MENU_ID);
+
+		// TODO: somehow figure out own scene id
+		//       this would require a kind of big refactor so,
+		//       will 2 for now since it shouldn't be possible to be different
+		remove_scene_manager(data->manager, 2);
 		return;
 	}
 
@@ -252,14 +257,6 @@ void handle_solar_editor(int clicked_id, Data *data) {
 void handle_input_solar_system(void *data, SDL_Event *event) {
 	Data *solar_data = data;
 
-	int clicked_id = menu_has_clicked(solar_data->root, event);
-	if (clicked_id != -1) {
-		handle_select_text_editor(clicked_id, solar_data);
-		handle_select_body(clicked_id, solar_data);
-
-		handle_solar_editor(clicked_id, solar_data);
-	}
-
 	if (solar_data->selected_editor != NULL) {
 		menu_text_edit_handle_events(
 			solar_data->root, solar_data->selected_editor->node, event);
@@ -273,6 +270,14 @@ void handle_input_solar_system(void *data, SDL_Event *event) {
 							  solar_data->selected_editor);
 			solar_data->selected_editor = NULL;
 		}
+	}
+
+	int clicked_id = menu_has_clicked(solar_data->root, event);
+	if (clicked_id != -1) {
+		handle_select_text_editor(clicked_id, solar_data);
+		handle_select_body(clicked_id, solar_data);
+
+		handle_solar_editor(clicked_id, solar_data);
 	}
 }
 

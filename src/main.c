@@ -39,6 +39,9 @@ int main() {
 		// get active scene
 		active_scene = manager->scenes[manager->active_index];
 
+		// draw scene to screen
+		active_scene->draw(active_scene->data, renderer);
+
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				exit(0);
@@ -47,9 +50,6 @@ int main() {
 			// handle input for scene
 			active_scene->handle_input(active_scene->data, &event);
 		}
-
-		// draw scene to screen
-		active_scene->draw(active_scene->data, renderer);
 
 		// draw to screen and wait amount of time for desired fps
 		SDL_RenderPresent(renderer);
