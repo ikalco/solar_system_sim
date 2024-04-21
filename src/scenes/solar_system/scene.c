@@ -219,7 +219,9 @@ void handle_solar_editor(int clicked_id, Data *data) {
 
 		// TODO: somehow figure out own scene id
 		//       this would require a kind of big refactor so,
-		//       will 2 for now since it shouldn't be possible to be different
+		//       will be 2 for now since it shouldn't be possible to be
+		//       different
+		// TODO: fix bug with segfault when going back 3 times
 		remove_scene_manager(data->manager, 2);
 		return;
 	}
@@ -256,6 +258,8 @@ void handle_solar_editor(int clicked_id, Data *data) {
 
 void handle_input_solar_system(void *data, SDL_Event *event) {
 	Data *solar_data = data;
+
+	handle_viewport_nav(solar_data->viewport, event);
 
 	if (solar_data->selected_editor != NULL) {
 		menu_text_edit_handle_events(
