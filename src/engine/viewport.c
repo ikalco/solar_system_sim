@@ -25,26 +25,29 @@ Viewport *init_viewport(VectorD offset, VectorD size, double scale) {
 void draw_viewport_grid(SDL_Renderer *renderer, Viewport *viewport) {
 	double min_size = viewport->size.x < viewport->size.y ? viewport->size.x
 														  : viewport->size.y;
-	double cell_size = min_size / 10;
+	int cell_size = min_size / 10;
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+	int x = ((int)viewport->offset.x % cell_size) + viewport->position.x;
+	int y = ((int)viewport->offset.y % cell_size) + viewport->position.y;
+
 	// vertical lines
-	for (int i = 1; i < viewport->size.x / cell_size; i++) {
+	for (int i = 0; i < viewport->size.x / cell_size; i++) {
 		SDL_RenderDrawLine(renderer,
-						   i * cell_size + viewport->offset.x,
+						   i * cell_size + x,
 						   viewport->position.y,
-						   i * cell_size + viewport->offset.x,
+						   i * cell_size + x,
 						   viewport->position.y + viewport->size.y);
 	}
 
 	// horizontal lines
-	for (int i = 1; i < viewport->size.y / cell_size; i++) {
+	for (int i = 0; i < viewport->size.y / cell_size; i++) {
 		SDL_RenderDrawLine(renderer,
 						   viewport->position.x,
-						   i * cell_size + viewport->offset.y,
+						   i * cell_size + y,
 						   viewport->position.x + viewport->size.x,
-						   i * cell_size + viewport->offset.y);
+						   i * cell_size + y);
 	}
 }
 

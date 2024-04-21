@@ -362,7 +362,7 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	// draw_viewport_grid(renderer, solar_data->viewport);
+	draw_viewport_grid(renderer, solar_data->viewport);
 	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
 
 	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
