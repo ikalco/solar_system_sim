@@ -1,5 +1,4 @@
 #include "viewport.h"
-#include "options.h"
 
 Viewport *init_viewport(VectorD offset, VectorD size, double scale) {
 	Viewport *viewport = malloc(sizeof(Viewport));
@@ -55,6 +54,7 @@ void handle_cursor(Viewport *viewport, SDL_Event *event) {
 	// get values
 	if (event->type == SDL_MOUSEBUTTONUP ||
 		event->type == SDL_MOUSEBUTTONDOWN) {
+		if (event->button.button != SDL_BUTTON_LEFT) return;
 		x = event->button.x;
 		y = event->button.y;
 		state = event->button.state;
