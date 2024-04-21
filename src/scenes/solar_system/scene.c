@@ -303,8 +303,8 @@ void init_solar_system(SceneManager *manager,
 	data->selected_body_node = NULL;
 	data->selected_editor = NULL;
 
-	data->viewport = init_viewport((VectorD){400, 0},
-								   (VectorD){WINDOW_WIDTH - 400, WINDOW_HEIGHT},
+	data->viewport = init_viewport((VectorD){405, 0},
+								   (VectorD){WINDOW_WIDTH - 405, WINDOW_HEIGHT},
 								   3.5 * AU);
 	data->root = init_solar_system_menu_root(window, data);
 
@@ -358,11 +358,12 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
+	// draw_viewport_grid(renderer, solar_data->viewport);
+	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
+
 	SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
 	SDL_RenderFillRect(renderer, &(SDL_Rect){395, 0, 10, WINDOW_HEIGHT});
 
-	draw_viewport_grid(renderer, solar_data->viewport);
-	draw_bodies(renderer, solar_data->viewport, solar_data->bodies);
 	draw_menu_root(solar_data->root);
 
 	// yes this is inefficient, will fix when it becomes a problem

@@ -64,6 +64,12 @@ void draw_bodies(SDL_Renderer *renderer, Viewport *viewport, List *bodies) {
 		rect.y =
 			(body->position.y * viewport->conversion) * -1 + viewport->offset.y;
 
+		if (rect.x + rect.w < viewport->position.x ||
+			rect.x - rect.w > viewport->position.x + viewport->size.x ||
+			rect.y + rect.h < viewport->position.y ||
+			rect.y - rect.h > viewport->position.y + viewport->size.y)
+			continue;
+
 		SDL_RenderFillRect(renderer, &rect);
 	}
 }
