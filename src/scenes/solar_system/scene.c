@@ -354,9 +354,9 @@ void draw_solar_system(void *data, SDL_Renderer *renderer) {
 					  TIME_STEP * solar_data->playback_speed);
 		set_body_editor_fields(solar_data->root, solar_data->selected_body);
 		// we know toggle->text will always be 2 chars with NULL at end
-		strncpy(toggle->text, "||", 2);
+		strncpy(toggle->text, "||", 3);
 	} else {
-		strncpy(toggle->text, ">", 2);
+		strncpy(toggle->text, ">", 3);
 	}
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
