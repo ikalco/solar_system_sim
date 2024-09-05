@@ -298,7 +298,7 @@ void init_solar_system(SceneManager *manager,
 
 	data->manager = manager;
 	data->window = window;
-	data->filename = scene->data; // see above
+	data->filename = create_string(scene->data); // see above
 	data->playback_speed = 1;
 	data->run_solar_system = true;
 	data->bodies = read_save_file(data->filename);
