@@ -1,0 +1,291 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/utils/util.o",
+      "src/utils/util.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/utils/util.c",
+    "output": "/home/david/prog/solar_system_sim/build/utils/util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/utils/linked_list.o",
+      "src/utils/linked_list.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/utils/linked_list.c",
+    "output": "/home/david/prog/solar_system_sim/build/utils/linked_list.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/load_menu/scene.o",
+      "src/scenes/load_menu/scene.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/load_menu/scene.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/load_menu/scene.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/load_menu/menu.o",
+      "src/scenes/load_menu/menu.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/load_menu/menu.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/load_menu/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/scene.o",
+      "src/scenes/scene.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/scene.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/scene.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/main_menu/scene.o",
+      "src/scenes/main_menu/scene.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/main_menu/scene.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/main_menu/scene.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/main_menu/menu.o",
+      "src/scenes/main_menu/menu.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/main_menu/menu.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/main_menu/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/solar_system/scene.o",
+      "src/scenes/solar_system/scene.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/solar_system/scene.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/solar_system/scene.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/scenes/solar_system/menu.o",
+      "src/scenes/solar_system/menu.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/scenes/solar_system/menu.c",
+    "output": "/home/david/prog/solar_system_sim/build/scenes/solar_system/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/main.c",
+    "output": "/home/david/prog/solar_system_sim/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/engine/save.o",
+      "src/engine/save.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/engine/save.c",
+    "output": "/home/david/prog/solar_system_sim/build/engine/save.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/engine/bodies.o",
+      "src/engine/bodies.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/engine/bodies.c",
+    "output": "/home/david/prog/solar_system_sim/build/engine/bodies.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/engine/viewport.o",
+      "src/engine/viewport.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/engine/viewport.c",
+    "output": "/home/david/prog/solar_system_sim/build/engine/viewport.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/menu/menu_util.o",
+      "src/menu/menu_util.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/menu/menu_util.c",
+    "output": "/home/david/prog/solar_system_sim/build/menu/menu_util.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/menu/menu_text_edit.o",
+      "src/menu/menu_text_edit.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/menu/menu_text_edit.c",
+    "output": "/home/david/prog/solar_system_sim/build/menu/menu_text_edit.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/menu/menu_nodes.o",
+      "src/menu/menu_nodes.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/menu/menu_nodes.c",
+    "output": "/home/david/prog/solar_system_sim/build/menu/menu_nodes.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+      "-I./src",
+      "-ggdb",
+      "-c",
+      "-o",
+      "build/menu/menu_render.o",
+      "src/menu/menu_render.c"
+    ],
+    "directory": "/home/david/prog/solar_system_sim",
+    "file": "/home/david/prog/solar_system_sim/src/menu/menu_render.c",
+    "output": "/home/david/prog/solar_system_sim/build/menu/menu_render.o"
+  }
+]

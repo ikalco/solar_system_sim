@@ -7,16 +7,6 @@
 
 #include "scenes/solar_system/scene.h"
 
-Scene *create_save_file_scene(char *save_file_name) {
-	Scene *solar_system_scene = create_scene(init_solar_system,
-											 cleanup_solar_system,
-											 handle_input_solar_system,
-											 draw_solar_system,
-											 save_file_name);
-
-	return solar_system_scene;
-}
-
 void init_load_menu(SceneManager *manager, Scene *scene, SDL_Window *window) {
 	Data *data = malloc(sizeof(Data));
 	data->manager = manager;
@@ -53,10 +43,13 @@ void handle_input_load_menu(void *data, SDL_Event *event) {
 				DEFAULT_SAVE_PATH,
 				save_file_button->text);
 
-		Scene *save_file_scene =
-			create_save_file_scene(create_string(save_file_name));
-
-		int scene_i = add_scene_manager(menu_data->manager, save_file_scene);
+		int scene_i =
+			add_scene_manager(menu_data->manager,
+							  (Scene){.init = init_solar_system,
+									  .cleanup = cleanup_solar_system,
+									  .handle_input = handle_input_solar_system,
+									  .draw = draw_solar_system,
+									  .data = save_file_name});
 
 		select_scene_manager(menu_data->manager, menu_data->window, scene_i);
 	}

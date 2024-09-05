@@ -12,25 +12,22 @@ int main() {
 	init_SDL();
 	atexit(cleanup_SDL);
 
-	// create menu scene
-	Scene *menu_scene = create_scene(init_main_menu,
-									 cleanup_main_menu,
-									 handle_input_main_menu,
-									 draw_main_menu,
-									 NULL);
-
-	Scene *load_scene = create_scene(init_load_menu,
-									 cleanup_load_menu,
-									 handle_input_load_menu,
-									 draw_load_menu,
-									 NULL);
-
 	// make sure order of scenes stay the same, look at scenes/scene.h
 	// create scene manager, add menu_scene, and select it
-	manager = create_scene_manager(menu_scene);
-	add_scene_manager(manager, load_scene);
+	manager = create_scene_manager();
 
-	select_scene_manager(manager, window, 0);
+	add_scene_manager(manager,
+					  (Scene){.init = init_main_menu,
+							  .cleanup = cleanup_main_menu,
+							  .handle_input = handle_input_main_menu,
+							  .draw = draw_main_menu});
+	add_scene_manager(manager,
+					  (Scene){.init = init_load_menu,
+							  .cleanup = cleanup_load_menu,
+							  .handle_input = handle_input_load_menu,
+							  .draw = draw_load_menu});
+
+	select_scene_manager(manager, window, SCENE_MAIN_MENU_ID);
 
 	Scene *active_scene;
 	SDL_Event event;

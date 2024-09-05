@@ -1,32 +1,12 @@
 #include "scene.h"
 
-Scene *create_scene(void (*init)(SceneManager *manager,
-								 Scene *scene,
-								 SDL_Window *window),
-					void (*cleanup)(void *data),
-					void (*handle_input)(void *data, SDL_Event *event),
-					void (*draw)(void *data, SDL_Renderer *renderer),
-					void *data) {
-	Scene *scene = malloc(sizeof(Scene));
-
-	scene->init = init;
-	scene->cleanup = cleanup;
-	scene->handle_input = handle_input;
-	scene->draw = draw;
-	scene->data = data;
-	scene->initialized = false;
-
-	return scene;
-}
-
-SceneManager *create_scene_manager(Scene *initial_scene) {
+SceneManager *create_scene_manager() {
 	SceneManager *manager = malloc(sizeof(SceneManager));
 
 	manager->scenes = malloc(sizeof(Scene *) * 1);
-	manager->scenes[0] = initial_scene;
 
 	manager->capacity = 1;
-	manager->num_scenes = 1;
+	manager->num_scenes = 0;
 	manager->active_index = -1;
 
 	return manager;
@@ -55,11 +35,12 @@ void resize_scene_manager(SceneManager *manager) {
 	}
 }
 
-int add_scene_manager(SceneManager *manager, Scene *scene) {
+int add_scene_manager(SceneManager *manager, struct scene scene) {
 	if (manager->num_scenes + 1 > manager->capacity)
 		resize_scene_manager(manager);
 
-	manager->scenes[manager->num_scenes] = scene;
+	manager->scenes[manager->num_scenes] = malloc(sizeof(scene));
+	memcpy(manager->scenes[manager->num_scenes], &scene, sizeof(scene));
 	manager->num_scenes++;
 
 	return manager->num_scenes - 1;
